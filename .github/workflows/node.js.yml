@@ -22,5 +22,4 @@ jobs:
     
     - name: Building Client
       run: |
-        npm install
-        rollup -c
+        npm build
