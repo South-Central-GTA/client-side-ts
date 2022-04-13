@@ -21,4 +21,7 @@ jobs:
       run: npm install -g typescript rollup
     
     - name: Building Client
-      run: npm run build
+      run: |
+        npm install
+        npm run build
+ 
