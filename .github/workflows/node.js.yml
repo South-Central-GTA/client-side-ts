@@ -16,6 +16,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 16.x
-        cache: 'npm'
-    - run: npm i
-    - run: rollup -c
+    
+    - name: Install TypeScript Compiler and Rollup
+      run: npm install -g typescript rollup
+    
+    - name: Building Client
+      run: |
+        npm install
+        rollup -c
