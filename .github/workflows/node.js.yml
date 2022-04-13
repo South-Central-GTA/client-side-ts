@@ -22,6 +22,7 @@ jobs:
     
     - name: Building Client
       run: |
+        npm i
+        npm ci
         rollup -c
-        npm run build
  
