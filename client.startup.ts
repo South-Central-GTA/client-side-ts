@@ -1,0 +1,131 @@
+import { injectable } from "tsyringe";
+import {SessionHandler} from "./handlers/session.handler";
+import {CharacterCreatorHandler} from "./handlers/character/character-creator.handler";
+import {CharacterSelectorHandler} from "./handlers/character/character-selector.handler";
+import {PlayerHandler} from "./handlers/player.handler";
+import {InventoryHandler} from "./handlers/inventory.handler";
+import {ChatHandler} from "./handlers/chat.handler";
+import {CharacterHandler} from "./handlers/character/character.handler";
+import {VehicleSelectorHandler} from "./handlers/character/vehicle-selector.handler";
+import {VehicleHandler} from "./handlers/vehicle.handler";
+import {WebviewHandler} from "./handlers/webview.handler";
+import {TuningHandler} from "./handlers/tuning.handler";
+import {FreeCamHandler} from "./handlers/freecam.handler";
+import {NotificationHandler} from "./handlers/notification.handler";
+import {AuthenticationHandler} from "./handlers/authentication.handler";
+import {TutorialHandler} from "./handlers/tutorial.handler";
+import {NameTagHandler} from "./handlers/name-tag.handler";
+import {HudHandler} from "./handlers/hud.handler";
+import {ContextMenuHandler} from "./handlers/context-menu.handler";
+import {PhoneHandler} from "./handlers/phone.handler";
+import {AdminHandler} from "./handlers/admin.handler";
+import {HouseHandler} from "./handlers/house/house.handler";
+import {SubTitleHandler} from "./handlers/sub-title.handler";
+import {HouseSelectorHandler} from "./handlers/character/house-selector.handler";
+import {SpawnSelectorHandler} from "./handlers/character/spawn-selector.handler";
+import {DefinedJobHandler} from "./handlers/defined-job.handler";
+import {BankHandler} from "./handlers/bank.handler";
+import {VehicleInventoryHandler} from "./handlers/vehicle-inventory.handler";
+import {PublicGarageHandler} from "./handlers/public-garage.handler";
+import {GroupDataHandler} from "./handlers/group/group-data.handler";
+import {GroupsMenuHandler} from "./handlers/group/groups-menu.handler";
+import {WaypointHandler} from "./handlers/waypoint.handler";
+import {DialogHandler} from "./handlers/dialog.handler";
+import {InteriorHandler} from "./handlers/interior.handler";
+import {SupermarketHandler} from "./handlers/company/supermarket.handler";
+import {AmmunationHandler} from "./handlers/company/ammunation.handler";
+import {MenuHandler} from "./handlers/menu.handler";
+import {CountdownHandler} from "./handlers/countdown.handler";
+import {AccountHandler} from "./handlers/account.handler";
+import {VehicleCatalogHandler} from "./handlers/vehicle-catalog.handler";
+import {AdminPrisonHandler} from "./handlers/admin-prison.handler";
+import {HairSalonHandler} from "./handlers/company/hair-salon.handler";
+import {TattooStudioHandler} from "./handlers/company/tattoo-studio.handler";
+import {ClothingStoreHandler} from "./handlers/company/clothing-store.handler";
+import {DrivingSchoolHandler} from "./handlers/driving-school.handler";
+import {WeatherHandler} from "./handlers/weather.handler";
+import {WeaponHandler} from "./handlers/weapon.handler";
+import {GasStationHandler} from "./handlers/company/gas-station.handler";
+import {ClothingHandler} from "./handlers/clothing.handler";
+import {AnimationsHandler} from "./handlers/animations.handler";
+import {PlayersListHandler} from "./handlers/players-list.handler";
+import {ObjectSyncHandler} from "./handlers/entity-sync/object-sync.handler";
+import {MarkerSyncHandler} from "./handlers/entity-sync/marker-sync.handler";
+import {PedSyncHandler} from "./handlers/entity-sync/ped-sync.handler";
+import {AnimationWheelHandler} from "./handlers/animation-wheel.handler";
+import {DeathHandler} from "./handlers/death.handler";
+import {DoorSyncHandler} from "./handlers/entity-sync/door-sync.handler";
+import {BlipSyncHandler} from "./handlers/entity-sync/blip-sync.handler";
+import {MdcHandler} from "./handlers/mdc.handler";
+import {EmergencyCallHandler} from "./handlers/emergency-call.handler";
+import {PoliceMdcHandler} from "./handlers/police-mdc.handler";
+import {VehicleSirenHandler} from "./handlers/vehicle-siren.handler";
+import {FireMdcHandler} from "./handlers/fire-mdc.handler";
+
+@injectable()
+export class ClientStartup {
+
+    constructor(
+        private readonly fireMdcHandler: FireMdcHandler,
+        private readonly vehicleSirenHandler: VehicleSirenHandler,
+        private readonly policeMdcHandler: PoliceMdcHandler,
+        private readonly emergencyCallHandler: EmergencyCallHandler,
+        private readonly mdcHandler: MdcHandler,
+        private readonly blipSyncHandler: BlipSyncHandler,
+        private readonly doorSyncHandler: DoorSyncHandler,
+        private readonly pedSyncHandler: PedSyncHandler,
+        private readonly markerSyncHandler: MarkerSyncHandler,
+        private readonly objectSyncHandler: ObjectSyncHandler,
+        private readonly playersList: PlayersListHandler,
+        private readonly animationWheelHandler: AnimationWheelHandler,
+        private readonly animations: AnimationsHandler,
+        private readonly deathHandler: DeathHandler,
+        private readonly clothing: ClothingHandler,
+        private readonly weapon: WeaponHandler,
+        private readonly weather: WeatherHandler,
+        private readonly webview: WebviewHandler,
+        private readonly session: SessionHandler,
+        private readonly charcreator: CharacterCreatorHandler,
+        private readonly charselector: CharacterSelectorHandler,
+        private readonly player: PlayerHandler,
+        private readonly inventory: InventoryHandler,
+        private readonly chat: ChatHandler,
+        private readonly character: CharacterHandler,
+        private readonly vehicleSelector: VehicleSelectorHandler,
+        private readonly vehicle: VehicleHandler,
+        private readonly tuning: TuningHandler,
+        private readonly freecam: FreeCamHandler,
+        private readonly notification: NotificationHandler,
+        private readonly auth: AuthenticationHandler,
+        private readonly tutorial: TutorialHandler,
+        private readonly nameTag: NameTagHandler,
+        private readonly hud: HudHandler,
+        private readonly context: ContextMenuHandler,
+        private readonly phone: PhoneHandler,
+        private readonly admin: AdminHandler,
+        private readonly house: HouseHandler,
+        private readonly subtitle: SubTitleHandler, 
+        private readonly houseSelector: HouseSelectorHandler, 
+        private readonly spawnSelector: SpawnSelectorHandler, 
+        private readonly definedJob: DefinedJobHandler,
+        private readonly bank: BankHandler,
+        private readonly vehicleInventory: VehicleInventoryHandler,
+        private readonly publicGarage: PublicGarageHandler,      
+        private readonly groupData: GroupDataHandler,
+        private readonly groupsMenu: GroupsMenuHandler,
+        private readonly waypoint: WaypointHandler,
+        private readonly dialogHandler: DialogHandler, 
+        private readonly interiorHandler: InteriorHandler,
+        private readonly supermarketHandler: SupermarketHandler,
+        private readonly ammuniationHandler: AmmunationHandler,
+        private readonly gasstationHandler: GasStationHandler,
+        private readonly menuHandler: MenuHandler,
+        private readonly countdownHandler: CountdownHandler,
+        private readonly accountHandler: AccountHandler,
+        private readonly vehicleCatalogHandler: VehicleCatalogHandler,
+        private readonly adminPrisonHandler: AdminPrisonHandler,
+        private readonly hairSalonHandler: HairSalonHandler,
+        private readonly tattooStudioHandler: TattooStudioHandler,
+        private readonly clothingStoreHandler: ClothingStoreHandler,
+        private readonly drivingSchoolHandler: DrivingSchoolHandler  ) { }
+}

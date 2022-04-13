@@ -1,0 +1,13 @@
+import { GenderType } from "../../enums/gender.type";
+
+export class ComponentVariationInterface {
+    GenderType: GenderType; 
+    NameHash: string; 
+    ComponentType: string; 
+    ComponentId: number; 
+    DrawableId: number; 
+    TextureId: number; 
+    TranslatedLabel: { [key: string]: string; };
+    Price: number; 
+    RestrictionTags: string[]; 
+}

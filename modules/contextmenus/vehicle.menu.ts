@@ -1,0 +1,46 @@
+import { singleton, container } from "tsyringe";
+import { foundation } from "../../decorators/foundation";
+import { LoggerModule } from "../logger.module";
+import * as alt from "alt-client";
+import { EventModule } from "../event.module";
+import { ActionInterface } from "../../interfaces/action.interface";
+import { MathModule } from "../math.module";
+import { on } from "../../decorators/events";
+import { NotificationModule } from "../notification.module";
+import { NotificationType } from "../../enums/notification.type";
+import {Player} from "../../extensions/player.extensions";
+import {GroupModule} from "../group.module";
+import {ContextModule} from "../context.module";
+
+@foundation()
+@singleton()
+export class VehicleMenu {
+    constructor(
+        private readonly logger: LoggerModule,
+        private readonly event: EventModule,
+        private readonly math: MathModule) { }
+
+    public interact(coords: alt.Vector3): void {
+        let closestVehicle: alt.Vehicle;
+        let lastDistance: number = 5;
+
+        alt.Vehicle.all.forEach(vehicle => {
+            const vehiclePosition = vehicle.pos;
+            const distance = this.math.distance(coords, vehiclePosition);
+
+            if (distance < lastDistance) {
+                closestVehicle = vehicle;
+                lastDistance = distance;
+            }
+        });
+
+        if (closestVehicle === undefined) {
+            return;
+        }
+
+        if (closestVehicle.hasSyncedMeta("ID")) {
+            const id = closestVehicle.getSyncedMeta("ID");
+            this.event.emitServer("vehicleactions:get", id);
+        }
+    }
+}
