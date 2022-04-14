@@ -26,7 +26,7 @@ export class WeatherModule {
         private readonly logger: LoggerModule) { }
 
     public startSync(): void {
-        native.setWeatherTypeNowPersist(this.weatherNameMap.get(alt.getSyncedMeta("Weather")));
+        native.setWeatherTypeNowPersist(this.weatherNameMap.get(alt.getSyncedMeta<WeatherType>("Weather")));
 
         alt.setMsPerGameMinute(60000);
 

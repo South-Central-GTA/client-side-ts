@@ -6,7 +6,7 @@ let outputPath = `../altv-server/resources/southcentral/client`;
 export default {
     input: './index.ts',
     output: {
-        dir: outputPath,
+        // dir: outputPath,
         format: 'esm'
     },
     plugins: [

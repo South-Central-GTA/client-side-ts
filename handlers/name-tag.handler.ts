@@ -47,10 +47,10 @@ export class NameTagHandler {
                 return;
             }
             
-            const characterId = target.getSyncedMeta("ID");
-            const rpName = target.getSyncedMeta("CHARACTER_NAME");
-            const color = target.getSyncedMeta("NAMECOLOR");
-            const isTyping = target.getSyncedMeta("IS_TYPING");
+            const characterId = target.getSyncedMeta<number>("ID");
+            const rpName = target.getSyncedMeta<string>("CHARACTER_NAME");
+            const color = target.getSyncedMeta<string>("NAMECOLOR");
+            const isTyping = target.getSyncedMeta<boolean>("IS_TYPING");
             
             let finalText = `${color}${rpName} [${characterId}]`;
             if (isTyping) {

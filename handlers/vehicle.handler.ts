@@ -70,7 +70,7 @@ export class VehicleHandler {
     @on("enteredVehicle")
     public onEnteredVehicle(vehicle: alt.Vehicle, oldSeat: number, seat: number): void {
         if (vehicle.hasSyncedMeta("MAX_FUEL")) {
-            this.maxFuel = vehicle.getSyncedMeta("MAX_FUEL");
+            this.maxFuel = vehicle.getSyncedMeta<number>("MAX_FUEL");
         } else {
             this.maxFuel = 0;
         }
@@ -175,12 +175,12 @@ export class VehicleHandler {
         let drivenKilometre: number = -1;
         
         if (vehicle.hasSyncedMeta("FUEL")) {
-            const fuel = vehicle.getSyncedMeta("FUEL");
+            const fuel = vehicle.getSyncedMeta<number>("FUEL");
             fuelPercentage = fuel / this.maxFuel;
         }
 
         if (vehicle.hasSyncedMeta("DRIVEN_KILOMETRE")) {
-            drivenKilometre = vehicle.getSyncedMeta("DRIVEN_KILOMETRE");
+            drivenKilometre = vehicle.getSyncedMeta<number>("DRIVEN_KILOMETRE");
         }
         
         this.event.emitGui("speedo:getinformation", {
@@ -206,8 +206,8 @@ export class VehicleHandler {
             return;
         }
 
-        const id = vehicle.getSyncedMeta("ID");
-        const owner = vehicle.getSyncedMeta("OWNER");
+        const id = vehicle.getSyncedMeta<number>("ID");
+        const owner = vehicle.getSyncedMeta<string>("OWNER");
         const engineHealth = native.getVehicleEngineHealth(vehicle.scriptID);
         const bodyHealth = native.getVehicleBodyHealth(vehicle.scriptID);
 

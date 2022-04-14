@@ -18,7 +18,7 @@ export class PedMenu {
         const targetPlayer = alt.Player.all.find(x => x.scriptID === entityId) as Player;
         let targetPlayerId = undefined;
         if (targetPlayer) {
-            targetPlayerId = targetPlayer.getSyncedMeta("ID");
+            targetPlayerId = targetPlayer.getSyncedMeta<number>("ID");
         }
 
         this.event.emitServer("pedactions:get", native.getEntityModel(entityId), targetPlayerId);
