@@ -25,4 +25,16 @@ jobs:
         npm i
         npm ci
         rollup -c
+      
+    - name: SFTP Deploy
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.2
+      with:
+          username: 'tstolzenberg'
+          server: '192.145.44.94'
+          port: '8459'
+          sftp_only: 'true'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          local_path: '/index.ts'
+          remote_path: '/home/tstolzenberg/altv/resources/southcentral/client'
+          args: '-o ConnectTimeout=5'
  
