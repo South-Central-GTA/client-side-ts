@@ -37,7 +37,7 @@ export class VehicleSirenHandler {
             return
         }
         
-        const muted = entity.getStreamSyncedMeta("SIREN_MUTED");
+        const muted = entity.getStreamSyncedMeta<boolean>("SIREN_MUTED");
         
         native.setVehicleHasMutedSirens(entity.scriptID, muted);
     }

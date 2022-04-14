@@ -20,7 +20,7 @@ export class DeathHandler {
             return
         }
 
-        const deathState = entity.getStreamSyncedMeta("DEATH_STATE");
+        const deathState = entity.getStreamSyncedMeta<DeathState>("DEATH_STATE");
 
         native.setEntityInvincible(entity.scriptID, deathState === DeathState.DEAD);
     }

@@ -1,12 +1,12 @@
 import typescript from "@rollup/plugin-typescript";
 import nodeResolve from "@rollup/plugin-node-resolve";
 
-let outputPath = `../altv-server/resources/southcentral/client`;
+let outputPath = `./output`;
 
 export default {
     input: './index.ts',
     output: {
-        // dir: outputPath,
+        dir: outputPath,
         format: 'esm'
     },
     plugins: [
