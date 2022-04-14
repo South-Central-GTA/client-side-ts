@@ -39,7 +39,7 @@ export class VehicleMenu {
         }
 
         if (closestVehicle.hasSyncedMeta("ID")) {
-            const id = closestVehicle.getSyncedMeta("ID");
+            const id = closestVehicle.getSyncedMeta<number>("ID");
             this.event.emitServer("vehicleactions:get", id);
         }
     }

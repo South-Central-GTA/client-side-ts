@@ -4,6 +4,7 @@ import {on, onGui, onServer} from "../decorators/events";
 import alt from "alt-client";
 import native from "natives";
 import {WeatherModule} from "../modules/weather.module";
+import {WeatherType} from "../enums/weather.type";
 
 @foundation()
 @singleton()
@@ -15,7 +16,7 @@ export class WeatherHandler {
 
     @onServer("weather:updateweather")
     public onUpdateWeather(secondsForTransition: number): void {
-        const currentWeather = alt.getSyncedMeta("Weather");
+        const currentWeather = alt.getSyncedMeta<WeatherType>("Weather");
 
         if (this.weather.oldWeather === currentWeather) {
             return;

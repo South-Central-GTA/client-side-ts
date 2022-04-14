@@ -22,7 +22,6 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "allowSyntheticDefaultImports": true,
-        "outDir": "../altv-server/resources/southcentral/client"
     },
     "exclude": [
         "node_modules"

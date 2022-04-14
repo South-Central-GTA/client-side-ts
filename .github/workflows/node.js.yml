@@ -1,0 +1,40 @@
+name: Release Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: NPM clean-install
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+    
+    - name: Install TypeScript Compiler and Rollup
+      run: npm install -g typescript rollup
+    
+    - name: Building Client
+      run: |
+        npm i
+        npm ci
+        rollup -c
+      
+    - name: SFTP Deploy
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.2
+      with:
+          username: 'tstolzenberg'
+          server: '192.145.44.94'
+          port: '8459'
+          sftp_only: 'true'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          local_path: 'output/*'
+          remote_path: '/home/tstolzenberg/altv/resources/southcentral/client'
+          args: '-o ConnectTimeout=5'
+ 
