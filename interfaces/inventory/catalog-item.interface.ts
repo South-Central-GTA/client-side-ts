@@ -5,7 +5,6 @@ export interface CatalogItemInterface {
     name: string;
     image: string;
     description: string;
-    useValue: number;
     rarity: number;
     weight: number;
     equippable: boolean;
