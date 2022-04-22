@@ -79,6 +79,14 @@ export class PedSyncModule {
             delete this.peds[id];
         }
     }
+
+    public clearAll() {
+        this.peds.forEach((ped) => {
+            native.deletePed(ped.entity);
+        });
+        
+        this.peds = [];
+    }
     
     public setHeading(id: number, heading: number) {
         if(this.peds.hasOwnProperty(id)) {

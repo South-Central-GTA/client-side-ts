@@ -16,7 +16,7 @@ export class PedMenu {
 
     public interact(entityId: number): void {
         const targetPlayer = alt.Player.all.find(x => x.scriptID === entityId) as Player;
-        let targetPlayerId = undefined;
+        let targetPlayerId = -1;
         if (targetPlayer) {
             targetPlayerId = targetPlayer.getSyncedMeta<number>("ID");
         }

@@ -95,6 +95,13 @@ export class ObjectSyncModule {
             delete this.objects[id];
         }
     } 
+    public clearAll(): void  {
+        this.objects.forEach((object) => {
+            native.deleteObject(object.entity);
+        });                  
+
+        this.objects = [];
+    } 
     
     public setFreeze(id: number, freeze: boolean): void {
         if(this.objects.hasOwnProperty(id)) {

@@ -35,7 +35,7 @@ export class DoorSyncModule {
         }
     }
     
-    public  restore(id: number): void {
+    public restore(id: number): void {
         if (this.doors.hasOwnProperty(id)) {
             let door = this.doors[id];
 
@@ -55,7 +55,7 @@ export class DoorSyncModule {
         }
     }
     
-    public clearAllDoor(): void {
+    public clearAll(): void {
         this.doors = [];
     }
     

@@ -5,18 +5,19 @@ import {LoggerModule} from "./logger.module";
 import {BlipInterface} from "../interfaces/blip.interface";
 import {BlipColor, BlipSprite} from "alt-shared";
 import {BlipType} from "../enums/blip.type";
+import native from "natives";
 
 @singleton()
 export class BlipSyncModule {
     private blips: BlipInterface[] = [];
     
-    public constructor(private logger: LoggerModule) {
+    public constructor(private readonly logger: LoggerModule) {
     }
     
     public add(id: number, position: Vector3, name: string, sprite: BlipSprite, color: BlipColor, scale: number, shortRange: boolean,
                player: alt.Player, blipType: BlipType, radius: number, alpha: number): void {
 
-        if (player?.id !== alt.Player.local.id) {
+        if (player !== null && player.id !== alt.Player.local.id){
             return;
         }
         
@@ -60,7 +61,7 @@ export class BlipSyncModule {
         if (this.blips.hasOwnProperty(id)) {
             const blip = this.blips[id];
 
-            if (blip.player?.id !== alt.Player.local.id) {
+            if (blip.player !== null && blip.player.id !== alt.Player.local.id) {
                 return;
             }
 
@@ -107,6 +108,10 @@ export class BlipSyncModule {
     }
     
     public clearAll(): void {
+        this.blips.forEach((blip) => {
+            blip.handle.destroy();
+        });
+        
         this.blips = [];
     }
     

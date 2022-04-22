@@ -33,6 +33,8 @@ export class CharCreatorModule {
             character: character,
             startMoney: 0,
             hasPhone: false,
+            isRegistered: false,
+            hasDrivingLicense: false,
             purchaseOrders: [],
             spawnId: 0
         }
@@ -85,6 +87,8 @@ export class CharCreatorModule {
 
         this.characterCreatorData.startMoney = form.startMoney;
         this.characterCreatorData.hasPhone = form.hasPhone;
+        this.characterCreatorData.hasDrivingLicense = form.hasDrivingLicense;
+        this.characterCreatorData.isRegistered = form.isRegistered;
     }
 
     public getInventoryClothingItems(character: CharacterInterface): ItemInterface[] {

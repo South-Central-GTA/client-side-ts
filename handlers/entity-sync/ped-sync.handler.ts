@@ -8,6 +8,7 @@ import {ObjectSyncModule} from "../../modules/object-sync.module";
 import {LoggerModule} from "../../modules/logger.module";
 import {MarkerSyncModule} from "../../modules/marker-sync.module";
 import {PedSyncModule} from "../../modules/ped-sync.module";
+import {on} from "../../decorators/events";
 
 @foundation() 
 @singleton()
@@ -54,5 +55,10 @@ export class PedSyncHandler {
                 }
             }
         });
+    }
+
+    @on("disconnect")
+    public onPlayerDisconnect(): void {
+        this.pedSync.clearAll();
     }
 }

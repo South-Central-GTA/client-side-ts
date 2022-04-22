@@ -91,6 +91,10 @@ export class MarkerSyncModule {
             delete this.markers[id];
         }
     }
+
+    public clearAll() {
+        this.markers = [];
+    }
     
     public setBobUpDown(id: number, bobUpDown: boolean = false) {
         if(this.markers.hasOwnProperty(id)) {

@@ -6,13 +6,13 @@ import {EntityType} from "../../enums/entity.type";
 import {Vector3} from "../../extensions/vector3.extensions";
 import {ObjectSyncModule} from "../../modules/object-sync.module";
 import {DoorSyncModule} from "../../modules/door-sync.module";
+import {on} from "../../decorators/events";
 
 @foundation() 
 @singleton()
 export class DoorSyncHandler {
     
     constructor(private readonly doorSync: DoorSyncModule) {
-        
         alt.onServer("entitySync:create", (id: number, entityType: EntityType, position: Vector3, currEntityData: { [name: string]: any }) => {
             if(currEntityData) {
                 const data = currEntityData;
@@ -53,5 +53,10 @@ export class DoorSyncHandler {
                 }
             }
         });
+    }
+
+    @on("disconnect")
+    public onPlayerDisconnect(): void {
+        this.doorSync.clearAll();
     }
 }

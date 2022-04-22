@@ -5,6 +5,7 @@ import {EventModule} from "../../modules/event.module";
 import {EntityType} from "../../enums/entity.type";
 import {Vector3} from "../../extensions/vector3.extensions";
 import {ObjectSyncModule} from "../../modules/object-sync.module";
+import {on} from "../../decorators/events";
 
 @foundation() 
 @singleton()
@@ -37,5 +38,10 @@ export class ObjectSyncHandler {
                 objectSync.clear(id);
             }
         });
+    }
+
+    @on("disconnect")
+    public onPlayerDisconnect(): void {
+        this.objectSync.clearAll();
     }
 }

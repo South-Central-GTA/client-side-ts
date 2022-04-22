@@ -1,18 +1,18 @@
 import * as alt from "alt-client";
 import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
-import {EventModule} from "../../modules/event.module";
 import {EntityType} from "../../enums/entity.type";
 import {Vector3} from "../../extensions/vector3.extensions";
-import {ObjectSyncModule} from "../../modules/object-sync.module";
-import {DoorSyncModule} from "../../modules/door-sync.module";
 import {BlipSyncModule} from "../../modules/blip-sync.module";
+import {on} from "../../decorators/events";
+import native from "natives";
 
 @foundation() 
 @singleton()
 export class BlipSyncHandler {
     
     constructor(private readonly blipSync: BlipSyncModule) {
+        
         alt.onServer("entitySync:create", (id: number, entityType: EntityType, position: Vector3, currEntityData: { [name: string]: any }) => {
             if(currEntityData) {
                 const data = currEntityData;
@@ -53,5 +53,10 @@ export class BlipSyncHandler {
                 // }
             }
         });
+    }
+
+    @on("disconnect")
+    public onPlayerDisconnect(): void {
+        this.blipSync.clearAll();
     }
 }

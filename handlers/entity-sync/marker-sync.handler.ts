@@ -7,6 +7,7 @@ import {Vector3} from "../../extensions/vector3.extensions";
 import {ObjectSyncModule} from "../../modules/object-sync.module";
 import {LoggerModule} from "../../modules/logger.module";
 import {MarkerSyncModule} from "../../modules/marker-sync.module";
+import {on} from "../../decorators/events";
 
 @foundation() 
 @singleton()
@@ -46,5 +47,10 @@ export class MarkerSyncHandler {
                 markerSync.clear(id);
             }
         });
+    }
+
+    @on("disconnect")
+    public onPlayerDisconnect(): void {
+        this.markerSync.clearAll();
     }
 }
