@@ -22,7 +22,7 @@ export class MdcHandler {
 
     @onServer("mdc:open")
     public onOpen(factionType: FactionType, canLogin: boolean, characterName: string, rankName: string): void {
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.setIsAnyTextFieldFocused = true;
         this.player.showCursor();
         this.player.blurScreen(250);
@@ -33,7 +33,7 @@ export class MdcHandler {
     
     @onGui("mdc:close")
     public onClose(): void {
-        this.player.setIsAnyMenuOpen = false;
+        this.player.closeMenu();
         this.player.setIsAnyTextFieldFocused = false;
         this.player.hideCursor();
         this.player.unblurScreen(250);

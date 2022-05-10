@@ -20,25 +20,25 @@ export class DialogModule {
         private readonly player: Player) { }
 
     public create(dialog: DialogInterface): void {
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
+        this.player.showCursor();
+        this.gui.focusView();
         this.currentDialog = dialog;
 
         if (dialog.freezeGameControls) {
             this.player.blockGameControls(true);
-            this.player.showCursor();
-            this.gui.focusView();
         }
 
         this.event.emitGui("dialog:create", dialog);
     }
 
     public destroy(): void {
-        this.player.setIsAnyMenuOpen = false;
-
+        this.player.closeMenu();
+        this.player.hideCursor();
+        this.gui.unfocusView();
+        
         if (this.currentDialog.freezeGameControls) {
             this.player.blockGameControls(false);
-            this.player.hideCursor();
-            this.gui.unfocusView();
         }
 
         this.currentDialog = undefined;

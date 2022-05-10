@@ -26,7 +26,7 @@ export class PublicGarageHandler {
     
     @onServer("publicgarage:setupunpark")
     public onSetupUnpark(vehicles: PublicGarageEntryInterface[]): void {
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.blockGameControls(true);
         this.player.showCursor();
         this.gui.focusView();
@@ -36,7 +36,7 @@ export class PublicGarageHandler {
     
     @onServer("publicgarage:showrespawnvehiclelist")
     private onShowRespawnVehicleList(vehicles: VehicleInterface[]): void {
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.blockGameControls(true);
         this.player.showCursor();
         this.gui.focusView();

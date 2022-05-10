@@ -66,19 +66,15 @@ export class Player extends alt.Player {
     }
 
     get getIsAnyTextOpen() {
-        return this.isAnyTextFieldFocused || this.isChatting || this.isAnyMenuOpen;
+        return this.isAnyTextFieldFocused || this.isChatting || this.openMenuCount;
     }
 
     get getIsCursorVisible() {
         return this.isCursorVisible
     }
     
-    set setIsAnyMenuOpen(state: boolean) {
-        this.isAnyMenuOpen = state;
-    }
-    
     get getIsAnyMenuOpen() {
-        return this.isAnyMenuOpen || this.getIsInventoryOpen
+        return this.openMenuCount > 0 || this.getIsInventoryOpen
     }
 
     public characterId: number;
@@ -101,7 +97,7 @@ export class Player extends alt.Player {
     private isInventoryOpen: boolean;
     private isPhoneOpen: boolean;
     private isAnyTextFieldFocused: boolean;
-    private isAnyMenuOpen: boolean;
+    private openMenuCount: number = 0;
 
     private cameraLocked: boolean = true;
     private escBlocked: boolean = false;
@@ -115,6 +111,17 @@ export class Player extends alt.Player {
         this.update.add(() => this.tick());
     }
 
+    public openMenu(): void {
+        this.openMenuCount ++;
+    }
+    
+    public closeMenu(): void {
+        this.openMenuCount --;
+        if (this.openMenuCount < 0) {
+            this.openMenuCount = 0;
+        }
+    }
+    
     public setVisible(state: boolean): void {
         native.setEntityVisible(alt.Player.local.scriptID, state, false);
     }

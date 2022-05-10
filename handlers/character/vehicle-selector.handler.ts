@@ -33,13 +33,13 @@ export class VehicleSelectorHandler {
         private readonly charCreator: CharCreatorModule) { }
 
     @onServer("vehicleselector:open")
-    public onOpen(vehicles: CatalogVehicleInterface[]): void {
+    public async onOpen(vehicles: CatalogVehicleInterface[]): Promise<void> {
         this.createCamera();
 
         this.vehicles = vehicles;
         
         if (this.vehicles.length > 0) {
-            this.changeVehicle(this.vehicles[this.currentIndex]);
+            await this.changeVehicle(this.vehicles[this.currentIndex]);
 
             if (this.updateId) {
                 this.update.remove(this.updateId);

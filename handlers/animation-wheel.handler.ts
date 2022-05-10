@@ -74,7 +74,11 @@ export class AnimationWheelHandler {
 
     private setMenuState(state: boolean): void {
         this.isMenuOpen = state;
-        this.player.setIsAnyMenuOpen = this.isMenuOpen;
+        if (state) {
+            this.player.openMenu();
+        } else {
+            this.player.closeMenu();
+        }
         this.player.blockGameControls(this.isMenuOpen);
 
         if (this.isMenuOpen) {

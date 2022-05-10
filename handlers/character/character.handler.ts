@@ -36,12 +36,12 @@ export class CharacterHandler {
     
     @on("keydown")
     public onKeydown(key: number): void {
-        if (this.player.isInAPrison || !this.player.isSpawnedCharacter || this.player.getIsAnyTextFieldFocused) {
+        if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
             return;
         }
 
         if (key === KeyCodes.F9) {
-            if (this.isMenuOpen) {
+            if (this.isMenuOpen || this.player.getIsAnyMenuOpen) {
                 this.setMenuState(false);
             } else {
                 if (this.player.isSpawnedCharacter) {
@@ -141,7 +141,11 @@ export class CharacterHandler {
         }
 
         this.isMenuOpen = state;
-        this.player.setIsAnyMenuOpen = this.isMenuOpen;
+        if (state) {
+            this.player.openMenu();
+        } else {
+            this.player.closeMenu();
+        }
         this.player.blockGameControls(this.isMenuOpen);
 
         if (this.isMenuOpen) {

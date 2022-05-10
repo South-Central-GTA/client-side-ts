@@ -39,7 +39,7 @@ export class ClothingStoreHandler {
             return;
         }
         
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.freeze();
         this.player.showCursor();
         this.player.lockCamera(true);
@@ -97,7 +97,7 @@ export class ClothingStoreHandler {
 
     private close(): void {
         this.onReset();
-        this.player.setIsAnyMenuOpen = false;
+        this.player.closeMenu();
         this.player.unfreeze();
         this.player.hideCursor();
         this.player.lockCamera(false);

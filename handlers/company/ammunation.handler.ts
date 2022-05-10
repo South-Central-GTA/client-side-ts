@@ -25,7 +25,7 @@ export class AmmunationHandler {
             return;
         }
 
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.freeze();
         this.player.showCursor();
         this.gui.focusView();

@@ -16,7 +16,7 @@ export class BankHandler {
 
     @onServer("atm:openmenu")
     public onOpenMenu(): void {
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.freeze();
         this.player.showCursor();
         this.gui.focusView();

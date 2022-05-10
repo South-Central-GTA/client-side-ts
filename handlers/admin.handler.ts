@@ -26,7 +26,7 @@ export class AdminHandler {
         }
         
         if (key === KeyCodes.F11) {
-            if (this.isMenuOpen) {
+            if (this.isMenuOpen || this.player.getIsAnyMenuOpen) {
                 this.setMenuState(false);
             } else {
                 this.event.emitServer("admin:requestmenu");
@@ -49,7 +49,12 @@ export class AdminHandler {
         }
 
         this.isMenuOpen = state;
-        this.player.setIsAnyMenuOpen = this.isMenuOpen;
+        
+        if (state) {
+            this.player.openMenu();
+        } else {
+            this.player.closeMenu();
+        }
         this.player.blockGameControls(this.isMenuOpen);
 
         if (this.isMenuOpen) {

@@ -107,7 +107,7 @@ export class VehicleHandler {
 
     @onServer("vehiclesellmenu:show")
     public onSellVehicleMenuShow(hasBankAccount: boolean, isInGroup: boolean): void {
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.freeze();
         this.player.showCursor();
         this.gui.focusView();
@@ -118,7 +118,7 @@ export class VehicleHandler {
     @onServer("vehiclesellmenu:close")
     @onGui("vehiclesellmenu:close")
     public onSellVehicleMenuClose(): void {
-        this.player.setIsAnyMenuOpen = false;
+        this.player.closeMenu();
         this.player.unfreeze();
         this.player.hideCursor();
         this.gui.unfocusView();

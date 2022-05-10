@@ -33,7 +33,7 @@ export class HairSalonHandler {
 
     @onServer("hairsalon:open")
     private async onOpen(character: CharacterInterface): Promise<void> {
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.freeze();
         this.player.showCursor();
         this.player.lockCamera(true);
@@ -89,7 +89,7 @@ export class HairSalonHandler {
     
     private close(): void {
         this.onReset();
-        this.player.setIsAnyMenuOpen = false;
+        this.player.closeMenu();
         this.player.unfreeze();
         this.player.hideCursor();
         this.player.lockCamera(false);

@@ -24,7 +24,7 @@ export class GasStationHandler {
 
     @onServer("gasstation:openrefuelmenu")
     private onOpenRefuelMenu(maxPossibleFuel: number, fuelPrice: number): void {
-        this.player.setIsAnyMenuOpen = true;
+        this.player.openMenu();
         this.player.freeze();
         this.player.showCursor();
         this.gui.focusView();
@@ -53,7 +53,7 @@ export class GasStationHandler {
     
     @onGui("gasstation:close")
     private onCloseMenu(): void {
-        this.player.setIsAnyMenuOpen = false;
+        this.player.closeMenu();
         this.player.unfreeze();
         this.player.hideCursor();
         this.gui.unfocusView();

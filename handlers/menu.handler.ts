@@ -16,7 +16,7 @@ export class MenuHandler {
 
     @onGui("menu:close")
     public onClose(): void {
-        this.player.setIsAnyMenuOpen = false;
+        this.player.closeMenu();
         this.player.unfreeze();
         this.player.hideCursor();
         this.gui.unfocusView();

@@ -53,7 +53,11 @@ export class PlayersListHandler {
         }
 
         this.isMenuOpen = state;
-        this.player.setIsAnyMenuOpen = this.isMenuOpen;
+        if (state) {
+            this.player.openMenu();
+        } else {
+            this.player.closeMenu();
+        }
         this.player.blockGameControls(this.isMenuOpen);
 
         if (this.isMenuOpen) {

@@ -131,7 +131,7 @@ export class CharacterCreatorHandler {
         }, 1500);
     }
 
-    @onGui("charcreator:resetcamera")
+    @onServer("charcreator:resetcamera")
     public onResetCamera(): void {
         this.createCamera();
         this.onChangeCamPos(this.lastIndex, 0);

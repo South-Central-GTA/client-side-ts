@@ -61,11 +61,13 @@ import {EmergencyCallHandler} from "./handlers/emergency-call.handler";
 import {PoliceMdcHandler} from "./handlers/police-mdc.handler";
 import {VehicleSirenHandler} from "./handlers/vehicle-siren.handler";
 import {FireMdcHandler} from "./handlers/fire-mdc.handler";
+import {PrisonHandler} from "./handlers/prison.handler";
 
 @injectable()
 export class ClientStartup {
 
     constructor(
+        private readonly prisonHandler: PrisonHandler,
         private readonly fireMdcHandler: FireMdcHandler,
         private readonly vehicleSirenHandler: VehicleSirenHandler,
         private readonly policeMdcHandler: PoliceMdcHandler,

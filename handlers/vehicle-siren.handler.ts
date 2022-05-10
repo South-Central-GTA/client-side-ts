@@ -12,17 +12,21 @@ import {CriminalRecordInterface} from "../interfaces/mdc/criminal-record.interfa
 import {MdcNodeInterface} from "../interfaces/mdc/mdc-node.interface";
 import {HouseModule} from "../modules/house.module";
 import {KeyCodes} from "../enums/keycode.type";
+import {Player} from "../extensions/player.extensions";
 
 @foundation()
 @singleton()
 export class VehicleSirenHandler {
     
-    constructor(private readonly event: EventModule) {
+    constructor(
+        private readonly event: EventModule,
+        private readonly player: Player
+    ) {
     }
 
     @on("keydown")
     public keydown(key: number) {
-        if (!alt.Player.local.vehicle) {
+        if (!alt.Player.local.vehicle || this.player.getIsAnyMenuOpen) {
             return;
         }
 
