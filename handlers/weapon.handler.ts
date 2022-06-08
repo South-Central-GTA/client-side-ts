@@ -1,12 +1,12 @@
 import alt from "alt-client";
 import native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
-import { GuiModule } from "../modules/gui.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
+import {GuiModule} from "../modules/gui.module";
 import {EventModule} from "../modules/event.module";
 import {on, onServer} from "../decorators/events";
 import {WeaponModule} from "../modules/weapon.module";
-import {Player} from "../extensions/player.extensions";
+import {Player} from "@extensions/player.extensions";
 import {UpdateModule} from "../modules/update.module";
 import {LoggerModule} from "../modules/logger.module";
 
@@ -14,7 +14,7 @@ import {LoggerModule} from "../modules/logger.module";
 @singleton()
 export class WeaponHandler {
     private wasShooting = false;
-    
+
     public constructor(
         private readonly gui: GuiModule,
         private readonly event: EventModule,
@@ -28,12 +28,12 @@ export class WeaponHandler {
     public onGiveAmmo(name: string, ammo: number): void {
         native.addAmmoToPed(alt.Player.local.scriptID, WeaponModule.getWeaponOfAmmoType(name), ammo);
     }
-    
+
     @onServer("weapon:removeammo")
     public onRemoveAmmo(name: string, ammo: number): void {
         native.addAmmoToPed(alt.Player.local.scriptID, WeaponModule.getWeaponOfAmmoType(name), -ammo);
     }
-    
+
     private tick(): void {
         if (native.isPedShooting(alt.Player.local)) {
             this.wasShooting = true;
@@ -52,7 +52,7 @@ export class WeaponHandler {
         let sniperAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_SNIPER"));
         let shotgunAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_SHOTGUN"));
         let lightMachineGunAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_LIGHT_MACHINE_GUN"));
-        
+
         // thorwables 
         let baseballAmmo = native.getAmmoInPedWeapon(alt.Player.local, 0x23C9F95C);
         let bzgasAmmo = native.getAmmoInPedWeapon(alt.Player.local, 0xA0973D5E);

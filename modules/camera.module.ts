@@ -1,6 +1,6 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
+import {singleton} from "tsyringe";
 import {IVector3} from "alt-client";
 import {LoggerModule} from "./logger.module";
 
@@ -22,9 +22,10 @@ export class CameraModule {
     private isCamMoving: boolean;
 
     public constructor(
-        private logger: LoggerModule) {}
+        private logger: LoggerModule) {
+    }
 
-    public createCamera(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0, 0), fov: number = 70): void  {
+    public createCamera(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0, 0), fov: number = 70): void {
         if (this.camera) {
             this.destroyCamera();
         }
@@ -40,20 +41,20 @@ export class CameraModule {
         native.setCamFov(this.camera, fov);
     }
 
-    public destroyCamera(): void  {
+    public destroyCamera(): void {
         native.renderScriptCams(false, false, 0, false, false, 0);
-        
+
         if (this.camera !== undefined && native.doesCamExist(this.camera)) {
             native.destroyCam(this.camera, true);
         }
-        
+
         native.setFollowPedCamViewMode(1);
         native.clearFocus();
         native.clearHdArea();
         this.camera = undefined;
     }
 
-    public moveCamera(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0, 0), duration: number = 1000, override: boolean = false): void  {
+    public moveCamera(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0, 0), duration: number = 1000, override: boolean = false): void {
         if (this.isCamMoving && !override)
             return;
 

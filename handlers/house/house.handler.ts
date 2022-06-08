@@ -1,21 +1,21 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { onServer, on } from "../../decorators/events";
-import { TextModule } from "../../modules/text.module";
-import { UpdateModule } from "../../modules/update.module";
-import { LoggerModule } from "../../modules/logger.module";
-import { HouseModule } from "../../modules/house.module";
-import { KeyCodes } from "../../enums/keycode.type";
-import { EventModule } from "../../modules/event.module";
-import { MathModule } from "../../modules/math.module";
-import { Player } from "../../extensions/player.extensions";
-import { BlipModule } from "../../modules/blip.module";
-import {LeaseCompanyInterface} from "../../interfaces/lease-company.interface";
+import {singleton} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {onServer, on} from "../../decorators/events";
+import {TextModule} from "../../modules/text.module";
+import {UpdateModule} from "../../modules/update.module";
+import {LoggerModule} from "../../modules/logger.module";
+import {HouseModule} from "../../modules/house.module";
+import {KeyCodes} from "@enums/keycode.type";
+import {EventModule} from "../../modules/event.module";
+import {MathModule} from "../../modules/math.module";
+import {Player} from "../../extensions/player.extensions";
+import {BlipModule} from "../../modules/blip.module";
 import {LeaseCompanyModule} from "../../modules/group/lease-company.module";
-import {HouseInterface} from "../../interfaces/house.interface";
-import {InteriorInterface} from "../../interfaces/interior.interface";
+import {HouseInterface} from "@interfaces/house.interface";
+import {LeaseCompanyInterface} from "@interfaces/group/lease-company.interface";
+import {InteriorInterface} from "@interfaces/interior.interface";
 
 @foundation()
 @singleton()
@@ -38,7 +38,7 @@ export class HouseHandler {
         if (this.player.getIsAnyTextOpen) {
             return;
         }
-        
+
         if (key === KeyCodes.F) {
             const house = this.house.getHouses.find(h => this.math.distance(new alt.Vector3(h.positionX, h.positionY, h.positionZ), alt.Player.local.pos) <= 1.5);
             const exit = this.house.getInteriors.find(e => this.math.distance(new alt.Vector3(e.x, e.y, e.z), alt.Player.local.pos) <= 1.5);
@@ -48,7 +48,7 @@ export class HouseHandler {
             }
         }
     }
-    
+
     @onServer("houses:add")
     public onAdd(house: HouseInterface | LeaseCompanyInterface): void {
         this.house.add(house);
@@ -59,7 +59,7 @@ export class HouseHandler {
     @onServer("houses:remove")
     public remove(houseId: number): void {
         this.house.remove(houseId);
-        
+
         this.house.updateBlips();
     }
 
@@ -88,15 +88,15 @@ export class HouseHandler {
         } else {
             this.house.hideDebugBlips();
         }
-        
+
         this.house.updateBlips();
     }
 
     @onServer("house:updatecharacterhouses")
     public onUpdateCharacterHouses(houses: HouseInterface[]): void {
-        
+
         houses.forEach((house: HouseInterface) => {
-            
+
             if (this.house.isLeaseCompany(house)) {
                 const leaseCompany = house as LeaseCompanyInterface;
                 leaseCompany.typeName = this.leaseCompany.getCompanyTypeName(leaseCompany.leaseCompanyType);
@@ -111,14 +111,14 @@ export class HouseHandler {
     private tick(): void {
         this.drawHouseTexts();
     }
-    
+
     private drawHouseTexts(): void {
         this.house.getHouses.forEach((house: any) => {
             if (house as HouseInterface) {
                 if (house.blockedOwnership && !this.player.isAduty) {
                     return;
                 }
-                
+
                 const houseNumberText = `Nr. ${house.houseNumber}`;
                 const streetText = `${house.streetName}.`;
 
@@ -129,7 +129,7 @@ export class HouseHandler {
                 if (house.subName.length !== 0) {
                     lowerText = `${streetText} ${house.subName} ${houseNumberText}`;
                 }
-                
+
                 if (house.rentable) {
                     houseTypeText = "Mietbare Immobilie";
                 }
@@ -149,7 +149,7 @@ export class HouseHandler {
                     const index = this.house.getHouses.indexOf(leaseCompany);
                     this.house.getHouses[index] = leaseCompany;
                 }
-                                
+
                 let defaultText = `${colorText}${houseTypeText}:\n~w~${lowerText}`;
 
                 if (this.player.isAduty) {

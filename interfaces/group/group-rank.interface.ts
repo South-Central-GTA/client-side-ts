@@ -1,5 +1,5 @@
-import { GroupPermission } from "../../enums/group.permission";
-import { BankingPermission } from "../../enums/banking.permission";
+import {GroupPermission} from "@enums/group.permission";
+import {BankingPermission} from "@enums/banking.permission";
 
 export interface GroupRankInterface {
     groupId: number;

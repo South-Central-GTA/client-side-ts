@@ -1,16 +1,17 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { MarkerInterface } from "../interfaces/marker.interface";
-import { MathModule } from "./math.module";
-import { Player } from "../extensions/player.extensions";
+import {singleton} from "tsyringe";
+import {MarkerInterface} from "@interfaces/marker.interface";
+import {MathModule} from "./math.module";
+import {Player} from "@extensions/player.extensions";
 
 @singleton()
 export class MarkerModule {
 
     public constructor(
         private readonly math: MathModule,
-        private readonly player: Player) { }
+        private readonly player: Player) {
+    }
 
     public drawMarkerWithDistance(marker: MarkerInterface, distance: number = 5): void {
         if (this.math.distance(alt.Player.local.pos, new alt.Vector3(marker.positionX, marker.positionY, marker.positionZ)) <= distance) {

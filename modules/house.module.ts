@@ -1,13 +1,13 @@
 import * as native from "natives";
 import * as alt from "alt-client";
-import { singleton } from "tsyringe";
-import { HouseInterface } from "../interfaces/house.interface";
-import { LoggerModule } from "./logger.module";
-import { Player } from "../extensions/player.extensions";
-import { BlipModule } from "./blip.module";
-import { InteriorInterface } from "../interfaces/interior.interface";
-import {LeaseCompanyInterface} from "../interfaces/lease-company.interface";
+import {singleton} from "tsyringe";
+import {HouseInterface} from "@interfaces/house.interface";
+import {LoggerModule} from "./logger.module";
+import {Player} from "@extensions/player.extensions";
+import {BlipModule} from "./blip.module";
+import {InteriorInterface} from "@interfaces/interior.interface";
 import {LeaseCompanyModule} from "./group/lease-company.module";
+import {LeaseCompanyInterface} from "@interfaces/group/lease-company.interface";
 
 @singleton()
 export class HouseModule {
@@ -18,23 +18,24 @@ export class HouseModule {
     get getInteriors() {
         return this.interiors;
     }
-    
+
     private adutyHouseBlips: number[] = [];
     private leaseCompanyBlips: number[] = [];
     private ownedHouseBlips: number[] = [];
 
     private houses: HouseInterface[] = [];
     private interiors: InteriorInterface[] = [];
-    
+
     constructor(
         private readonly logger: LoggerModule,
         private readonly blip: BlipModule,
         private readonly leaseCompany: LeaseCompanyModule,
-        private readonly player: Player) { }
-    
+        private readonly player: Player) {
+    }
+
     public add(house: HouseInterface | LeaseCompanyInterface): void {
         house.streetName = this.getStreet(house.streetDirection, new alt.Vector3(house.positionX, house.positionY, house.positionZ));
-        
+
         this.houses.push(house);
     }
 
@@ -81,7 +82,7 @@ export class HouseModule {
         this.hideLeaseCompanyBlips();
         this.showLeaseCompanyBlips();
     }
-    
+
     public showOwnerIcon(): void {
         this.houses.filter(h => h.houseType === 0 && h.ownerId === this.player.characterId).forEach((house: HouseInterface) => {
             this.ownedHouseBlips.push(this.blip.createBlip(new alt.Vector3(house.positionX, house.positionY, house.positionZ), 2, 40, "Deine Immobilie", false));
@@ -120,7 +121,7 @@ export class HouseModule {
             this.blip.destroyBlip(houseBlip);
         });
     }
-    
+
     public isHouse(house: HouseInterface | LeaseCompanyInterface): house is HouseInterface {
         return (house as HouseInterface).houseType === 0;
     }
@@ -128,13 +129,13 @@ export class HouseModule {
     public isLeaseCompany(house: HouseInterface | LeaseCompanyInterface): house is LeaseCompanyInterface {
         return (house as HouseInterface).houseType === 1;
     }
-    
+
     private updateHouse(house: any): void {
         const savedHouse = this.houses.find(h => h.id === house.id);
         if (!savedHouse) {
             return;
         }
-        
+
         house.streetName = this.getStreet(house.streetDirection, new alt.Vector3(house.positionX, house.positionY, house.positionZ))
 
         const index = this.houses.indexOf(savedHouse);

@@ -1,12 +1,12 @@
-import { singleton } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { LoggerModule } from "../../modules/logger.module";
-import { onServer } from "../../decorators/events";
-import { Player } from "../../extensions/player.extensions";
-import { GuiModule } from "../../modules/gui.module";
-import { EventModule } from "../../modules/event.module";
-import { NotificationModule } from "../../modules/notification.module";
-import {CatalogItemInterface} from "../../interfaces/inventory/catalog-item.interface";
+import {singleton} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {LoggerModule} from "../../modules/logger.module";
+import {onServer} from "../../decorators/events";
+import {Player} from "../../extensions/player.extensions";
+import {GuiModule} from "../../modules/gui.module";
+import {EventModule} from "../../modules/event.module";
+import {NotificationModule} from "../../modules/notification.module";
+import {CatalogItemInterface} from "@interfaces/inventory/catalog-item.interface";
 
 @foundation()
 @singleton()
@@ -17,7 +17,8 @@ export class SupermarketHandler {
         private readonly notification: NotificationModule,
         private readonly player: Player,
         private readonly gui: GuiModule,
-        private readonly event: EventModule) { }
+        private readonly event: EventModule) {
+    }
 
     @onServer("supermarket:openmenu")
     public onOpenMenu(buyableItems: CatalogItemInterface[]): void {

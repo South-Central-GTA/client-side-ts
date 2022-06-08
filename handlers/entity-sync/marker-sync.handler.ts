@@ -2,24 +2,24 @@ import * as alt from "alt-client";
 import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
 import {EventModule} from "../../modules/event.module";
-import {EntityType} from "../../enums/entity.type";
+import {EntityType} from "@enums/entity.type";
 import {Vector3} from "../../extensions/vector3.extensions";
 import {ObjectSyncModule} from "../../modules/object-sync.module";
 import {LoggerModule} from "../../modules/logger.module";
 import {MarkerSyncModule} from "../../modules/marker-sync.module";
 import {on} from "../../decorators/events";
 
-@foundation() 
+@foundation()
 @singleton()
 export class MarkerSyncHandler {
-    
+
     constructor(private readonly markerSync: MarkerSyncModule) {
         alt.onServer("entitySync:create", (id: number, entityType: EntityType, position: Vector3, currEntityData: { [name: string]: any }) => {
-            if(currEntityData) {
+            if (currEntityData) {
                 const data = currEntityData;
-                if(data != undefined) {
+                if (data != undefined) {
                     if (entityType === EntityType.Marker) {
-                        markerSync.add(id, data.markerType, position, data.direction, data.rotation, data.scale, 
+                        markerSync.add(id, data.markerType, position, data.direction, data.rotation, data.scale,
                             data.color, data.bobUpDown, data.text, data.ownerName, data.createdAtJson);
                     }
                 }
@@ -35,13 +35,13 @@ export class MarkerSyncHandler {
                 markerSync.remove(id);
             }
         });
-        
+
         alt.onServer("entitySync:updatePosition", (id: number, entityType: EntityType, position: Vector3) => {
-            if (entityType == 0){
+            if (entityType == 0) {
                 markerSync.setPosition(id, position);
             }
         });
-        
+
         alt.onServer("entitySync:clearCache", (id: number, entityType: EntityType) => {
             if (entityType === EntityType.Marker) {
                 markerSync.clear(id);

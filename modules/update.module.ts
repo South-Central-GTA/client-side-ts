@@ -1,11 +1,11 @@
-import { singleton } from "tsyringe";
-import { IUpdate } from "../interfaces/update.interface";
-import { UUIDV4 } from "../helpers";
+import {singleton} from "tsyringe";
+import {UpdateInterface} from "@interfaces/update.interface";
+import {UUIDV4} from "../helpers";
 import * as alt from 'alt-client';
 
 @singleton()
 export class UpdateModule {
-    private updates: IUpdate[] = []
+    private updates: UpdateInterface[] = []
 
     public constructor() {
         alt.everyTick(() => {
@@ -23,7 +23,7 @@ export class UpdateModule {
     }
 
     public add(func: Function) {
-        const r = { f: func, uuid: UUIDV4() }
+        const r = {f: func, uuid: UUIDV4()}
         this.updates.push(r);
         return r.uuid;
     }

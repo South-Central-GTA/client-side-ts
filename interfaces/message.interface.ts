@@ -1,4 +1,4 @@
-﻿import {ChatType} from "../enums/chat.type";
+﻿import {ChatType} from "@enums/chat.type";
 
 export interface MessageInterface {
     sender: string;

@@ -1,14 +1,15 @@
 import * as alt from "alt-client";
-import { singleton } from "tsyringe";
-import { EventModule } from "./event.module";
-import { LoggerModule } from "./logger.module";
+import {singleton} from "tsyringe";
+import {EventModule} from "./event.module";
+import {LoggerModule} from "./logger.module";
 
 @singleton()
 export class WeaponModule {
-   
+
     constructor(
         private readonly event: EventModule,
-        private readonly logger: LoggerModule) { }
+        private readonly logger: LoggerModule) {
+    }
 
     public static getWeaponOfAmmoType(name: string): number {
         switch (name) {

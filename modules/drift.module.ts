@@ -1,8 +1,8 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { UpdateModule } from "./update.module";
-import { MathModule } from "./math.module";
+import {singleton} from "tsyringe";
+import {UpdateModule} from "./update.module";
+import {MathModule} from "./math.module";
 
 enum DriftEndReason {
     LowSpeed = 0,
@@ -42,7 +42,8 @@ export class DriftModule {
 
     public constructor(
         private readonly update: UpdateModule,
-        private readonly math: MathModule) { }
+        private readonly math: MathModule) {
+    }
 
     public startTracking(vehicle: alt.Vehicle) {
         if (!this.updateId) {
@@ -75,8 +76,7 @@ export class DriftModule {
             if (isDriftingNow) {
                 this.badAngleSince = 0;
                 this.driftProcessed(driftAngle, speed, true);
-            }
-            else {
+            } else {
                 let end = true;
                 let treshhold = false;
 
@@ -84,8 +84,7 @@ export class DriftModule {
                     if (this.badAngleSince === 0) {
                         this.badAngleSince = Date.now();
                         end = false;
-                    }
-                    else if ((Date.now() - this.badAngleSince) < 2000) {
+                    } else if ((Date.now() - this.badAngleSince) < 2000) {
                         end = false;
                         treshhold = true;
                     }
@@ -93,16 +92,13 @@ export class DriftModule {
 
                 if (end) {
                     this.driftEnded(!angleOk ? DriftEndReason.LowAngle : (!speedOk ? DriftEndReason.LowSpeed : DriftEndReason.DamageDetected));
-                }
-                else {
+                } else {
                     this.driftProcessed(driftAngle, speed, false, treshhold);
                 }
             }
-        }
-        else if (isDriftingNow) {
+        } else if (isDriftingNow) {
             this.driftStarted(vehicle);
-        }
-        else if (this.isDrifting) {
+        } else if (this.isDrifting) {
             this.driftEnded(DriftEndReason.OutOfVehicle);
         }
     }
@@ -124,13 +120,11 @@ export class DriftModule {
         if (activeSeconds <= 2) {
             this.driftType = DriftTypes.Drifting;
             this.driftScore += 1;
-        }
-        else if (activeSeconds <= 4) {
+        } else if (activeSeconds <= 4) {
             this.driftType = DriftTypes.GoodDrift;
             this.driftScore += 2;
 
-        }
-        else if (activeSeconds <= 5) {
+        } else if (activeSeconds <= 5) {
             this.driftType = DriftTypes.PerfectDrift;
             this.driftScore += 5;
         }

@@ -1,12 +1,12 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { InputType } from "../enums/input.type";
-import { MathModule } from "./math.module";
-import { KeyCodes } from "../enums/keycode.type";
-import { singleton } from "tsyringe";
-import { UpdateModule } from "./update.module";
-import { Player } from "../extensions/player.extensions";
-import { EventModule } from "./event.module";
+import {InputType} from "@enums/input.type";
+import {MathModule} from "./math.module";
+import {KeyCodes} from "@enums/keycode.type";
+import {singleton} from "tsyringe";
+import {UpdateModule} from "./update.module";
+import {Player} from "@extensions/player.extensions";
+import {EventModule} from "./event.module";
 import {IVector3} from "alt-client";
 import {LoggerModule} from "./logger.module";
 import {CameraModule} from "./camera.module";
@@ -36,18 +36,19 @@ export class FreeCamModule {
     private leftMouseClicked: boolean;
 
     private spectatingTarget: number | undefined;
-    
+
     public constructor(
         private readonly math: MathModule,
         private readonly camera: CameraModule,
         private readonly update: UpdateModule,
         private readonly player: Player,
         private readonly event: EventModule,
-        private readonly logger: LoggerModule) { }
+        private readonly logger: LoggerModule) {
+    }
 
     public start(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0, 0)) {
         this.camera.createCamera(pos, rot);
-        
+
         this.isFreeCamActive = true;
         this.player.freeze();
         this.unfreeze();
@@ -66,13 +67,13 @@ export class FreeCamModule {
             this.update.remove(this.everyTickRef);
             this.everyTickRef = undefined;
         }
-        
+
         this.everyTickRef = this.update.add(() => this.tick());
-        
+
         this.updatePosInterval = alt.setInterval(() => {
             if (!this.spectatingTarget) {
                 if (this.camera.getCamera) {
-                   this.event.emitServer("freecam:update", this.camera.camPos.x, this.camera.camPos.y, this.camera.camPos.z);
+                    this.event.emitServer("freecam:update", this.camera.camPos.x, this.camera.camPos.y, this.camera.camPos.z);
                 }
             } else {
                 const coords = native.getEntityCoords(this.spectatingTarget, true);
@@ -82,7 +83,7 @@ export class FreeCamModule {
 
         this.event.emitGui("hud:setfreecam", true);
     }
-    
+
     public setPos(pos: alt.Vector3): void {
         if (this.everyTickRef) {
             this.update.remove(this.everyTickRef);
@@ -124,16 +125,16 @@ export class FreeCamModule {
 
         alt.off('keydown', (key: number) => this.keydown(key));
         alt.off('keyup', (key: number) => this.keyup(key));
-        
+
         if (this.everyTickRef) {
             this.update.remove(this.everyTickRef);
             this.everyTickRef = undefined;
         }
-        
+
         if (this.updatePosInterval !== undefined) {
             alt.clearInterval(this.updatePosInterval);
         }
-        
+
         this.event.emitGui("hud:setfreecam", false);
     }
 
@@ -142,14 +143,14 @@ export class FreeCamModule {
             if (!this.freezed) {
                 this.executeActions();
             }
-            
+
             this.blockActionsWhileFreecam();
         } else {
             const coords = native.getEntityCoords(this.spectatingTarget, true);
             native.setEntityCoords(alt.Player.local.scriptID, coords.x, coords.y, coords.z, false, false, false, false);
             this.blockActionsWhileSpectating();
         }
-        
+
         this.handleMouseClicks();
     }
 
@@ -302,22 +303,22 @@ export class FreeCamModule {
             if (this.leftMouseClicked) {
                 return;
             }
-            
+
             this.leftMouseClicked = true;
-            
+
             if (this.spectatingTarget) {
                 this.spectatingTarget = undefined;
                 this.camera.createCamera(alt.Player.local.pos, alt.Player.local.rot);
                 native.networkSetInSpectatorMode(false, undefined);
             } else {
                 const entity = this.getEntiyAroundMouse();
-    
+
                 if (!entity) {
                     return;
                 }
 
                 this.camera.destroyCamera();
-                
+
                 this.spectatingTarget = entity;
 
                 const coords = native.getEntityCoords(this.spectatingTarget, true);
@@ -333,7 +334,7 @@ export class FreeCamModule {
             this.leftMouseClicked = false;
         }
     }
-    
+
     private blockActionsWhileFreecam(): void {
         native.disableControlAction(0, InputType.LOOK_LR, true);
         native.disableControlAction(0, InputType.LOOK_UD, true);
@@ -353,7 +354,7 @@ export class FreeCamModule {
         native.disableControlAction(0, InputType.MELEE_ATTACK_HEAVY, true);
         native.disableControlAction(0, InputType.MELEE_ATTACK_ALTERNATE, true);
     }
-    
+
     private blockActionsWhileSpectating(): void {
         native.disableControlAction(0, InputType.SCRIPT_RIGHT_AXIS_X, true);
         native.disableControlAction(0, InputType.SCRIPT_RIGHT_AXIS_Y, true);
@@ -396,37 +397,36 @@ export class FreeCamModule {
         if (worldCord.isHit) {
             const closestVehicle = this.getClosestVehicle(worldCord.pos);
             if (closestVehicle) {
-                return closestVehicle.scriptID;    
+                return closestVehicle.scriptID;
             }
-            
+
             const player = this.getClosestPlayer(worldCord.pos);
             if (player) {
                 return player.scriptID;
             }
-            
+
             return undefined;
         }
     }
-    
+
     private getClosestVehicle(pos: IVector3): alt.Vehicle {
         let radius = 5;
         let closestDistance = -1;
         let closestVehicle = undefined;
-        
+
         for (let i = 0; i < alt.Vehicle.all.length; i++) {
             const veh = alt.Vehicle.all[i];
 
             const distance = veh.pos.distanceTo(pos);
-            if (distance <= radius && (distance < closestDistance || closestDistance == -1))
-            {
+            if (distance <= radius && (distance < closestDistance || closestDistance == -1)) {
                 closestDistance = distance;
                 closestVehicle = veh;
             }
         }
-        
+
         return closestVehicle;
     }
-    
+
     private getClosestPlayer(pos: IVector3): alt.Player {
         let radius = 5;
         let closestDistance = -1;
@@ -434,19 +434,18 @@ export class FreeCamModule {
 
         for (let i = 0; i < alt.Player.all.length; i++) {
             const player = alt.Player.all[i];
-            
+
             if (player.scriptID === alt.Player.local.scriptID) {
                 continue;
             }
-            
+
             const distance = player.pos.distanceTo(pos);
-            if (distance <= radius && (distance < closestDistance || closestDistance == -1))
-            {
+            if (distance <= radius && (distance < closestDistance || closestDistance == -1)) {
                 closestDistance = distance;
                 closestPlayer = player;
             }
         }
-        
+
         return closestPlayer;
     }
 }

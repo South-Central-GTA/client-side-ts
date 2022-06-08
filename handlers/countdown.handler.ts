@@ -1,14 +1,15 @@
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
-import { onServer } from "../decorators/events";
-import { CountdownModule } from "../modules/countdown.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
+import {onServer} from "../decorators/events";
+import {CountdownModule} from "../modules/countdown.module";
 
 @foundation()
 @singleton()
 export class CountdownHandler {
 
     constructor(
-        private readonly countdown: CountdownModule) { }
+        private readonly countdown: CountdownModule) {
+    }
 
     @onServer("countdown:create")
     public onCreate(idString: string, serverEvent: string, duration: number): void {

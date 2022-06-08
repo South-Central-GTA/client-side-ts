@@ -1,27 +1,54 @@
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
-import { EventModule } from "../modules/event.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
+import {EventModule} from "../modules/event.module";
 import {AnimationModule} from "../modules/animation.module";
-import {on} from "../decorators/events";
+import {on, onServer} from "../decorators/events";
 import alt from "alt-client";
 import native from "natives";
-import {DeathState} from "../enums/death.state";
+import {DeathState} from "@enums/death.state";
+import {UpdateModule} from "../modules/update.module";
+import {LoggerModule} from "../modules/logger.module";
 
-@foundation() 
+@foundation()
 @singleton()
 export class DeathHandler {
+    private tick: string | undefined;
+
     constructor(
         private readonly event: EventModule,
-        private readonly animation: AnimationModule) { }
+        private readonly animation: AnimationModule,
+        private readonly update: UpdateModule,
+        private readonly logger: LoggerModule,
+    ) {
+    }
 
     @on("streamSyncedMetaChange")
-    private onStreamSyncedMetaChange(entity: alt.Entity, key: string, value: any, oldValue: any): void {
+    private async onStreamSyncedMetaChange(entity: alt.Entity, key: string, value: any, oldValue: any): Promise<void> {
         if (!entity.hasStreamSyncedMeta("DEATH_STATE")) {
             return
         }
 
         const deathState = entity.getStreamSyncedMeta<DeathState>("DEATH_STATE");
 
-        native.setEntityInvincible(entity.scriptID, deathState === DeathState.DEAD);
+    }
+
+    @onServer("death:start")
+    private async onStart(): Promise<void> {
+        native.setPedCanBeTargetted(alt.Player.local.scriptID, false);
+        native.setEntityInvincible(alt.Player.local.scriptID, true);
+        native.setPedCanRagdoll(alt.Player.local.scriptID, true);
+        alt.setTimeout(() => {
+            native.freezeEntityPosition(alt.Player.local.scriptID, true);
+        }, 1000);
+    }
+
+    @onServer("death:revive")
+    private async onRevive(): Promise<void> {
+        native.setPedCanBeTargetted(alt.Player.local.scriptID, true);
+        native.setEntityInvincible(alt.Player.local.scriptID, false);
+        native.setPedCanRagdoll(alt.Player.local.scriptID, true);
+        alt.setTimeout(() => {
+            native.freezeEntityPosition(alt.Player.local.scriptID, false);
+        }, 1000);
     }
 }

@@ -1,4 +1,4 @@
-import { PhoneMessageInterface } from "./phone-message.interface";
+import {PhoneMessageInterface} from "./phone-message.interface";
 
 export interface PhoneChatInterface {
     id: number;

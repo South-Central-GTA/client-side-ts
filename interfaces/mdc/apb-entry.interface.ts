@@ -1,6 +1,6 @@
-export interface MdcNodeInterface {
+export interface ApbEntryInterface {
     id: number;
-    node: string;
+    content: string;
     creatorCharacterName: string;
     createdAtJson: string;
 }

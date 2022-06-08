@@ -1,11 +1,11 @@
 import alt from "alt-client";
 import native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
 import {on, onGui, onServer} from "../decorators/events";
-import {Player} from "../extensions/player.extensions";
+import {Player} from "@extensions/player.extensions";
 import {GuiModule} from "../modules/gui.module";
-import {FactionType} from "../enums/faction.type";
+import {FactionType} from "@enums/faction.type";
 import {EventModule} from "../modules/event.module";
 import {LoggerModule} from "../modules/logger.module";
 
@@ -27,10 +27,10 @@ export class MdcHandler {
         this.player.showCursor();
         this.player.blurScreen(250);
         this.gui.focusView();
-        
+
         this.event.emitGui("mdc:open", factionType, canLogin, characterName, rankName);
     }
-    
+
     @onGui("mdc:close")
     public onClose(): void {
         this.player.closeMenu();

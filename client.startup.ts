@@ -1,7 +1,6 @@
-import { injectable } from "tsyringe";
+import {injectable} from "tsyringe";
 import {SessionHandler} from "./handlers/session.handler";
 import {CharacterCreatorHandler} from "./handlers/character/character-creator.handler";
-import {CharacterSelectorHandler} from "./handlers/character/character-selector.handler";
 import {PlayerHandler} from "./handlers/player.handler";
 import {InventoryHandler} from "./handlers/inventory.handler";
 import {ChatHandler} from "./handlers/chat.handler";
@@ -62,11 +61,14 @@ import {PoliceMdcHandler} from "./handlers/police-mdc.handler";
 import {VehicleSirenHandler} from "./handlers/vehicle-siren.handler";
 import {FireMdcHandler} from "./handlers/fire-mdc.handler";
 import {PrisonHandler} from "./handlers/prison.handler";
+import {FriskHandler} from "./handlers/frisk.handler";
+import {CharacterSelectorHandler} from "./handlers/character/character-selector.handler";
 
 @injectable()
 export class ClientStartup {
 
     constructor(
+        private readonly friskHandler: FriskHandler,
         private readonly prisonHandler: PrisonHandler,
         private readonly fireMdcHandler: FireMdcHandler,
         private readonly vehicleSirenHandler: VehicleSirenHandler,
@@ -88,7 +90,7 @@ export class ClientStartup {
         private readonly webview: WebviewHandler,
         private readonly session: SessionHandler,
         private readonly charcreator: CharacterCreatorHandler,
-        private readonly charselector: CharacterSelectorHandler,
+        private readonly characterSelectorHandler: CharacterSelectorHandler,
         private readonly player: PlayerHandler,
         private readonly inventory: InventoryHandler,
         private readonly chat: ChatHandler,
@@ -106,17 +108,17 @@ export class ClientStartup {
         private readonly phone: PhoneHandler,
         private readonly admin: AdminHandler,
         private readonly house: HouseHandler,
-        private readonly subtitle: SubTitleHandler, 
-        private readonly houseSelector: HouseSelectorHandler, 
-        private readonly spawnSelector: SpawnSelectorHandler, 
+        private readonly subtitle: SubTitleHandler,
+        private readonly houseSelector: HouseSelectorHandler,
+        private readonly spawnSelector: SpawnSelectorHandler,
         private readonly definedJob: DefinedJobHandler,
         private readonly bank: BankHandler,
         private readonly vehicleInventory: VehicleInventoryHandler,
-        private readonly publicGarage: PublicGarageHandler,      
+        private readonly publicGarage: PublicGarageHandler,
         private readonly groupData: GroupDataHandler,
         private readonly groupsMenu: GroupsMenuHandler,
         private readonly waypoint: WaypointHandler,
-        private readonly dialogHandler: DialogHandler, 
+        private readonly dialogHandler: DialogHandler,
         private readonly interiorHandler: InteriorHandler,
         private readonly supermarketHandler: SupermarketHandler,
         private readonly ammuniationHandler: AmmunationHandler,
@@ -129,5 +131,6 @@ export class ClientStartup {
         private readonly hairSalonHandler: HairSalonHandler,
         private readonly tattooStudioHandler: TattooStudioHandler,
         private readonly clothingStoreHandler: ClothingStoreHandler,
-        private readonly drivingSchoolHandler: DrivingSchoolHandler  ) { }
+        private readonly drivingSchoolHandler: DrivingSchoolHandler) {
+    }
 }

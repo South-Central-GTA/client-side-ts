@@ -1,8 +1,8 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton, container } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { EventModule } from "../event.module";
+import {singleton, container} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {EventModule} from "../event.module";
 import {ObjectSyncModule} from "../object-sync.module";
 import {LoggerModule} from "../logger.module";
 import {Player} from "../../extensions/player.extensions";
@@ -14,7 +14,8 @@ export class ObjectMenu {
         private readonly event: EventModule,
         private readonly objectSync: ObjectSyncModule,
         private readonly logger: LoggerModule,
-        private readonly player: Player) { }
+        private readonly player: Player) {
+    }
 
     public interact(entityId: number): void {
         const model = native.getEntityModel(entityId);

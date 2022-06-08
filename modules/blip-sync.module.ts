@@ -1,28 +1,28 @@
 import * as alt from "alt-client";
 import {singleton} from "tsyringe";
-import {Vector3} from "../extensions/vector3.extensions";
+import {Vector3} from "@extensions/vector3.extensions";
 import {LoggerModule} from "./logger.module";
-import {BlipInterface} from "../interfaces/blip.interface";
+import {BlipInterface} from "@interfaces/blip.interface";
 import {BlipColor, BlipSprite} from "alt-shared";
-import {BlipType} from "../enums/blip.type";
+import {BlipType} from "@enums/blip.type";
 import native from "natives";
 
 @singleton()
 export class BlipSyncModule {
     private blips: BlipInterface[] = [];
-    
+
     public constructor(private readonly logger: LoggerModule) {
     }
-    
+
     public add(id: number, position: Vector3, name: string, sprite: BlipSprite, color: BlipColor, scale: number, shortRange: boolean,
                player: alt.Player, blipType: BlipType, radius: number, alpha: number): void {
 
-        if (player !== null && player.id !== alt.Player.local.id){
+        if (player !== null && player.id !== alt.Player.local.id) {
             return;
         }
-        
+
         let handle = null;
-        
+
         switch (blipType) {
             case BlipType.POINT:
                 handle = new alt.PointBlip(position.x, position.y, position.z);
@@ -34,7 +34,7 @@ export class BlipSyncModule {
                 handle = new alt.RadiusBlip(position.x, position.y, position.z, radius);
                 break;
         }
-        
+
         if (handle === null) {
             return;
         }
@@ -44,19 +44,20 @@ export class BlipSyncModule {
         handle.name = name;
         handle.shortRange = shortRange;
 
-        this.blips[id] = { id: id, handle: handle, position: position, sprite: sprite, color: color, 
-            scale: scale, name: name, shortRange: shortRange, blipType: blipType, player: player, radius: radius };
+        this.blips[id] = {
+            id: id, handle: handle, position: position, sprite: sprite, color: color,
+            scale: scale, name: name, shortRange: shortRange, blipType: blipType, player: player, radius: radius
+        };
     }
 
     public get(entityId: number): BlipInterface {
         if (this.blips.hasOwnProperty(entityId)) {
             return this.blips[entityId];
-        }
-        else {
+        } else {
             return null;
         }
     }
-    
+
     public restore(id: number): void {
         if (this.blips.hasOwnProperty(id)) {
             const blip = this.blips[id];
@@ -90,7 +91,7 @@ export class BlipSyncModule {
             blip.handle.shortRange = blip.shortRange;
         }
     }
-    
+
     public remove(id: number): void {
         if (this.blips.hasOwnProperty(id)) {
             this.blips[id].handle.destroy();
@@ -106,15 +107,15 @@ export class BlipSyncModule {
             delete this.blips[id];
         }
     }
-    
+
     public clearAll(): void {
         this.blips.forEach((blip) => {
             blip.handle.destroy();
         });
-        
+
         this.blips = [];
     }
-    
+
     public setPosition(id: number, position: Vector3): void {
         if (this.blips.hasOwnProperty(id)) {
             this.blips[id].handle.pos = position;

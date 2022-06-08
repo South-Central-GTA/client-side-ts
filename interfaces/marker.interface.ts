@@ -1,4 +1,4 @@
-export class MarkerInterface {
+export interface MarkerInterface {
     type: number;
     positionX: number
     positionY: number
@@ -6,13 +6,13 @@ export class MarkerInterface {
     sizeX: number;
     sizeY: number;
     sizeZ: number;
-    
+
     red: number;
     green: number;
     blue: number;
     alpha: number;
     bobUpAndDown: boolean
-    
+
     hasText?: boolean;
     text?: string;
 }

@@ -1,8 +1,8 @@
 import * as alt from "alt-client";
-import { foundation } from "../decorators/foundation";
-import { singleton } from "tsyringe";
-import { onGui, onServer } from "../decorators/events";
-import { EventModule } from "../modules/event.module";
+import {foundation} from "../decorators/foundation";
+import {singleton} from "tsyringe";
+import {onGui, onServer} from "../decorators/events";
+import {EventModule} from "../modules/event.module";
 
 @foundation()
 @singleton()
@@ -11,7 +11,8 @@ export class HudHandler {
     private money: number = 0;
 
     public constructor(
-        private readonly event: EventModule) { }
+        private readonly event: EventModule) {
+    }
 
     @onGui("hud:ready")
     public onLoaded(): void {

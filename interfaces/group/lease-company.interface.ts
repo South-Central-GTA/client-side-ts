@@ -1,7 +1,7 @@
-import { LeaseCompanyType } from "../enums/lease-company.type";
-import { HouseInterface } from "./house.interface";
+import {HouseInterface} from "../house.interface";
+import {LeaseCompanyType} from "@enums/lease-company.type";
 
-export class LeaseCompanyInterface extends HouseInterface {
+export interface LeaseCompanyInterface extends HouseInterface {
     leaseCompanyType: LeaseCompanyType;
     playerDuty: boolean;
     cashierX: number;

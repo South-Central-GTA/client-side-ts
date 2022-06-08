@@ -1,6 +1,6 @@
-import { Vector3 } from "alt-client";
+import {Vector3} from "alt-client";
 
-export class RaycastResultInterface {
+export interface RaycastResultInterface {
     isHit: boolean;
     pos: Vector3;
     normal: Vector3;

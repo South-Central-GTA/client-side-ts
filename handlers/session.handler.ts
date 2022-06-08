@@ -1,14 +1,14 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { GuiModule } from "../modules/gui.module";
-import { CameraModule } from "../modules/camera.module";
-import { singleton } from "tsyringe";
-import { on } from "../decorators/events";
-import { foundation } from "../decorators/foundation";
-import { Player } from "../extensions/player.extensions";
+import {GuiModule} from "../modules/gui.module";
+import {CameraModule} from "../modules/camera.module";
+import {singleton} from "tsyringe";
+import {on} from "../decorators/events";
+import {foundation} from "../decorators/foundation";
+import {Player} from "@extensions/player.extensions";
 import {LoadingSpinnerModule} from "../modules/loading-spinner.module";
 import {LoggerModule} from "../modules/logger.module";
-                
+
 @foundation()
 @singleton()
 export class SessionHandler {
@@ -17,7 +17,8 @@ export class SessionHandler {
         private readonly camera: CameraModule,
         private readonly gui: GuiModule,
         private readonly spinner: LoadingSpinnerModule,
-        private readonly logger: LoggerModule) { }
+        private readonly logger: LoggerModule) {
+    }
 
     @on("disconnect")
     public onPlayerDisconnect(): void {
@@ -35,13 +36,13 @@ export class SessionHandler {
         this.player.freeze();
         this.player.showLoginCam();
 
-        native.setClockTime(12, 0 ,0);
+        native.setClockTime(12, 0, 0);
 
         native.replaceHudColourWithRgba(143, 231, 76, 60, 255);
         native.replaceHudColourWithRgba(116, 231, 76, 60, 255);
-        
+
         this.logger.info("Connection completed got called.")
-        
+
         this.loadIpls();
     }
 

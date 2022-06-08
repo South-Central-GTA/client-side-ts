@@ -1,6 +1,6 @@
-import { Vector3 } from "../../extensions/vector3.extensions";
+import alt from "alt-client";
 
 export interface InventoryDropInterface {
     itemId: number;
-    position: Vector3;
+    position: alt.Vector3;
 }

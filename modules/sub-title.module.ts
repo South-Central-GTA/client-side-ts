@@ -1,10 +1,11 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
+import {singleton} from "tsyringe";
 
 @singleton()
 export class SubTitleModule {
-    public constructor() { }
+    public constructor() {
+    }
 
     public draw(text: string, durationInMs: number = 5000): void {
         native.beginTextCommandPrint('STRING');

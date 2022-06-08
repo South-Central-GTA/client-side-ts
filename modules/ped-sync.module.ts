@@ -1,19 +1,24 @@
 import * as alt from "alt-client";
 import * as native from "natives";
 import {singleton} from "tsyringe";
-import {Vector3} from "../extensions/vector3.extensions";
-import {ServerPedInterface} from "../interfaces/ped/server-ped.interface";
+import {Vector3} from "@extensions/vector3.extensions";
+import {ServerPedInterface} from "@interfaces/ped/server-ped.interface";
 import {loadModel} from "../helpers";
 import {LoggerModule} from "./logger.module";
+import {CharacterInterface} from "@interfaces/character/character.interface";
+import {CharacterModule} from "./character.module";
 
 @singleton()
 export class PedSyncModule {
     private peds: ServerPedInterface[] = [];
 
     public constructor(
-        private readonly logger: LoggerModule) {}
-    
-    public add(id: number, model: string, position: Vector3, heading: number, vehicle: alt.Vehicle, seat: number): void {
+        private readonly logger: LoggerModule,
+        private readonly character: CharacterModule,
+    ) {
+    }
+
+    public add(id: number, model: string, position: Vector3, heading: number, vehicle: alt.Vehicle, seat: number, characterModel: CharacterInterface): void {
         const hash = alt.hash(model);
         loadModel(hash).then(() => {
             if (vehicle !== null) {
@@ -45,14 +50,18 @@ export class PedSyncModule {
                     seat: seat,
                 };
             }
+
+            if (characterModel !== null) {
+                this.character.apply(characterModel, this.peds[id].entity);
+            }
         });
     }
 
     public restore(id: number) {
-        if(this.peds.hasOwnProperty(id)){
+        if (this.peds.hasOwnProperty(id)) {
             const ped = this.peds[id];
             const hash = alt.hash(ped.model);
-            
+
             loadModel(hash).then(() => {
                 if (ped.vehicle !== null) {
                     alt.setTimeout(() => {
@@ -63,19 +72,23 @@ export class PedSyncModule {
                     this.peds[id].entity = native.createPed(0, hash, ped.position.x, ped.position.y, ped.position.z, ped.heading, false, false);
                     PedSyncModule.makePedStupid(this.peds[id].entity);
                 }
+
+                if (ped.characterModel !== null) {
+                    this.character.apply(ped.characterModel, ped.entity);
+                }
             });
         }
     }
 
     public remove(id: number) {
-        if(this.peds.hasOwnProperty(id)) {
+        if (this.peds.hasOwnProperty(id)) {
             native.deletePed(this.peds[id].entity);
             this.peds[id].entity = null;
         }
     }
 
     public clear(id: number) {
-        if(this.peds.hasOwnProperty(id)) {
+        if (this.peds.hasOwnProperty(id)) {
             delete this.peds[id];
         }
     }
@@ -84,24 +97,24 @@ export class PedSyncModule {
         this.peds.forEach((ped) => {
             native.deletePed(ped.entity);
         });
-        
+
         this.peds = [];
     }
-    
+
     public setHeading(id: number, heading: number) {
-        if(this.peds.hasOwnProperty(id)) {
+        if (this.peds.hasOwnProperty(id)) {
             this.peds[id].heading = heading;
             native.setEntityHeading(this.peds[id].entity, heading);
         }
     }
 
     public setPosition(id: number, position: Vector3) {
-        if(this.peds.hasOwnProperty(id)) {
+        if (this.peds.hasOwnProperty(id)) {
             this.peds[id].position = position;
             native.setEntityCoords(this.peds[id].entity, position.x, position.y, position.z, false, false, false, false);
         }
     }
-    
+
     private static makePedStupid(entity: number): void {
         native.setEntityAsMissionEntity(entity, true, false); // make sure its not despawned by game engine
         native.setBlockingOfNonTemporaryEvents(entity, true); // make sure ped doesnt flee etc only do what its told

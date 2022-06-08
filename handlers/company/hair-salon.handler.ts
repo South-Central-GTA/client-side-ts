@@ -1,19 +1,19 @@
 import alt from "alt-client";
 import native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { LoggerModule } from "../../modules/logger.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {LoggerModule} from "../../modules/logger.module";
 import {onGui, onServer} from "../../decorators/events";
-import { Player } from "../../extensions/player.extensions";
-import { GuiModule } from "../../modules/gui.module";
-import { EventModule } from "../../modules/event.module";
+import {Player} from "../../extensions/player.extensions";
+import {GuiModule} from "../../modules/gui.module";
+import {EventModule} from "../../modules/event.module";
 import {CameraModule} from "../../modules/camera.module";
-import {CharacterInterface} from "../../interfaces/character/character.interface";
-import {GenderType} from "../../enums/gender.type";
 import {loadModel} from "../../helpers";
 import {CharacterModule} from "../../modules/character.module";
 import {UpdateModule} from "../../modules/update.module";
-import {AppearancesInterface} from "../../interfaces/character/appearances.interface";
+import {AppearancesInterface} from "@interfaces/character/appearances.interface";
+import {CharacterInterface} from "@interfaces/character/character.interface";
+import {GenderType} from "@enums/gender.type";
 
 @foundation()
 @singleton()
@@ -29,7 +29,8 @@ export class HairSalonHandler {
         private readonly event: EventModule,
         private readonly camera: CameraModule,
         private readonly character: CharacterModule,
-        private readonly update: UpdateModule) { }
+        private readonly update: UpdateModule) {
+    }
 
     @onServer("hairsalon:open")
     private async onOpen(character: CharacterInterface): Promise<void> {
@@ -44,7 +45,7 @@ export class HairSalonHandler {
 
         await this.loadPed(character);
         this.createCamera();
-        
+
         this.event.emitGui("gui:routeto", "hairsalon");
     }
 
@@ -57,13 +58,13 @@ export class HairSalonHandler {
     private onGetCharacter(): void {
         this.event.emitGui("hairsalon:setcharacter", this.character.getCachedCharacter);
     }
-    
+
     @onGui("hairsalon:updatechar")
     private onUpdateCharacter(appearances: AppearancesInterface): void {
         this.newAppearances = appearances;
-        this.character.updateAppearance(appearances,  this.character.getCachedCharacter.gender, this.pedId);
+        this.character.updateAppearance(appearances, this.character.getCachedCharacter.gender, this.pedId);
     }
-    
+
     @onGui("hairsalon:rotatecharacter")
     private onRotateCharacter(dir: number): void {
         this.update.remove(this.everyTickRef);
@@ -80,13 +81,13 @@ export class HairSalonHandler {
         this.event.emitServer("hairsalon:cancel");
         this.close();
     }
-    
+
     @onGui("hairsalon:buy")
     private onBuy(): void {
         this.event.emitServer("hairsalon:requestbuydialog", JSON.stringify(this.newAppearances));
         this.close();
     }
-    
+
     private close(): void {
         this.onReset();
         this.player.closeMenu();
@@ -114,14 +115,14 @@ export class HairSalonHandler {
     private async loadPed(character: CharacterInterface): Promise<void> {
         let modelId = 0;
         if (character.gender === GenderType.MALE) {
-            await loadModel(1885233650);
             modelId = 1885233650;
         }
 
         if (character.gender === GenderType.FEMALE) {
-            await loadModel(2627665880);
             modelId = 2627665880;
         }
+
+        await loadModel(modelId);
 
         this.pedId = native.createPed(2, modelId, 139.76703, -1708.5758, 28.313599, 35, false, false);
         this.character.apply(character, this.pedId);

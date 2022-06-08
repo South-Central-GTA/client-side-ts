@@ -1,4 +1,4 @@
-import { AdminPermission } from "../enums/admin.permission";
+import {AdminPermission} from "@enums/admin.permission";
 
 export interface AccountInterface {
     id: number;

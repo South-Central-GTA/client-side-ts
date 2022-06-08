@@ -1,12 +1,12 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
-import { onServer, onGui } from "../decorators/events";
-import { EventModule } from "../modules/event.module";
-import { DialogModule } from "../modules/dialog.module";
-import { LoggerModule } from "../modules/logger.module";
-import {DialogInterface} from "../interfaces/dialog.interface";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
+import {onServer, onGui} from "../decorators/events";
+import {EventModule} from "../modules/event.module";
+import {DialogModule} from "../modules/dialog.module";
+import {LoggerModule} from "../modules/logger.module";
+import {DialogInterface} from "@interfaces/dialog.interface";
 
 @foundation()
 @singleton()
@@ -15,7 +15,8 @@ export class DialogHandler {
     constructor(
         private readonly event: EventModule,
         private readonly dialog: DialogModule,
-        private readonly logger: LoggerModule) { }
+        private readonly logger: LoggerModule) {
+    }
 
     @onServer("dialog:create")
     public onCreate(dialog: DialogInterface): void {
@@ -51,7 +52,7 @@ export class DialogHandler {
             if (this.dialog.getCurrentDialog.hasBankAccountSelection) {
                 if (this.dialog.getCurrentDialog.hasInputField) {
                     if (serverEvent !== null) {
-                        this.event.emitServer(serverEvent, bankAccountId, inputContent,...data);
+                        this.event.emitServer(serverEvent, bankAccountId, inputContent, ...data);
                     }
 
                     if (clientEvent !== null) {
@@ -59,7 +60,7 @@ export class DialogHandler {
                     }
                 } else {
                     if (serverEvent !== null) {
-                        this.event.emitServer(serverEvent, bankAccountId,...data);
+                        this.event.emitServer(serverEvent, bankAccountId, ...data);
                     }
 
                     if (clientEvent !== null) {
@@ -69,7 +70,7 @@ export class DialogHandler {
             } else {
                 if (this.dialog.getCurrentDialog.hasInputField) {
                     if (serverEvent !== null) {
-                        this.event.emitServer(serverEvent, inputContent,...data);
+                        this.event.emitServer(serverEvent, inputContent, ...data);
                     }
 
                     if (clientEvent !== null) {
@@ -77,7 +78,7 @@ export class DialogHandler {
                     }
                 } else {
                     if (serverEvent !== null) {
-                        this.event.emitServer(serverEvent,...data);
+                        this.event.emitServer(serverEvent, ...data);
                     }
 
                     if (clientEvent !== null) {
@@ -91,7 +92,7 @@ export class DialogHandler {
                     if (serverEvent !== null) {
                         this.event.emitServer(serverEvent, bankAccountId, inputContent);
                     }
-    
+
                     if (clientEvent !== null) {
                         this.event.emit(clientEvent, bankAccountId, inputContent);
                     }
@@ -99,7 +100,7 @@ export class DialogHandler {
                     if (serverEvent !== null) {
                         this.event.emitServer(serverEvent, inputContent);
                     }
-    
+
                     if (clientEvent !== null) {
                         this.event.emit(clientEvent, inputContent);
                     }

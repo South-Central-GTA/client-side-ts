@@ -1,4 +1,4 @@
-import { CharProfileInterface } from "./charprofile.interface";
+import {CharProfileInterface} from "./charprofile.interface";
 
 export interface CharacterFormInterface {
     profile: CharProfileInterface;

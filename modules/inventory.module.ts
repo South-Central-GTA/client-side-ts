@@ -3,15 +3,13 @@ import * as native from "natives";
 import {singleton} from "tsyringe";
 import {EventModule} from "./event.module";
 import {UpdateModule} from "./update.module";
-import {Player} from "../extensions/player.extensions";
-import {InventoryInterface} from "../interfaces/inventory/inventory.interface";
-import {ItemInterface} from "../interfaces/inventory/item.interface";
+import {Player} from "@extensions/player.extensions";
+import {InventoryInterface} from "@interfaces/inventory/inventory.interface";
 import {LoggerModule} from "./logger.module";
 import {getGroundZ} from "../helpers";
-import {InventoryDropInterface} from "../interfaces/inventory/inventory-drop.interface";
+import {InventoryDropInterface} from "@interfaces/inventory/inventory-drop.interface";
 import {MathModule} from "./math.module";
 import {NotificationModule} from "./notification.module";
-import {ActionInterface} from "../interfaces/action.interface";
 import {GuiModule} from "./gui.module";
 import {FreeCamModule} from "./free-cam.module";
 
@@ -29,7 +27,8 @@ export class InventoryModule {
         private readonly logger: LoggerModule,
         private readonly math: MathModule,
         private readonly notification: NotificationModule,
-        private readonly freecam: FreeCamModule) { }
+        private readonly freecam: FreeCamModule) {
+    }
 
     public setup(inventories: InventoryInterface[]): void {
         this.inventories = inventories;
@@ -41,11 +40,10 @@ export class InventoryModule {
             || !this.player.isSpawnedCharacter
             || this.freecam.isActive
             || this.player.isInvBlocked
-            || this.player.getIsAnyTextOpen)
-        {
+            || this.player.getIsAnyTextOpen) {
             return;
         }
-        
+
         this.event.emitServer("inventory:request");
     }
 
@@ -67,8 +65,6 @@ export class InventoryModule {
         alt.setTimeout(() => {
             this.player.blockESC(false);
         }, 100);
-        
-        this.event.emitServer("inventory:close");
     }
 
     public splitItem(itemId: number, amountToSplit: number): void {
@@ -82,7 +78,7 @@ export class InventoryModule {
     public swapItem(draggingItemId: number, droppedItemId: number): void {
         this.event.emitServer("inventory:swapitem", draggingItemId, droppedItemId);
     }
-    
+
     public switchItem(invId: number, itemId: number): void {
         this.event.emitServer("inventory:switchitem", invId, itemId);
     }

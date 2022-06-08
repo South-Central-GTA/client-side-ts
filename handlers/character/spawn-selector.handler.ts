@@ -1,16 +1,16 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { EventModule } from "../../modules/event.module";
-import { CameraModule } from "../../modules/camera.module";
-import { LoggerModule } from "../../modules/logger.module";
-import { NotificationModule } from "../../modules/notification.module";
-import { onServer, onGui } from "../../decorators/events";
-import { MathModule } from "../../modules/math.module";
-import { Vector3 } from "alt-client";
-import { CharCreatorModule } from "../../modules/char-creator.module";
-import {SpawnInterface} from "../../interfaces/spawn.interface";
+import {singleton} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {EventModule} from "../../modules/event.module";
+import {CameraModule} from "../../modules/camera.module";
+import {LoggerModule} from "../../modules/logger.module";
+import {NotificationModule} from "../../modules/notification.module";
+import {onServer, onGui} from "../../decorators/events";
+import {MathModule} from "../../modules/math.module";
+import {Vector3} from "alt-client";
+import {CharCreatorModule} from "../../modules/char-creator.module";
+import {SpawnInterface} from "@interfaces/spawn.interface";
 
 @foundation()
 @singleton()
@@ -26,7 +26,8 @@ export class SpawnSelectorHandler {
         private readonly logger: LoggerModule,
         private readonly event: EventModule,
         private readonly math: MathModule,
-        private readonly charCreator: CharCreatorModule) { }
+        private readonly charCreator: CharCreatorModule) {
+    }
 
     @onServer("spawnselector:reset")
     public onReset(): void {
@@ -94,7 +95,7 @@ export class SpawnSelectorHandler {
 
         this.charCreator.setSpawn(spawn.id);
         this.event.emitGui("spawnselector:setinfo", spawn);
-        
+
         this.updateCamera(pos);
     }
 

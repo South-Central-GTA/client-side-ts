@@ -4,5 +4,7 @@ export interface PhoneMessageInterface {
     sendetAt: string;
     ownerId: number;
     context: string;
+    senderPhoneNumber?: string;
+    targetPhoneNumber?: string;
     local: boolean;
 }

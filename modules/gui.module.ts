@@ -1,8 +1,8 @@
-import { singleton} from "tsyringe";
-import {WebView} from "../extensions/web-view.extensions";
+import {singleton} from "tsyringe";
+import {WebView} from "@extensions/web-view.extensions";
 import {LoggerModule} from "./logger.module";
 import {EventModule} from "./event.module";
-import {Player} from "../extensions/player.extensions";
+import {Player} from "@extensions/player.extensions";
 import alt from "alt-client";
 
 @singleton()
@@ -12,7 +12,8 @@ export class GuiModule {
     constructor(
         private readonly logger: LoggerModule,
         private readonly event: EventModule,
-        private readonly player: Player) { }
+        private readonly player: Player) {
+    }
 
     public createView(url: string): void {
         this.webview = new WebView(url, true);
@@ -25,6 +26,10 @@ export class GuiModule {
         });
 
         this.logger.info("WebViewModule: Create single-instance of south central ui.");
+    }
+
+    public setUrl(url: string): void {
+        this.webview.url = url;
     }
 
     public focusView(): void {

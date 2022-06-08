@@ -1,9 +1,9 @@
 ﻿import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { EventModule } from "./event.module";
-import { DialogInterface } from "../interfaces/dialog.interface";
-import { Player } from "../extensions/player.extensions";
+import {singleton} from "tsyringe";
+import {EventModule} from "./event.module";
+import {DialogInterface} from "@interfaces/dialog.interface";
+import {Player} from "@extensions/player.extensions";
 import {GuiModule} from "./gui.module";
 
 @singleton()
@@ -17,7 +17,8 @@ export class DialogModule {
     public constructor(
         private readonly event: EventModule,
         private readonly gui: GuiModule,
-        private readonly player: Player) { }
+        private readonly player: Player) {
+    }
 
     public create(dialog: DialogInterface): void {
         this.player.openMenu();
@@ -36,7 +37,7 @@ export class DialogModule {
         this.player.closeMenu();
         this.player.hideCursor();
         this.gui.unfocusView();
-        
+
         if (this.currentDialog.freezeGameControls) {
             this.player.blockGameControls(false);
         }

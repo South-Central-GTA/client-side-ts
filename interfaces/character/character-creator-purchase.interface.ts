@@ -1,5 +1,5 @@
-import { CharacterCreatorPurchaseType } from "../../enums/character-creator-purchase.type";
-import { CatalogVehicleInterface } from "../catalog-vehicle.interface";
+import {CharacterCreatorPurchaseType} from "@enums/character-creator-purchase.type";
+import {CatalogVehicleInterface} from "@interfaces/vehicles/catalog-vehicle.interface";
 
 export interface CharacterCreatorPurchaseInterface {
     id: number;

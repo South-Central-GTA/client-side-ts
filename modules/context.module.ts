@@ -1,26 +1,27 @@
 import * as native from "natives";
 import * as alt from "alt-client";
-import { singleton, container } from "tsyringe";
-import { EventModule } from "./event.module";
-import { InputType } from "../enums/input.type";
-import { IContextMenu } from "../interfaces/contextmenu.interface";
-import { ActionInterface } from "../interfaces/action.interface";
-import { Player } from "../extensions/player.extensions";
-import { UpdateModule } from "./update.module";
-import { MathModule } from "./math.module";
+import {singleton, container} from "tsyringe";
+import {EventModule} from "./event.module";
+import {InputType} from "@enums/input.type";
+import {ContextMenuInterface} from "@interfaces/context-menu.interface";
+import {ActionInterface} from "@interfaces/action.interface";
+import {Player} from "@extensions/player.extensions";
+import {UpdateModule} from "./update.module";
+import {MathModule} from "./math.module";
 import {CameraModule} from "./camera.module";
 import {GuiModule} from "./gui.module";
+
 @singleton()
 export class ContextModule {
     get getIsOpen() {
         return this.isOpen;
-    } 
-    
+    }
+
     private lastX: number;
     private lastY: number;
     private everyTickRef: string;
     private endPoint: alt.Vector3;
-    private isOpen: boolean; 
+    private isOpen: boolean;
 
     constructor(
         private readonly event: EventModule,
@@ -28,7 +29,8 @@ export class ContextModule {
         private readonly update: UpdateModule,
         private readonly math: MathModule,
         private readonly camera: CameraModule,
-        private readonly gui: GuiModule) { }
+        private readonly gui: GuiModule) {
+    }
 
     public open(title: string, actions: ActionInterface[], useLastPos: boolean = false, onCenter: boolean = false): void {
         const [_, width, height] = native.getActiveScreenResolution(0, 0);
@@ -46,7 +48,7 @@ export class ContextModule {
             this.lastY = pos.y;
         }
 
-        const contextMenu: IContextMenu = {
+        const contextMenu: ContextMenuInterface = {
             title: title,
             x: this.lastX,
             y: this.lastY,

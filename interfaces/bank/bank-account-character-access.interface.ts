@@ -1,4 +1,4 @@
-import { BankingPermission } from "../../enums/banking.permission";
+import {BankingPermission} from "@enums/banking.permission";
 
 export interface BankAccountCharacterAccessInterface {
     bankAccountId: number;

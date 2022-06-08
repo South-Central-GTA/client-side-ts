@@ -1,9 +1,10 @@
-import { singleton } from "tsyringe";
-import { LeaseCompanyType } from "../../enums/lease-company.type";
+import {singleton} from "tsyringe";
+import {LeaseCompanyType} from "@enums/lease-company.type";
 
 @singleton()
 export class LeaseCompanyModule {
-    constructor() { }
+    constructor() {
+    }
 
     public getCompanyTypeName(type: LeaseCompanyType): string {
         switch (type) {

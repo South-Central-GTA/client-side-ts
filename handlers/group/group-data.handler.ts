@@ -1,15 +1,15 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { onServer } from "../../decorators/events";
-import { EventModule } from "../../modules/event.module";
-import { HouseModule } from "../../modules/house.module";
-import { LoggerModule } from "../../modules/logger.module";
-import {CompanyInterface} from "../../interfaces/group/company.interface";
-import {FactionInterface} from "../../interfaces/group/faction.interface";
+import {singleton} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {onServer} from "../../decorators/events";
+import {EventModule} from "../../modules/event.module";
+import {HouseModule} from "../../modules/house.module";
+import {LoggerModule} from "../../modules/logger.module";
 import {GroupModule} from "../../modules/group.module";
-import {GroupInterface} from "../../interfaces/group/group.interface";
+import {GroupInterface} from "@interfaces/group/group.interface";
+import {CompanyInterface} from "@interfaces/group/company.interface";
+import {FactionInterface} from "@interfaces/group/faction.interface";
 
 @foundation()
 @singleton()
@@ -18,7 +18,8 @@ export class GroupDataHandler {
         private readonly event: EventModule,
         private readonly house: HouseModule,
         private readonly logger: LoggerModule,
-        private readonly group: GroupModule) { }
+        private readonly group: GroupModule) {
+    }
 
     @onServer("group:setup")
     public onSetup(allGroups: GroupInterface[], groups: GroupInterface[], company?: CompanyInterface, faction?: FactionInterface): void {
@@ -44,7 +45,7 @@ export class GroupDataHandler {
                     new alt.Vector3(faction.houses[g].positionX, faction.houses[g].positionY, faction.houses[g].positionZ));
             }
         }
-        
+
         this.group.setup(allGroups, groups, company, faction);
 
         this.event.emitGui("group:setup", allGroups, groups, company, faction);

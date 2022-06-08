@@ -1,6 +1,6 @@
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
-import { GuiModule } from "../modules/gui.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
+import {GuiModule} from "../modules/gui.module";
 import {on, onGui, onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 
@@ -9,7 +9,8 @@ import {EventModule} from "../modules/event.module";
 export class WebviewHandler {
     public constructor(
         private readonly gui: GuiModule,
-        private readonly event: EventModule) { }
+        private readonly event: EventModule) {
+    }
 
     @onServer("webview:create")
     public create(url: string): void {

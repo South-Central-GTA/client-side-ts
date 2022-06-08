@@ -6,6 +6,7 @@
      * @param {(...args: any[]) => void} callback
      */
     onClient?(name: string, callback: (...args: any[]) => void): void;
+
     /**
      * Receive event from client
      *
@@ -13,6 +14,7 @@
      * @param {(...args: any[]) => void} callback
      */
     onGui?(name: string, callback: (...args: any[]) => void): void;
+
     /**
      * Emit event to server
      * @param {string} name

@@ -1,16 +1,16 @@
-import { singleton } from "tsyringe";
+import {singleton} from "tsyringe";
 import {LoggerModule} from "./logger.module";
 import alt from "alt-client";
 import native from "natives";
-import {MaxDrawablesTexturesInterface} from "../interfaces/character/max-drawable-textures.interface";
-import {MaxDrawablesInterface} from "../interfaces/character/max-drawables.interface";
-import {ClothesInterface} from "../interfaces/character/clothes.interface";
-import {CharacterInterface} from "../interfaces/character/character.interface";
+import {MaxDrawablesTexturesInterface} from "@interfaces/character/max-drawable-textures.interface";
+import {MaxDrawablesInterface} from "@interfaces/character/max-drawables.interface";
+import {ClothesInterface} from "@interfaces/character/clothes.interface";
 
 @singleton()
 export class ClothingModule {
     constructor(
-        private readonly logger: LoggerModule) { }    
+        private readonly logger: LoggerModule) {
+    }
 
     public isClothingItem(name: string): boolean {
         switch (name) {
@@ -65,7 +65,7 @@ export class ClothingModule {
             maxShoes: native.getNumberOfPedDrawableVariations(pedId, 6)
         }
     }
-    
+
     public getMaxTextureVariations(pedId: number, clothes: ClothesInterface): MaxDrawablesTexturesInterface {
         return {
             maxHat: native.getNumberOfPedPropTextureVariations(pedId, 0, clothes.hat !== null ? clothes.hat.drawableId : -1) - 1,
@@ -87,7 +87,7 @@ export class ClothingModule {
 
     public getClothCategoryPrice(catalogItemName: string, compId: number): number {
         let price = 0;
-        
+
         if (this.isClothingItemAProp(catalogItemName)) {
             switch (compId) {
                 case 0:
@@ -137,7 +137,7 @@ export class ClothingModule {
                     break;
             }
         }
-        
+
         return price;
     }
 }

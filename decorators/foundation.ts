@@ -1,9 +1,9 @@
-import { Reflection as Reflect } from '@abraham/reflection';
-import { container } from 'tsyringe';
-import {EventInterface} from "../interfaces/event.interface";
-import {KeyEventsInterface, KeyEventsModuleInterface} from "../interfaces/key-events-module.interface";
+import {Reflection as Reflect} from '@abraham/reflection';
+import {container} from 'tsyringe';
+import {EventInterface} from "@interfaces/event.interface";
+import {KeyEventsInterface, KeyEventsModuleInterface} from "@interfaces/key-events-module.interface";
 import {EventModule} from "../modules/event.module";
-import {EventModuleInterface} from "../interfaces/event-module.interface";
+import {EventModuleInterface} from "@interfaces/event-module.interface";
 
 /**
  * Provide the ability to use method decorators

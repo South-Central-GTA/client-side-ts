@@ -1,16 +1,17 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { MathModule } from "./math.module";
-import { Vector3 } from "../extensions/vector3.extensions";
-import { Player } from "../extensions/player.extensions";
+import {singleton} from "tsyringe";
+import {MathModule} from "./math.module";
+import {Vector3} from "@extensions/vector3.extensions";
+import {Player} from "@extensions/player.extensions";
 
 @singleton()
 export class TextModule {
 
     public constructor(
         private readonly math: MathModule,
-        private readonly player: Player) { }
+        private readonly player: Player) {
+    }
 
     public drawText2d(message: string, posX: number, posY: number, scale: number, fontType: number, align: number, r: number, g: number, b: number, a: number, useOutline: boolean = true, useDropShadow: boolean = true) {
         native.beginTextCommandDisplayText('STRING');

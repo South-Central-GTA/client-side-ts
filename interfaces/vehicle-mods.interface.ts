@@ -1,4 +1,4 @@
-export class IVehicleMods {
+export interface IVehicleMods {
     spoilers: number;
     frontBumper: number;
     rearBumper: number;

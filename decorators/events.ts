@@ -1,6 +1,6 @@
-import { Reflection as Reflect } from "@abraham/reflection";
-import { container } from "tsyringe";
-import {EventInterface} from "../interfaces/event.interface";
+import {Reflection as Reflect} from "@abraham/reflection";
+import {container} from "tsyringe";
+import {EventInterface} from "@interfaces/event.interface";
 
 
 /**
@@ -12,23 +12,23 @@ import {EventInterface} from "../interfaces/event.interface";
  * @param {string} propertyKey
  */
 function validateEventExistsAndPush(target, type: string, name: string, propertyKey: string) {
-        let eventName = name || propertyKey;
-        const convertToEventName = container.resolve('convertToEventName') as CallableFunction;
-        eventName = convertToEventName(eventName);
+    let eventName = name || propertyKey;
+    const convertToEventName = container.resolve('convertToEventName') as CallableFunction;
+    eventName = convertToEventName(eventName);
 
-        if (!Reflect.hasMetadata('events', target.constructor)) {
-                Reflect.defineMetadata('events', [], target.constructor);
-        }
+    if (!Reflect.hasMetadata('events', target.constructor)) {
+        Reflect.defineMetadata('events', [], target.constructor);
+    }
 
-        const events  = Reflect.getMetadata('events', target.constructor) as EventInterface[];
+    const events = Reflect.getMetadata('events', target.constructor) as EventInterface[];
 
-        events.push({
-                type,
-                name: eventName,
-                method: propertyKey
-        });
+    events.push({
+        type,
+        name: eventName,
+        method: propertyKey
+    });
 
-        Reflect.defineMetadata('events', events, target.constructor);
+    Reflect.defineMetadata('events', events, target.constructor);
 }
 
 /**

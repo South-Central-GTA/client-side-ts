@@ -1,7 +1,7 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { MathModule } from "./math.module";
+import {singleton} from "tsyringe";
+import {MathModule} from "./math.module";
 
 @singleton()
 export class PericoIslandModule {

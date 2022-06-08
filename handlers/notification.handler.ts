@@ -1,17 +1,16 @@
-import * as alt from "alt-client";
-import { singleton } from "tsyringe";
-import { onServer, onGui } from "../decorators/events";
-import { foundation } from "../decorators/foundation";
-import { NotificationModule } from "../modules/notification.module";
-import { NotificationInterface } from "../interfaces/notification.interface";
-import { NotificationType } from "../enums/notification.type";
-import { NotificationPositionType } from "../enums/notification-position.type";
-                
+import {singleton} from "tsyringe";
+import {onServer, onGui} from "../decorators/events";
+import {foundation} from "../decorators/foundation";
+import {NotificationModule} from "../modules/notification.module";
+import {NotificationInterface} from "@interfaces/notification.interface"
+import {NotificationTypes} from "@enums/notification.types";
+
 @foundation()
 @singleton()
 export class NotificationHandler {
     public constructor(
-        private notification: NotificationModule) { }
+        private notification: NotificationModule) {
+    }
 
     @onServer("notification:send")
     public sendNotification(notification: NotificationInterface): void {
@@ -21,7 +20,7 @@ export class NotificationHandler {
     @onGui("notification:error")
     public guiError(errorMessage: string): void {
         const notification: NotificationInterface = {
-            type: NotificationType.ERROR,
+            type: NotificationTypes.ERROR,
             text: errorMessage
         };
 

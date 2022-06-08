@@ -1,7 +1,7 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { AttachEntityOptions } from "../enums/attachentity.options";
-import { singleton } from "tsyringe";
+import {AttachEntityOptions} from "@enums/attachentity.options";
+import {singleton} from "tsyringe";
 
 @singleton()
 export class PropModule {
@@ -34,7 +34,7 @@ export class PropModule {
     public attachToEntity(entity: number, bone: number, options: AttachEntityOptions = {}) {
         let defaultOptions = new AttachEntityOptions();
 
-        options = { ...defaultOptions, ...options };
+        options = {...defaultOptions, ...options};
 
         native.attachEntityToEntity(
             this.propID,

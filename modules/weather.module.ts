@@ -1,9 +1,9 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { EventModule } from "./event.module";
-import { WeatherType } from "../enums/weather.type";
-import { LoggerModule } from "./logger.module";
+import {singleton} from "tsyringe";
+import {EventModule} from "./event.module";
+import {WeatherType} from "@enums/weather.type";
+import {LoggerModule} from "./logger.module";
 
 @singleton()
 export class WeatherModule {
@@ -23,7 +23,8 @@ export class WeatherModule {
 
     constructor(
         private readonly event: EventModule,
-        private readonly logger: LoggerModule) { }
+        private readonly logger: LoggerModule) {
+    }
 
     public startSync(): void {
         native.setWeatherTypeNowPersist(this.weatherNameMap.get(alt.getSyncedMeta<WeatherType>("Weather")));

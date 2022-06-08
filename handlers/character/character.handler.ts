@@ -1,21 +1,21 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { CharacterModule } from "../../modules/character.module";
+import {singleton} from "tsyringe";
+import {CharacterModule} from "../../modules/character.module";
 import {on, onGui, onServer} from "../../decorators/events";
-import { foundation } from "../../decorators/foundation";
-import { Player } from "../../extensions/player.extensions";
-import { CameraModule } from "../../modules/camera.module";
-import { EventModule } from "../../modules/event.module";
-import { GuiModule } from "../../modules/gui.module";
-import { WeatherModule } from "../../modules/weather.module";
-import { HouseModule } from "../../modules/house.module";
-import { LoggerModule } from "../../modules/logger.module";
+import {foundation} from "../../decorators/foundation";
+import {Player} from "../../extensions/player.extensions";
+import {CameraModule} from "../../modules/camera.module";
+import {EventModule} from "../../modules/event.module";
+import {GuiModule} from "../../modules/gui.module";
+import {WeatherModule} from "../../modules/weather.module";
+import {HouseModule} from "../../modules/house.module";
+import {LoggerModule} from "../../modules/logger.module";
 import {PhoneModule} from "../../modules/phone.module";
 import {LoadingSpinnerModule} from "../../modules/loading-spinner.module";
-import {CharacterInterface} from "../../interfaces/character/character.interface";
-import {InventoryInterface} from "../../interfaces/inventory/inventory.interface";
-import {KeyCodes} from "../../enums/keycode.type";
+import {CharacterInterface} from "@interfaces/character/character.interface";
+import {InventoryInterface} from "@interfaces/inventory/inventory.interface";
+import {KeyCodes} from "@enums/keycode.type";
 
 @foundation()
 @singleton()
@@ -32,8 +32,9 @@ export class CharacterHandler {
         private readonly house: HouseModule,
         private readonly loading: LoadingSpinnerModule,
         private readonly logger: LoggerModule,
-        private readonly phone: PhoneModule) { }
-    
+        private readonly phone: PhoneModule) {
+    }
+
     @on("keydown")
     public onKeydown(key: number): void {
         if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
@@ -55,7 +56,7 @@ export class CharacterHandler {
     private onShowMenu(): void {
         this.setMenuState(true);
     }
-    
+
     @onServer("character:apply")
     public updateModel(character: CharacterInterface): void {
         this.character.apply(character, alt.Player.local.scriptID);
@@ -67,7 +68,7 @@ export class CharacterHandler {
 
         this.character.apply(character, localPlayer.scriptID);
         this.player.characterId = character.id;
-        
+
         if (this.player.getIsPhoneOpen) {
             this.phone.close();
         }
@@ -78,7 +79,7 @@ export class CharacterHandler {
         this.player.setVisible(true);
         this.player.showHud();
         this.player.isSpawnedCharacter = true;
-        
+
         this.gui.unfocusView();
         this.camera.destroyCamera();
         this.loading.hide();
@@ -115,7 +116,7 @@ export class CharacterHandler {
         this.event.emitGui("character:sync", character.id);
         this.character.apply(character, alt.Player.local.scriptID);
     }
-    
+
     @onServer("character:updatetorso")
     public onUpdateTorso(torso: number): void {
         this.character.updateTorso(alt.Player.local.scriptID, torso, 0);
@@ -125,7 +126,7 @@ export class CharacterHandler {
     public onUpdateClothes(inventory: InventoryInterface): void {
         this.character.createClothesBasedOnInventory(inventory, alt.Player.local.scriptID, this.character.getCachedCharacter.gender);
     }
-    
+
     @onGui("charactermenu:requestclose")
     public onRequestClose(): void {
         this.setMenuState(false);

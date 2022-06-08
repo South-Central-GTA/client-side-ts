@@ -1,13 +1,13 @@
 import * as native from "natives";
 import * as alt from "alt-client";
-import { singleton, container } from "tsyringe";
-import { EventModule } from "./event.module";
-import { InputType } from "../enums/input.type";
-import { Player } from "../extensions/player.extensions";
-import { UpdateModule } from "./update.module";
-import { MathModule } from "./math.module";
-import { RaycastResultInterface } from "../interfaces/raycastresult.interface";
-import { RGBInterface } from "../interfaces/rgb.interface";
+import {singleton, container} from "tsyringe";
+import {EventModule} from "./event.module";
+import {InputType} from "@enums/input.type";
+import {Player} from "@extensions/player.extensions";
+import {UpdateModule} from "./update.module";
+import {MathModule} from "./math.module";
+import {RaycastResultInterface} from "@interfaces/raycastresult.interface";
+import {RGBInterface} from "@interfaces/rgb.interface";
 import {LoggerModule} from "./logger.module";
 import {CameraModule} from "./camera.module";
 import {GuiModule} from "./gui.module";
@@ -17,7 +17,7 @@ import {PedMenu} from "./contextmenus/ped.menu";
 import {ObjectMenu} from "./contextmenus/object.menu";
 import {VehicleMenu} from "./contextmenus/vehicle.menu";
 import {ContextModule} from "./context.module";
-import {KeyCodes} from "../enums/keycode.type";
+import {KeyCodes} from "@enums/keycode.type";
 
 @singleton()
 export class InteractModule {
@@ -42,15 +42,16 @@ export class InteractModule {
         private readonly pedMenu: PedMenu,
         private readonly objectMenu: ObjectMenu,
         private readonly vehicleMenu: VehicleMenu,
-        private readonly contextMenu: ContextModule) { }
+        private readonly contextMenu: ContextModule) {
+    }
 
     public startInteract(): void {
         if (!this.player.isSpawnedCharacter || this.player.getIsAnyTextOpen) {
             return;
         }
-        
+
         this.player.showCursor();
-        
+
         if (alt.Player.local.vehicle) {
             this.inVehicleMenu.interact(alt.Player.local.vehicle);
         } else {
@@ -100,7 +101,7 @@ export class InteractModule {
 
             this.endPoint = result.pos;
         }
-        
+
         this.drawVisualLine();
 
         if (native.isDisabledControlJustPressed(0, InputType.AIM)) {
@@ -109,7 +110,7 @@ export class InteractModule {
             }
 
             this.clickCooldown = Date.now() + 100;
-            
+
             const result = this.math.screenToWorld(x, y, 22);
             const entityType = native.getEntityType(result.entity);
 
@@ -124,7 +125,7 @@ export class InteractModule {
                 normal: result.normal,
                 entity: result.entity,
             };
-            
+
             if (this.math.distance(alt.Player.local.pos, rayCastInfo.pos) > this.MAX_DISTANCE) {
                 return;
             }
@@ -134,7 +135,7 @@ export class InteractModule {
 
             this.gui.focusView();
             this.currentPlayerPos = alt.Player.local.pos;
-            
+
             switch (entityType) {
                 case 1:
                     this.openPedMenu(rayCastInfo.entity, rayCastInfo.pos);
@@ -159,16 +160,15 @@ export class InteractModule {
         if (this.endPoint === undefined) {
             return;
         }
-        
+
         let lineColor: RGBInterface;
 
         if (this.math.distance(alt.Player.local.pos, this.endPoint) > this.MAX_DISTANCE) {
-            lineColor = { red: 255, green: 25, blue: 25 };
+            lineColor = {red: 255, green: 25, blue: 25};
+        } else {
+            lineColor = {red: 255, green: 255, blue: 255};
         }
-        else {
-            lineColor = { red: 255, green: 255, blue: 255 };
-        }
-        
+
         native.drawLine(
             alt.Player.local.pos.x,
             alt.Player.local.pos.y,
@@ -197,7 +197,7 @@ export class InteractModule {
         if (alt.Player.local.vehicle) {
             return;
         }
-        
+
         this.objectMenu.interact(entityId);
     }
 

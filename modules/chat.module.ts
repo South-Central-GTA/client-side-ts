@@ -1,13 +1,13 @@
 import * as native from "natives";
 import * as alt from "alt-client";
-import { singleton } from "tsyringe";
-import { EventModule } from "./event.module";
-import { FreeCamModule } from "./free-cam.module";
-import { Player } from "../extensions/player.extensions";
-import { UpdateModule } from "./update.module";
-import { InputType } from "../enums/input.type";
+import {singleton} from "tsyringe";
+import {EventModule} from "./event.module";
+import {FreeCamModule} from "./free-cam.module";
+import {Player} from "@extensions/player.extensions";
+import {UpdateModule} from "./update.module";
+import {InputType} from "@enums/input.type";
 import {GuiModule} from "./gui.module";
-import {MessageInterface} from "../interfaces/message.interface";
+import {MessageInterface} from "@interfaces/message.interface";
 
 @singleton()
 export class ChatModule {
@@ -23,11 +23,12 @@ export class ChatModule {
         private readonly freecam: FreeCamModule,
         private readonly player: Player,
         private readonly gui: GuiModule,
-        private readonly update: UpdateModule) { }
+        private readonly update: UpdateModule) {
+    }
 
-    public openChat(): void{
-        if (!this.chatVisible || this.inputActive 
-            || this.player.getIsAnyTextFieldFocused 
+    public openChat(): void {
+        if (!this.chatVisible || this.inputActive
+            || this.player.getIsAnyTextFieldFocused
             || this.player.getIsAnyTextOpen)
             return;
 
@@ -47,9 +48,9 @@ export class ChatModule {
             return;
 
         this.player.blockESC(false);
-        this.setChatInput(false, delay);        
+        this.setChatInput(false, delay);
     }
-    
+
     public sendMessage(message: MessageInterface): void {
         this.event.emitGui("chat:pushmessage", message);
     }
@@ -58,7 +59,7 @@ export class ChatModule {
         this.chatVisible = !this.chatVisible;
         this.event.emitGui("chat:togglevisibility", this.chatVisible);
     }
-    
+
     public toggleTimestamp(): void {
         this.showTimestamp = !this.showTimestamp;
         this.event.emitGui("chat:toggletimestamp", this.showTimestamp);
@@ -72,7 +73,7 @@ export class ChatModule {
             if (!this.updateId) {
                 this.updateId = this.update.add(() => this.toggleActions(false));
             }
-            
+
             this.player.blockGameControls(true);
         } else {
             alt.setTimeout(() => {

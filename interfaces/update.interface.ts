@@ -1,4 +1,4 @@
-export class IUpdate {
-        uuid: string
-        f: Function
+export interface UpdateInterface {
+    uuid: string
+    f: Function
 }

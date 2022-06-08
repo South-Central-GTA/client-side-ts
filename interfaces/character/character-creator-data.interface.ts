@@ -1,5 +1,5 @@
-import { CharacterInterface } from "./character.interface";
-import { CharacterCreatorPurchaseInterface } from "./character-creator-purchase.interface";
+import {CharacterCreatorPurchaseInterface} from "./character-creator-purchase.interface";
+import {CharacterInterface} from "@interfaces/character/character.interface";
 
 export interface CharacterCreatorDataInterface {
     character: CharacterInterface;

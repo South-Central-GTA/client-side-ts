@@ -1,4 +1,4 @@
-import { GenderType } from "../../enums/gender.type";
+import {GenderType} from "@enums/gender.type";
 
 export interface ClothingInterface {
     genderType: GenderType;

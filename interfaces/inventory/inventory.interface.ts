@@ -1,5 +1,5 @@
-import { ItemInterface } from "./item.interface";
-import { InventoryType } from "../../enums/inventory.type";
+import {ItemInterface} from "./item.interface";
+import {InventoryType} from "@enums/inventory.type";
 
 export interface InventoryInterface {
     id: number;

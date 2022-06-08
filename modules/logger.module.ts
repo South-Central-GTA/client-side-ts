@@ -1,5 +1,5 @@
 import * as alt from "alt-client";
-import { singleton } from "tsyringe";
+import {singleton} from "tsyringe";
 
 @singleton()
 export class LoggerModule {

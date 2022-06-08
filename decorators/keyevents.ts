@@ -1,5 +1,5 @@
-import { Reflection as Reflect } from "@abraham/reflection";
-import {KeyEventsInterface} from "../interfaces/key-events-module.interface";
+import {Reflection as Reflect} from "@abraham/reflection";
+import {KeyEventsInterface} from "@interfaces/key-events-module.interface";
 
 /**
  * Keyup decorator
@@ -32,7 +32,7 @@ export const keyup = (key: number | string): MethodDecorator => {
  * @param {number | string} key
  * @returns {MethodDecorator}
  */
-export const keydown = (key: number|string): MethodDecorator => {
+export const keydown = (key: number | string): MethodDecorator => {
     return (target, propertyKey: string): void => {
         if (!Reflect.hasMetadata('keydown', target.constructor)) {
             Reflect.defineMetadata('keydown', [], target.constructor);

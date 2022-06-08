@@ -1,20 +1,20 @@
-import { singleton } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { LoggerModule } from "../../modules/logger.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {LoggerModule} from "../../modules/logger.module";
 import {onGui, onServer} from "../../decorators/events";
-import { Player } from "../../extensions/player.extensions";
-import { GuiModule } from "../../modules/gui.module";
-import { EventModule } from "../../modules/event.module";
+import {Player} from "../../extensions/player.extensions";
+import {GuiModule} from "../../modules/gui.module";
+import {EventModule} from "../../modules/event.module";
 import alt from "alt-client";
-import {CharacterInterface} from "../../interfaces/character/character.interface";
-import {GenderType} from "../../enums/gender.type";
 import {loadModel} from "../../helpers";
 import native from "natives";
 import {CameraModule} from "../../modules/camera.module";
 import {CharacterModule} from "../../modules/character.module";
 import {UpdateModule} from "../../modules/update.module";
 import {ClothingModule} from "../../modules/clothing.module";
-import {ClothesInterface} from "../../interfaces/character/clothes.interface";
+import {ClothesInterface} from "@interfaces/character/clothes.interface";
+import {CharacterInterface} from "@interfaces/character/character.interface";
+import {GenderType} from "@enums/gender.type";
 
 @foundation()
 @singleton()
@@ -31,14 +31,15 @@ export class ClothingStoreHandler {
         private readonly camera: CameraModule,
         private readonly character: CharacterModule,
         private readonly update: UpdateModule,
-        private readonly clothing: ClothingModule) { }
+        private readonly clothing: ClothingModule) {
+    }
 
     @onServer("clothingstore:startchangeclothes")
     private async onStartChangeClothes(character: CharacterInterface): Promise<void> {
         if (!this.player.getIsInInterior) {
             return;
         }
-        
+
         this.player.openMenu();
         this.player.freeze();
         this.player.showCursor();
@@ -66,12 +67,12 @@ export class ClothingStoreHandler {
     @onGui("clothingstore:updatechar")
     private onUpdateCharacter(clothes: ClothesInterface): void {
         this.newClothes = clothes;
-        
+
         this.event.emitGui("clothesmenu:setmaxtexturevariation", this.clothing.getMaxTextureVariations(this.pedId, clothes));
 
         this.character.updateClothes(clothes, this.pedId, this.character.getCachedCharacter.gender);
     }
-    
+
     @onGui("clothingstore:rotatecharacter")
     private onRotateCharacter(dir: number): void {
         this.update.remove(this.everyTickRef);

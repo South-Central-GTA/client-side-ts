@@ -1,7 +1,6 @@
-import { NotificationType } from "../enums/notification.type";
-import { NotificationPositionType } from "../enums/notification-position.type";
+import {NotificationTypes} from "@enums/notification.types";
 
 export interface NotificationInterface {
-    type: NotificationType;
+    type: NotificationTypes;
     text: string;
 }

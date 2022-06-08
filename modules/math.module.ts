@@ -1,18 +1,19 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { RaycastModule } from "./raycast.module";
-import { CameraModule } from "./camera.module";
-import { LoggerModule } from "./logger.module";
+import {singleton} from "tsyringe";
+import {RaycastModule} from "./raycast.module";
+import {CameraModule} from "./camera.module";
+import {LoggerModule} from "./logger.module";
 import {IVector3} from "alt-client";
-import {RaycastResultInterface} from "../interfaces/raycastresult.interface";
+import {RaycastResultInterface} from "@interfaces/raycastresult.interface";
 
 @singleton()
 export class MathModule {
     public constructor(
         private raycast: RaycastModule,
         private camera: CameraModule,
-        private logger: LoggerModule) { }
+        private logger: LoggerModule) {
+    }
 
     // Get the direction based on rotation.
     public rotationToDirection(rotation: alt.Vector3): alt.Vector3 {
@@ -41,12 +42,12 @@ export class MathModule {
         } else {
             camPos = native.getGameplayCamCoord() as alt.Vector3;
         }
-        
+
         const processedCoords = this.processCoordinates(x, y);
         const target = this.s2w(camPos, processedCoords.x, processedCoords.y);
 
         const dir = this.subVector3(target, camPos);
-        
+
         return this.raycast.line(camPos, dir, distance, flags, ignore);
     }
 
@@ -106,15 +107,14 @@ export class MathModule {
 
     public normalize2d(x: number, y: number): alt.Vector3 {
         const t = native.sqrt(x * x + y * y);
-    
-        if (t > 0.000001)
-        {
+
+        if (t > 0.000001) {
             let fRcpt = 1 / t;
-    
+
             x *= fRcpt;
             y *= fRcpt;
         }
-        
+
         return new alt.Vector3(x, y, 0);
     }
 
@@ -153,7 +153,7 @@ export class MathModule {
             relativeY = Math.abs(relativeY);
         }
 
-        return { x: relativeX, y: relativeY };
+        return {x: relativeX, y: relativeY};
     }
 
     private s2w(camPos, relX, relY) {

@@ -1,4 +1,4 @@
-import {Vector3} from "../extensions/vector3.extensions";
+import {Vector3} from "@extensions/vector3.extensions";
 
 export interface DoorInterface {
     id: number;

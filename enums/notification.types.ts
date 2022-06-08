@@ -1,4 +1,4 @@
-export enum NotificationType {
+﻿export enum NotificationTypes {
     INFO,
     WARNING,
     ERROR,

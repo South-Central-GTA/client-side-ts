@@ -1,4 +1,4 @@
-export abstract class HouseInterface {
+export interface HouseInterface {
     id: number;
     interiorId: number;
     houseNumber: number;
@@ -8,7 +8,7 @@ export abstract class HouseInterface {
     groupOwnerId: number;
     price: number;
     southCentralPoints: number;
-    
+
     positionX: number;
     positionY: number;
     positionZ: number;

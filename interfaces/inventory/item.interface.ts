@@ -1,5 +1,5 @@
-import { ItemState } from "../../enums/item.state";
-import { CatalogItemInterface } from "./catalog-item.interface";
+import {CatalogItemInterface} from "./catalog-item.interface";
+import {ItemState} from "@enums/item.state";
 
 export interface ItemInterface {
     id: number;
@@ -19,7 +19,8 @@ export interface ItemInterface {
     lastUsage?: string;
 
     entity?: number; // only clientside
-    
+
     // only for weapon attachments
     attachedToWeaponItem?: number;
+    attachmentItems?: ItemInterface[];
 }

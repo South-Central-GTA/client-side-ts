@@ -1,7 +1,7 @@
 ﻿import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { AccountInterface } from "../interfaces/account.interface";
+import {singleton} from "tsyringe";
+import {AccountInterface} from "@interfaces/account.interface";
 
 @singleton()
 export class AccountModule {
@@ -11,7 +11,8 @@ export class AccountModule {
 
     private account: AccountInterface;
 
-    public constructor() { }
+    public constructor() {
+    }
 
     public setup(account: AccountInterface): void {
         this.account = account;

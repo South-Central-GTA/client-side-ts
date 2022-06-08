@@ -1,18 +1,19 @@
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
 import {on, onGui, onServer} from "../decorators/events";
 import alt from "alt-client";
 import native from "natives";
 import {WeatherModule} from "../modules/weather.module";
-import {WeatherType} from "../enums/weather.type";
+import {WeatherType} from "@enums/weather.type";
 
 @foundation()
 @singleton()
 export class WeatherHandler {
     private interval: number;
-    
+
     public constructor(
-        private readonly weather: WeatherModule) { }
+        private readonly weather: WeatherModule) {
+    }
 
     @onServer("weather:updateweather")
     public onUpdateWeather(secondsForTransition: number): void {

@@ -1,11 +1,11 @@
 import * as alt from "alt-client";
 import * as native from "natives";
 import {EventModule} from "../modules/event.module";
-import {Player} from "../extensions/player.extensions";
-import {KeyCodes} from "../enums/keycode.type";
+import {Player} from "@extensions/player.extensions";
+import {KeyCodes} from "@enums/keycode.type";
 import {AnimationModule} from "../modules/animation.module";
 import {UpdateModule} from "../modules/update.module";
-import {InputType} from "../enums/input.type";
+import {InputType} from "@enums/input.type";
 import {CameraModule} from "../modules/camera.module";
 import {on, onGui, onServer} from "../decorators/events";
 import {foundation} from "../decorators/foundation";
@@ -15,9 +15,9 @@ import {BlipModule} from "../modules/blip.module";
 import {PericoIslandModule} from "../modules/perico-island.module";
 import {singleton} from "tsyringe";
 import {HouseModule} from "../modules/house.module";
-import {Vector3} from "../extensions/vector3.extensions";
+import {Vector3} from "@extensions/vector3.extensions";
 import {LoggerModule} from "../modules/logger.module";
-import {AnimationFlag} from "../enums/animation.flag";
+import {AnimationFlag} from "@enums/animation.flag";
 
 @foundation()
 @singleton()
@@ -36,14 +36,14 @@ export class PlayerHandler {
         private readonly camera: CameraModule,
         private readonly chat: ChatModule,
         private readonly blip: BlipModule,
-        private readonly pericoIsland: PericoIslandModule, 
+        private readonly pericoIsland: PericoIslandModule,
         private readonly house: HouseModule,
         private readonly logger: LoggerModule) {
         this.update.add(() => this.tick());
 
         alt.setInterval(() => {
-            native.invalidateIdleCam(); 
-            native.invalidateVehicleIdleCam(); 
+            native.invalidateIdleCam();
+            native.invalidateVehicleIdleCam();
         }, 20000);
 
         alt.setInterval(() => {
@@ -141,7 +141,7 @@ export class PlayerHandler {
                     }
                 }
             }
-        } 
+        }
     }
 
     @on("gameEntityCreate")
@@ -194,7 +194,7 @@ export class PlayerHandler {
             alt.clearInterval(this.dutyInterval);
         }
     }
-    
+
     @onServer("player:setinhouse")
     public onSetInHouse(state: boolean): void {
         this.player.isInHouse = state;
@@ -251,19 +251,19 @@ export class PlayerHandler {
     @onServer("player:cuff")
     public async onCuffPlayer(): Promise<void> {
         await this.animation.load("mp_arresting");
-        
+
         native.setPedComponentVariation(alt.Player.local.scriptID, 7, 41, 0, 5);
         native.setPedCanSwitchWeapon(alt.Player.local.scriptID, false);
         native.setPlayerCanDoDriveBy(alt.Player.local.scriptID, false);
         native.setCurrentPedWeapon(alt.Player.local.scriptID, 0xA2719263, true);
-        
+
         this.cuffTick = this.update.add(() => {
             if (!this.animation.isPlaying("mp_arresting", "idle")) {
                 this.animation.play("mp_arresting", "idle", {
                     flag: AnimationFlag.Loop | AnimationFlag.OnlyAnimateUpperBody | AnimationFlag.AllowPlayerControl
                 });
             }
-            
+
             native.disableControlAction(0, InputType.ENTER, true);
             native.disableControlAction(0, InputType.ATTACK, true);
             native.disableControlAction(0, InputType.ATTACK2, true);
@@ -301,7 +301,7 @@ export class PlayerHandler {
         this.showDebugBlips();
     }
 
-    private showDebugBlips(): void {       
+    private showDebugBlips(): void {
         alt.Player.all.forEach((otherPlayer: alt.Player) => {
             if (otherPlayer !== alt.Player.local) {
                 this.adutyPlayerBlips.push(this.blip.createBlipForEntity(otherPlayer.scriptID, 5, 1, "", true));
@@ -343,7 +343,7 @@ export class PlayerHandler {
         if (native.isPedArmed(alt.Player.local.scriptID, 6)) {
             native.disableControlAction(0, InputType.MELEE_ATTACK_LIGHT, true);
             native.disableControlAction(0, InputType.MELEE_ATTACK_HEAVY, true);
-            native.disableControlAction(0, InputType.MELEE_ATTACK_ALTERNATE, true); 
+            native.disableControlAction(0, InputType.MELEE_ATTACK_ALTERNATE, true);
         }
     }
 

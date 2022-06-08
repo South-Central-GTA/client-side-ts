@@ -1,5 +1,3 @@
-import { ActionInterface } from "../action.interface";
-
 export interface CatalogItemInterface {
     id: number;
     name: string;
@@ -13,5 +11,4 @@ export interface CatalogItemInterface {
     sellable: boolean;
     price: number;
     sellPrice: number;
-    actions: ActionInterface[];
 }

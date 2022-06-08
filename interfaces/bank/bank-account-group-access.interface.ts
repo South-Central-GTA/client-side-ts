@@ -1,5 +1,5 @@
-import { BankingPermission } from "../../enums/banking.permission";
-
 export interface BankAccountGroupAccessInterface {
     groupId: number;
+    name: string;
+    owner: boolean;
 }

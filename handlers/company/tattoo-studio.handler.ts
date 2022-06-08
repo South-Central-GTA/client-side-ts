@@ -1,19 +1,19 @@
 import alt from "alt-client";
 import native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { LoggerModule } from "../../modules/logger.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {LoggerModule} from "../../modules/logger.module";
 import {onGui, onServer} from "../../decorators/events";
-import { Player } from "../../extensions/player.extensions";
-import { GuiModule } from "../../modules/gui.module";
-import { EventModule } from "../../modules/event.module";
+import {Player} from "../../extensions/player.extensions";
+import {GuiModule} from "../../modules/gui.module";
+import {EventModule} from "../../modules/event.module";
 import {CameraModule} from "../../modules/camera.module";
-import {CharacterInterface} from "../../interfaces/character/character.interface";
-import {GenderType} from "../../enums/gender.type";
 import {loadModel} from "../../helpers";
 import {CharacterModule} from "../../modules/character.module";
 import {UpdateModule} from "../../modules/update.module";
-import {TattoosInterface} from "../../interfaces/character/tattoos.interface";
+import {TattoosInterface} from "@interfaces/character/tattoos.interface";
+import {CharacterInterface} from "@interfaces/character/character.interface";
+import {GenderType} from "@enums/gender.type";
 
 @foundation()
 @singleton()
@@ -29,7 +29,8 @@ export class TattooStudioHandler {
         private readonly event: EventModule,
         private readonly camera: CameraModule,
         private readonly character: CharacterModule,
-        private readonly update: UpdateModule) { }
+        private readonly update: UpdateModule) {
+    }
 
     @onServer("tattoostudio:open")
     private async onOpen(character: CharacterInterface): Promise<void> {
@@ -41,10 +42,10 @@ export class TattooStudioHandler {
         this.player.hideRadarAndHud();
         this.player.blockGameControls(true);
         this.gui.focusView();
-        
+
         await this.loadPed(character);
         this.createCamera();
-        
+
         this.character.setNude(this.pedId, this.character.getCachedCharacter.gender);
 
         this.event.emitGui("gui:routeto", "tattoostudio");
@@ -59,7 +60,7 @@ export class TattooStudioHandler {
     private onGetCharacter(): void {
         this.event.emitGui("tattoostudio:setcharacter", this.character.getCachedCharacter);
     }
-    
+
     @onGui("tattoostudio:updatechar")
     private onUpdateCharacter(tattoos: TattoosInterface): void {
         this.newTattoos = tattoos;
@@ -67,7 +68,7 @@ export class TattooStudioHandler {
         this.character.updateAppearance(this.character.getCachedCharacter.appearances, this.character.getCachedCharacter.gender, this.pedId);
         this.character.updateTattoos(tattoos, this.pedId);
     }
-    
+
     @onGui("tattoostudio:rotatecharacter")
     private onRotateCharacter(dir: number): void {
         this.update.remove(this.everyTickRef);
@@ -84,13 +85,13 @@ export class TattooStudioHandler {
         this.event.emitServer("tattoostudio:cancel");
         this.close();
     }
-    
+
     @onGui("tattoostudio:buy")
     private onBuy(): void {
         this.event.emitServer("tattoostudio:requestbuydialog", JSON.stringify(this.newTattoos));
         this.close();
     }
-    
+
     private close(): void {
         this.onReset();
         this.player.closeMenu();

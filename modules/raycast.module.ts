@@ -1,7 +1,7 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { RaycastResultInterface } from "../interfaces/raycastresult.interface";
-import { singleton } from "tsyringe";
+import {RaycastResultInterface} from "@interfaces/raycastresult.interface";
+import {singleton} from "tsyringe";
 
 @singleton()
 export class RaycastModule {
@@ -28,7 +28,7 @@ export class RaycastModule {
             targetPos.z,
             flags,
             ignoredEntity, // entity that get ignored from raycast.
-            0,                               );
+            0,);
         return this.result(ray);
     }
 
@@ -39,7 +39,7 @@ export class RaycastModule {
     private result(ray: any): RaycastResultInterface {
         let result = native.getShapeTestResult(ray, undefined, undefined, undefined, undefined);
         let hitEntity = result[4];
-        
+
         return {
             isHit: result[1],
             pos: new alt.Vector3(result[2].x, result[2].y, result[2].z),

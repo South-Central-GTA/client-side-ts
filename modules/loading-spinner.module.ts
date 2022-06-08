@@ -1,7 +1,7 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { LoadingSpinnerType } from "../enums/loadingspinner.type";
+import {singleton} from "tsyringe";
+import {LoadingSpinnerType} from "@enums/loadingspinner.type";
 
 @singleton()
 export class LoadingSpinnerModule {
@@ -14,8 +14,7 @@ export class LoadingSpinnerModule {
 
         if (loadingText == null) {
             native.beginTextCommandBusyspinnerOn("");
-        }
-        else {
+        } else {
             native.beginTextCommandBusyspinnerOn("STRING");
             native.addTextComponentSubstringPlayerName(loadingText);
         }

@@ -1,20 +1,20 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../../decorators/foundation";
-import { EventModule } from "../../modules/event.module";
-import { CameraModule } from "../../modules/camera.module";
-import { LoggerModule } from "../../modules/logger.module";
-import { NotificationModule } from "../../modules/notification.module";
-import { onServer, onGui } from "../../decorators/events";
-import { Vector3 } from "../../extensions/vector3.extensions";
-import { MathModule } from "../../modules/math.module";
-import { HouseModule } from "../../modules/house.module";
-import { CharCreatorModule } from "../../modules/char-creator.module";
-import {HouseInterface} from "../../interfaces/house.interface";
-import {NotificationType} from "../../enums/notification.type";
-import {CharacterCreatorPurchaseType} from "../../enums/character-creator-purchase.type";
+import {singleton} from "tsyringe";
+import {foundation} from "../../decorators/foundation";
+import {EventModule} from "../../modules/event.module";
+import {CameraModule} from "../../modules/camera.module";
+import {LoggerModule} from "../../modules/logger.module";
+import {NotificationModule} from "../../modules/notification.module";
+import {onServer, onGui} from "../../decorators/events";
+import {Vector3} from "../../extensions/vector3.extensions";
+import {MathModule} from "../../modules/math.module";
+import {HouseModule} from "../../modules/house.module";
+import {CharCreatorModule} from "../../modules/char-creator.module";
+import {HouseInterface} from "@interfaces/house.interface";
+import {CharacterCreatorPurchaseType} from "@enums/character-creator-purchase.type";
 import {UID} from "../../helpers";
+import {NotificationTypes} from "@enums/notification.types";
 
 @foundation()
 @singleton()
@@ -26,7 +26,7 @@ export class HouseSelectorHandler {
     private stayedOnBuyedHouse: boolean = false;
     private cameraState: number = 0;
     private helicopterCamInt: number = 0;
-     
+
     public constructor(
         private readonly camera: CameraModule,
         private readonly notification: NotificationModule,
@@ -34,7 +34,8 @@ export class HouseSelectorHandler {
         private readonly event: EventModule,
         private readonly math: MathModule,
         private readonly house: HouseModule,
-        private readonly charCreator: CharCreatorModule) { }
+        private readonly charCreator: CharCreatorModule) {
+    }
 
     @onServer("houseselector:reset")
     public onReset(): void {
@@ -63,7 +64,7 @@ export class HouseSelectorHandler {
         const currentHouse = houses.find(h => h.id == this.currentHouseId);
         if (currentHouse.ownerId && currentHouse.id !== this.currentHouseId) {
             this.notification.sendNotification({
-                type: NotificationType.ERROR,
+                type: NotificationTypes.ERROR,
                 text: "Diese Immobilie wurde gerade gekauft, tut uns leid. Die Auswahl an Immobilien wird in Echtzeit kalkuliert."
             });
 
@@ -72,7 +73,7 @@ export class HouseSelectorHandler {
         } else {
             if (this.stayedOnBuyedHouse) {
                 this.notification.sendNotification({
-                    type: NotificationType.INFO,
+                    type: NotificationTypes.INFO,
                     text: "Diese Immobilie wurde wieder auf dem Markt freigegeben."
                 });
 
@@ -85,7 +86,7 @@ export class HouseSelectorHandler {
 
     @onServer("houseselector:select")
     public onSelect(houseId: number): void {
-        this.currentHouseIndex = this.houses.findIndex(h => h.id === houseId); 
+        this.currentHouseIndex = this.houses.findIndex(h => h.id === houseId);
         this.currentHouseId = houseId;
 
         const houseData = this.houses.find(h => h.id === houseId);
@@ -137,7 +138,7 @@ export class HouseSelectorHandler {
     @onGui("houseselector:show")
     public onShow(): void {
         this.selectHouse(this.houses[this.currentHouseIndex]);
-    } 
+    }
 
     @onGui("houseselector:remove")
     public onRemove(): void {
@@ -177,8 +178,7 @@ export class HouseSelectorHandler {
 
         if (this.cameraState === 0) {
             this.createDoorCam(camPos, doorPos);
-        }
-        else if (this.cameraState === 1) {
+        } else if (this.cameraState === 1) {
             this.createHelicopterCam(doorPos);
         }
     }

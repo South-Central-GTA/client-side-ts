@@ -1,13 +1,13 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
+import {singleton} from "tsyringe";
 import {IVector3} from "alt-client";
 
 @singleton()
 export class BlipModule {
 
-    public constructor( ) 
-    {}
+    public constructor() {
+    }
 
     public createBlip(position: IVector3, color: number, sprite: number, text: string, longRangeVisible: boolean = true): number {
         const blip = native.addBlipForCoord(position.x, position.y, position.z);
@@ -16,7 +16,7 @@ export class BlipModule {
         native.setBlipColour(blip, color);
         native.setBlipDisplay(blip, longRangeVisible ? 2 : 8);
         native.setBlipAsShortRange(blip, !longRangeVisible);
-        
+
         return blip;
     }
 

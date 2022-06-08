@@ -1,17 +1,17 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
-import { EventModule } from "../modules/event.module";
-import { Player } from "../extensions/player.extensions";
-import { KeyCodes } from "../enums/keycode.type";
-import { UpdateModule } from "../modules/update.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
+import {EventModule} from "../modules/event.module";
+import {Player} from "@extensions/player.extensions";
+import {KeyCodes} from "@enums/keycode.type";
+import {UpdateModule} from "../modules/update.module";
 import {on, onGui, onServer} from "../decorators/events";
-import { InputType } from "../enums/input.type";
-import { TextModule } from "../modules/text.module";
-import { LoggerModule } from "../modules/logger.module";
-import { VehicleModule } from "../modules/vehicle.module";
-import { getGroundZ } from "../helpers";
+import {InputType} from "@enums/input.type";
+import {TextModule} from "../modules/text.module";
+import {LoggerModule} from "../modules/logger.module";
+import {VehicleModule} from "../modules/vehicle.module";
+import {getGroundZ} from "../helpers";
 import {GuiModule} from "../modules/gui.module";
 
 @foundation()
@@ -21,7 +21,7 @@ export class VehicleHandler {
     private tickId: string;
     private maxFuel: number;
     private wasLastFrameInVehicle: boolean;
-    
+
     public constructor(
         private readonly player: Player,
         private readonly event: EventModule,
@@ -42,7 +42,7 @@ export class VehicleHandler {
                     return;
 
                 this.event.emitServer("vehicle:toggleengine");
-            } 
+            }
         }
     }
 
@@ -55,7 +55,7 @@ export class VehicleHandler {
                     alt.clearInterval(interval);
                     return;
                 }
-                
+
                 if (native.getVehicleDoorLockStatus(vehicle.scriptID) === 1) {
                     this.overrideVehicleEntrance();
                     alt.clearInterval(interval);
@@ -64,7 +64,7 @@ export class VehicleHandler {
 
                 i++
             }, 200);
-        }                                                        
+        }
     }
 
     @on("enteredVehicle")
@@ -83,21 +83,21 @@ export class VehicleHandler {
 
             this.player.showRadar();
         }
-        
+
         this.wasLastFrameInVehicle = true;
     }
 
     @on("leftVehicle")
     public onLeftVehicle(vehicle: alt.Vehicle, seat: number): void {
         this.update.remove(this.drivingTickId);
-        
+
         this.event.emitGui("speedo:toggleui", false);
 
         this.player.hideRadar();
     }
 
     @onServer("vehicle:repair")
-    public repairVehicle(vehicle: alt.Vehicle, vehicleDbId: number, amount: number, fixCosmetics: boolean):  void {
+    public repairVehicle(vehicle: alt.Vehicle, vehicleDbId: number, amount: number, fixCosmetics: boolean): void {
         if (vehicle === undefined) {
             return;
         }
@@ -111,10 +111,10 @@ export class VehicleHandler {
         this.player.freeze();
         this.player.showCursor();
         this.gui.focusView();
-        
+
         this.event.emitGui("vehiclesellmenu:show", hasBankAccount, isInGroup);
     }
-    
+
     @onServer("vehiclesellmenu:close")
     @onGui("vehiclesellmenu:close")
     public onSellVehicleMenuClose(): void {
@@ -123,13 +123,13 @@ export class VehicleHandler {
         this.player.hideCursor();
         this.gui.unfocusView();
     }
-    
+
     private overrideVehicleEntrance(): void {
         const vehicle = this.vehicle.getClosestVehicle();
         if (!vehicle) {
             return;
         }
-        
+
         const vehicleDoor = this.vehicle.getClosestVehicleDoor(vehicle);
         if (vehicleDoor > -1) {
             native.taskEnterVehicle(alt.Player.local, vehicle, -1, vehicleDoor - 1, 1, 1, 0);
@@ -140,7 +140,7 @@ export class VehicleHandler {
         if (vehicle == null) {
             return;
         }
-        
+
         if (!vehicle.valid) {
             return;
         }
@@ -153,7 +153,7 @@ export class VehicleHandler {
         alt.Vehicle.all.forEach((vehicle: alt.Vehicle) => {
             this.drawAdminDebug(vehicle);
         });
-        
+
         if (this.wasLastFrameInVehicle) {
             if (alt.Player.local.vehicle === undefined) {
                 this.event.emitGui("speedo:toggleui", false);
@@ -166,14 +166,14 @@ export class VehicleHandler {
         if (vehicle == null || !vehicle.valid) {
             return;
         }
-        
+
         if (native.getVehicleClass(vehicle.scriptID) === 13) {
             return;
         }
 
         let fuelPercentage: number = 1;
         let drivenKilometre: number = -1;
-        
+
         if (vehicle.hasSyncedMeta("FUEL")) {
             const fuel = vehicle.getSyncedMeta<number>("FUEL");
             fuelPercentage = fuel / this.maxFuel;
@@ -182,7 +182,7 @@ export class VehicleHandler {
         if (vehicle.hasSyncedMeta("DRIVEN_KILOMETRE")) {
             drivenKilometre = vehicle.getSyncedMeta<number>("DRIVEN_KILOMETRE");
         }
-        
+
         this.event.emitGui("speedo:getinformation", {
             speed: this.vehicle.getCurrentSpeed(vehicle),
             rpm: vehicle.rpm,

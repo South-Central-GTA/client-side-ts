@@ -1,14 +1,14 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { EventModule } from "../modules/event.module";
-import { Player } from "../extensions/player.extensions";
-import { KeyCodes } from "../enums/keycode.type";
-import { foundation } from "../decorators/foundation";
+import {EventModule} from "../modules/event.module";
+import {Player} from "@extensions/player.extensions";
+import {KeyCodes} from "@enums/keycode.type";
+import {foundation} from "../decorators/foundation";
 import {singleton} from "tsyringe";
 import {on, onServer} from "../decorators/events";
 import {GuiModule} from "../modules/gui.module";
 import {LoggerModule} from "../modules/logger.module";
-import {PlayerInterface} from "../interfaces/player.interface";
+import {PlayerInterface} from "@interfaces/player.interface";
 
 @foundation()
 @singleton()
@@ -20,15 +20,15 @@ export class PlayersListHandler {
         private readonly player: Player,
         private readonly gui: GuiModule,
         private readonly logger: LoggerModule,
-        )
-    { }
+    ) {
+    }
 
     @on("keydown")
     public onKeydown(key: number): void {
         if (!this.player.isSpawnedCharacter) {
             return;
         }
-        
+
         if (key === KeyCodes.O) {
             if (this.isMenuOpen) {
                 this.setMenuState(false);
@@ -36,7 +36,7 @@ export class PlayersListHandler {
                 if (this.player.getIsAnyTextOpen) {
                     return;
                 }
-                
+
                 this.event.emitServer("playerslist:requestmenu");
             }
         }

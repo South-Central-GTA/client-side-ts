@@ -1,17 +1,11 @@
 ﻿import * as alt from "alt-client";
 import * as native from "natives";
 import {injectable, singleton} from "tsyringe";
-import { CharacterInterface } from "../../interfaces/character/character.interface";
-import { GenderType } from "../../enums/gender.type";
-import { Player } from "../../extensions/player.extensions";
-import { foundation } from "../../decorators/foundation";
-import { onServer, onGui, on } from "../../decorators/events";
-import { loadModel, UID } from "../../helpers";
-import { CharacterFormInterface } from "../../interfaces/character/character-form.interface";
-import { LocationInterface } from "../../interfaces/location.interface";
-import { CharacterCreatorPurchaseType } from "../../enums/character-creator-purchase.type";
-import { CharacterCreatorPurchaseInterface } from "../../interfaces/character/character-creator-purchase.interface";
-import { DialogType } from "../../enums/dialog.type";
+import {Player} from "../../extensions/player.extensions";
+import {foundation} from "../../decorators/foundation";
+import {onServer, onGui, on} from "../../decorators/events";
+import {loadModel, UID} from "../../helpers";
+import {DialogType} from "@enums/dialog.type";
 import {CameraModule} from "../../modules/camera.module";
 import {CharacterModule} from "../../modules/character.module";
 import {EventModule} from "../../modules/event.module";
@@ -21,6 +15,12 @@ import {LoadingSpinnerModule} from "../../modules/loading-spinner.module";
 import {CharCreatorModule} from "../../modules/char-creator.module";
 import {DialogModule} from "../../modules/dialog.module";
 import {ClothingModule} from "../../modules/clothing.module";
+import {CharacterInterface} from "@interfaces/character/character.interface";
+import {CharacterCreatorPurchaseType} from "@enums/character-creator-purchase.type";
+import {CharacterFormInterface} from "@interfaces/character/character-form.interface";
+import {GenderType} from "@enums/gender.type";
+import {LocationInterface} from "@interfaces/location.interface";
+import {CharacterCreatorPurchaseInterface} from "@interfaces/character/character-creator-purchase.interface";
 
 @foundation()
 @injectable()
@@ -68,13 +68,14 @@ export class CharacterCreatorHandler {
         private readonly loading: LoadingSpinnerModule,
         private readonly charCreator: CharCreatorModule,
         private readonly dialog: DialogModule,
-        private readonly clothing: ClothingModule) {}
+        private readonly clothing: ClothingModule) {
+    }
 
     @onServer("charcreator:open")
-    public async onOpen(character: CharacterInterface, isTutorial: boolean, moneyToSouthCentralPointsValue: number, 
+    public async onOpen(character: CharacterInterface, isTutorial: boolean, moneyToSouthCentralPointsValue: number,
                         baseCharacterCosts: number, phonePointsPrice: number): Promise<void> {
         this.isTutorial = isTutorial;
-        
+
         this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE = moneyToSouthCentralPointsValue;
         this.PHONE_POINTS_PRICE = phonePointsPrice;
 
@@ -87,11 +88,11 @@ export class CharacterCreatorHandler {
             //     FreezeGameControls: false,
             //     PrimaryButton: "Okay",
             // });
-            
+
             // TODO: Implement the tutorial tips for character creation.
         }
-        
-        native.setClockTime(12, 0 ,0);
+
+        native.setClockTime(12, 0, 0);
 
         this.createCamera();
 
@@ -104,7 +105,7 @@ export class CharacterCreatorHandler {
         this.isNewCharacter = (character != null);
 
         this.pedId = native.createPed(2, mHash, this.characterPos.x, this.characterPos.y, this.characterPos.z, 180, false, false);
-        
+
         this.charCreator.setup(character, this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE);
 
         this.charCreator.addPurchase({
@@ -118,7 +119,7 @@ export class CharacterCreatorHandler {
         });
 
         this.character.apply(character, this.pedId);
-        
+
         this.event.emitGui("gui:routeto", "charcreator");
 
         this.loading.show("Lade Charaktererstellung...");
@@ -151,7 +152,7 @@ export class CharacterCreatorHandler {
         this.loading.hide();
         this.event.emitGui("charcreator:resetissaving");
     }
-    
+
     @onGui("charcreator:removepurchaseorder")
     public onRemovePurchaseOrder(purchaseOrder: CharacterCreatorPurchaseInterface): void {
         if (!purchaseOrder.removeable) {
@@ -168,7 +169,7 @@ export class CharacterCreatorHandler {
             title: "Charakter Erstellung verlassen",
             description: "Bist du dir sicher das du die Charakter Erstellung verlassen möchtest? Dein aktueller Charakter würde nicht gespeichert werden!",
             hasBankAccountSelection: false,
-            hasInputField: false, 
+            hasInputField: false,
             dataJson: "[]",
             freezeGameControls: false,
             primaryButton: "Ja",
@@ -176,7 +177,7 @@ export class CharacterCreatorHandler {
             primaryButtonClientEvent: "charcreator:close",
         });
     }
-    
+
     @on("charcreator:close")
     public onClose(): void {
         native.deletePed(this.pedId);
@@ -246,10 +247,10 @@ export class CharacterCreatorHandler {
 
     @onGui("charcreator:setform")
     public onSetForm(form: CharacterFormInterface): void {
-        this.charCreator.setForm(form); 
+        this.charCreator.setForm(form);
         this.charCreator.resetTypePurchaseOrders(CharacterCreatorPurchaseType.MONEY);
         this.charCreator.resetTypePurchaseOrders(CharacterCreatorPurchaseType.ITEM);
-        
+
         if (form.startMoney > 0) {
             this.charCreator.addPurchase({
                 id: UID(),
@@ -261,7 +262,7 @@ export class CharacterCreatorHandler {
                 orderedVehicle: null
             });
         }
-        
+
         if (form.hasPhone) {
             this.charCreator.addPurchase({
                 id: UID(),
@@ -280,22 +281,22 @@ export class CharacterCreatorHandler {
         if (genderChanged) {
             this.switchGender(character);
         }
-        
+
         this.updateCharacter(character);
-        
+
         this.event.emitGui("clothesmenu:setmaxtexturevariation", this.clothing.getMaxTextureVariations(this.pedId, character.clothes));
 
         if (this.setNudeMode) {
             this.character.setNude(this.pedId, character.gender);
         }
     }
-    
+
     @onGui("charcreator:setnude")
     public onSetNude(): void {
         this.setNudeMode = true;
         this.character.setNude(this.pedId, this.charCreator.getCharacterData.character.gender);
     }
-    
+
     @onGui("charcreator:loadclothes")
     public onLoadClothes(): void {
         this.setNudeMode = false;
@@ -321,7 +322,7 @@ export class CharacterCreatorHandler {
             closeButtonClientEvent: "charcreator:cantfinishedcreation"
         });
     }
-    
+
     @on("charcreator:buycharacter")
     public onBuyCharacter(): void {
         this.player.fadeOut(500);
@@ -346,7 +347,7 @@ export class CharacterCreatorHandler {
     private switchGender(char: CharacterInterface): void {
         native.deletePed(this.pedId);
 
-        if(char.gender == GenderType.MALE) {
+        if (char.gender == GenderType.MALE) {
             this.pedId = native.createPed(2, 1885233650, this.characterPos.x, this.characterPos.y, this.characterPos.z, 180, false, false);
         } else if (char.gender == GenderType.FEMALE) {
             this.pedId = native.createPed(2, -1667301416, this.characterPos.x, this.characterPos.y, this.characterPos.z, 180, false, false);
@@ -356,11 +357,11 @@ export class CharacterCreatorHandler {
         char.mother = 21;
         char.similarity = (char.gender === GenderType.MALE) ? 0 : 1;
         char.skinSimilarity = (char.gender === GenderType.MALE) ? 0 : 1;
-        char.appearances.hair = 0;    
+        char.appearances.hair = 0;
 
         this.event.emitGui("charcreator:setgender", char.gender, this.clothing.getMaxDrawableVariations(this.pedId));
     }
-    
+
     private updateCharacter(character: CharacterInterface): void {
         // Generate cloth items based on the given cloth interface. 
         character.inventory.items = this.charCreator.getInventoryClothingItems(character);

@@ -36,7 +36,7 @@ export class DrivingSchoolHandler {
         {x: 30.276924, y: -1692.4352, z: 28.206},
         {x: 90.14506, y: -1720.8, z: 27.92},
     ];
-    
+
     private MAX_SPEED = 80;
 
     private index: number = 0;
@@ -72,7 +72,7 @@ export class DrivingSchoolHandler {
         this.update.remove(this.tickId);
         this.speedingReports = 0;
     }
-    
+
     @onServer("drivingschool:restart")
     private onRestart(startX: number, startY: number, startZ: number, index: number): void {
         this.startPos = {x: startX, y: startY, z: startZ};
@@ -81,14 +81,14 @@ export class DrivingSchoolHandler {
         this.reachedCheckpoint = false;
         this.lastCheckpoint = false;
         this.speedingReported = false;
-        
+
         if (this.index >= this.checkpointPositions.length) {
             this.currentCheckpointPos = this.startPos;
             this.lastCheckpoint = true;
         } else {
             this.currentCheckpointPos = this.checkpointPositions[this.index];
         }
-        
+
         this.tickId = this.update.add(() => this.tick());
 
         this.waypoint.set(
@@ -121,7 +121,7 @@ export class DrivingSchoolHandler {
     private onResetLastCheckpoint(): void {
         this.reachedCheckpoint = false;
     }
-    
+
     @onServer("drivingschool:resetreportspeeding")
     private onResetReportSpeeding(): void {
         if (!this.speedingReported) {
@@ -136,7 +136,7 @@ export class DrivingSchoolHandler {
     private tick(): void {
         if (alt.Player.local.vehicle) {
             if (this.vehicle.getCurrentSpeed(alt.Player.local.vehicle) > this.MAX_SPEED && !this.speedingReported) {
-                this.speedingReports ++;
+                this.speedingReports++;
                 this.event.emitServer("drivingschool:reportspeeding", this.speedingReports);
                 this.speedingReported = true;
             }
@@ -168,7 +168,7 @@ export class DrivingSchoolHandler {
                     type: 1,
                     bobUpAndDown: false
                 });
-            }   
+            }
         }
     }
 }

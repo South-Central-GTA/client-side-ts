@@ -1,14 +1,14 @@
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
-import { on, onServer, onGui } from "../decorators/events";
-import { EventModule } from "../modules/event.module";
-import { Player } from "../extensions/player.extensions";
-import { GuiModule } from "../modules/gui.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
+import {on, onServer, onGui} from "../decorators/events";
+import {EventModule} from "../modules/event.module";
+import {Player} from "@extensions/player.extensions";
+import {GuiModule} from "../modules/gui.module";
 import {AccountModule} from "../modules/account.module";
-import {KeyCodes} from "../enums/keycode.type";
+import {KeyCodes} from "@enums/keycode.type";
 
-@foundation() 
+@foundation()
 @singleton()
 export class AdminHandler {
     private isMenuOpen: boolean = false;
@@ -17,14 +17,15 @@ export class AdminHandler {
         private readonly event: EventModule,
         private readonly player: Player,
         private readonly gui: GuiModule,
-        private readonly account: AccountModule) { }
+        private readonly account: AccountModule) {
+    }
 
     @on("keydown")
     public onKeydown(key: number): void {
         if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
             return;
         }
-        
+
         if (key === KeyCodes.F11) {
             if (this.isMenuOpen || this.player.getIsAnyMenuOpen) {
                 this.setMenuState(false);
@@ -33,9 +34,9 @@ export class AdminHandler {
             }
         }
     }
-    
+
     @onServer("admin:showmenu")
-    private onShowMenu(): void { 
+    private onShowMenu(): void {
         this.setMenuState(true);
     }
 
@@ -49,7 +50,7 @@ export class AdminHandler {
         }
 
         this.isMenuOpen = state;
-        
+
         if (state) {
             this.player.openMenu();
         } else {

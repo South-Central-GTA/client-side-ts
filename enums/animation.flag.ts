@@ -1,5 +1,4 @@
-﻿export enum AnimationFlag
-{
+﻿export enum AnimationFlag {
     Loop = 1 << 0,
     StopOnLastFrame = 1 << 1,
     OnlyAnimateUpperBody = 1 << 4,

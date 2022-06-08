@@ -1,17 +1,20 @@
-import { GenderType } from "../../enums/gender.type";
-import { FaceFeaturesInterface } from "./facefeatures.interface";
-import { AppearancesInterface } from "./appearances.interface";
-import { InventoryInterface } from "../inventory/inventory.interface";
-import { DefinedJobInterface } from "../definedjob/defined-job.interface";
+import {FaceFeaturesInterface} from "./facefeatures.interface";
+import {AppearancesInterface} from "./appearances.interface";
+import {InventoryInterface} from "../inventory/inventory.interface";
+import {DefinedJobInterface} from "../definedjob/defined-job.interface";
 import {TattoosInterface} from "./tattoos.interface";
 import {ClothesInterface} from "./clothes.interface";
+import {GenderType} from "@enums/gender.type";
+import {PersonalLicenseInterface} from "./personal-license.interface";
 
-export interface   CharacterInterface {
+export interface CharacterInterface {
     id: number;
     accountId: number;
+    accountName: string;
 
     firstName: string;
     lastName: string;
+    name: string;
 
     gender: GenderType;
     age: number;
@@ -25,11 +28,11 @@ export interface   CharacterInterface {
     physique: string;
     story: string;
     bodySize: number;
-    
+
     similarity: number;
     skinSimilarity: number;
     characterState: number;
-    
+
     torso: number;
     torsoTexture: number;
 
@@ -37,7 +40,8 @@ export interface   CharacterInterface {
     appearances: AppearancesInterface;
     inventory: InventoryInterface;
     definedJob: DefinedJobInterface;
-    tattoos: TattoosInterface; 
+    tattoos: TattoosInterface;
+    licenses: PersonalLicenseInterface[];
 
     clothes: ClothesInterface; //only clientside
 }

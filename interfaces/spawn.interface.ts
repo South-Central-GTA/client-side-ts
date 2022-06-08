@@ -1,5 +1,3 @@
-import { LocationInterface } from "./location.interface";
-
 export interface SpawnInterface {
     id: number;
     name: string;

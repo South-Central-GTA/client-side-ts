@@ -1,12 +1,12 @@
 ﻿import * as alt from "alt-client";
 import * as native from "natives";
-import { container, singleton } from "tsyringe";
+import {container, singleton} from "tsyringe";
 import {PrototypeFor} from "../decorators/prototype-for";
 import {UpdateModule} from "../modules/update.module";
 import {EventModule} from "../modules/event.module";
 import {LoggerModule} from "../modules/logger.module";
 import {CameraModule} from "../modules/camera.module";
-import {InputType} from "../enums/input.type";
+import {InputType} from "@enums/input.type";
 
 @PrototypeFor(alt.Player)
 @singleton()
@@ -19,9 +19,9 @@ export class Player extends alt.Player {
 
     private oldHealth: number = null;
     private oldArmour: number = null;
-    
+
     private isInInterior: boolean = false;
-    
+
     set setIsInInterior(isInInterior: boolean) {
         this.isInInterior = isInInterior;
     }
@@ -29,7 +29,7 @@ export class Player extends alt.Player {
     get getIsInInterior() {
         return this.isInInterior;
     }
-   
+
     set setIsChatting(state: boolean) {
         this.isChatting = state;
     };
@@ -55,7 +55,7 @@ export class Player extends alt.Player {
     get getIsPhoneOpen() {
         return this.isPhoneOpen;
     }
-  
+
     set setIsAnyTextFieldFocused(state: boolean) {
         this.isAnyTextFieldFocused = state;
         this.blockGameControls(state);
@@ -72,7 +72,7 @@ export class Player extends alt.Player {
     get getIsCursorVisible() {
         return this.isCursorVisible
     }
-    
+
     get getIsAnyMenuOpen() {
         return this.openMenuCount > 0 || this.getIsInventoryOpen
     }
@@ -112,16 +112,16 @@ export class Player extends alt.Player {
     }
 
     public openMenu(): void {
-        this.openMenuCount ++;
+        this.openMenuCount++;
     }
-    
+
     public closeMenu(): void {
-        this.openMenuCount --;
+        this.openMenuCount--;
         if (this.openMenuCount < 0) {
             this.openMenuCount = 0;
         }
     }
-    
+
     public setVisible(state: boolean): void {
         native.setEntityVisible(alt.Player.local.scriptID, state, false);
     }
@@ -151,7 +151,7 @@ export class Player extends alt.Player {
 
     public blurScreen(time = 0): void {
         native.triggerScreenblurFadeIn(time);
-        
+
         const int = alt.setInterval(() => {
             if (!native.isScreenblurFadeRunning()) {
                 native.triggerScreenblurFadeIn(time);
@@ -190,13 +190,13 @@ export class Player extends alt.Player {
             this.event.emitGui("hud:moveup");
             native.displayRadar(true);
         }
-        
+
         native.displayHud(true);
 
     }
 
     public hideRadarAndHud(force: boolean = false): void {
-        if (this.isAduty && !force 
+        if (this.isAduty && !force
             || alt.Player.local.vehicle !== null && !force) {
             return;
         }
@@ -224,7 +224,7 @@ export class Player extends alt.Player {
         if (this.isAduty || alt.Player.local.vehicle !== null) {
             return;
         }
-        
+
         native.displayRadar(false);
         this.event.emitGui("hud:movedown");
     }
@@ -252,13 +252,13 @@ export class Player extends alt.Player {
         if (!state && (this.getIsInventoryOpen || this.getIsPhoneOpen)) {
             return;
         }
-        
+
         this.escBlocked = state;
     }
 
     public freeze(administrative: boolean = false): void {
         this.isFreezed = true;
-        
+
         if (!administrative && this.adminFreezed) {
             return;
         }
@@ -266,7 +266,7 @@ export class Player extends alt.Player {
         if (administrative) {
             this.adminFreezed = true;
         }
-        
+
         alt.toggleGameControls(false);
 
         native.freezeEntityPosition(alt.Player.local.scriptID, true);
@@ -285,7 +285,7 @@ export class Player extends alt.Player {
         if (administrative) {
             this.adminFreezed = false;
         }
-        
+
         alt.toggleGameControls(true);
 
         native.freezeEntityPosition(alt.Player.local.scriptID, false);
@@ -311,7 +311,7 @@ export class Player extends alt.Player {
 
     public loadPlayerHead(): Promise<string> {
         return new Promise(resolve => {
-                const interval = alt.setInterval(() => {
+            const interval = alt.setInterval(() => {
                 if (native.isPedheadshotReady(this.scriptID) && native.isPedheadshotValid(this.scriptID)) {
                     alt.clearInterval(interval);
                     return resolve(native.getPedheadshotTxdString(this.scriptID));
@@ -398,7 +398,7 @@ export class Player extends alt.Player {
             native.disableControlAction(0, InputType.ENTER, true);
             native.disableControlAction(0, InputType.VEH_EXIT, true);
         }
-        
+
         native.setPedCanSwitchWeapon(alt.Player.local.scriptID, !this.isCursorVisible);
 
         if (this.escBlocked) {

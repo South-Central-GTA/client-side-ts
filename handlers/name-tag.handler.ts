@@ -1,17 +1,17 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { Player } from "../extensions/player.extensions";
-import { MathModule } from "../modules/math.module";
-import { TextModule } from "../modules/text.module";
-import { UpdateModule } from "../modules/update.module";
-import { foundation } from "../decorators/foundation";
-import { singleton } from "tsyringe";
+import {Player} from "@extensions/player.extensions";
+import {MathModule} from "../modules/math.module";
+import {TextModule} from "../modules/text.module";
+import {UpdateModule} from "../modules/update.module";
+import {foundation} from "../decorators/foundation";
+import {singleton} from "tsyringe";
 import {LoggerModule} from "../modules/logger.module";
 
 @foundation()
 @singleton()
 export class NameTagHandler {
-    
+
     public constructor(
         private readonly math: MathModule,
         private readonly text: TextModule,
@@ -40,18 +40,18 @@ export class NameTagHandler {
             if (!renderData) {
                 return;
             }
-            
+
             count += 1;
 
             if (target.hasStreamSyncedMeta("FREECAM")) {
                 return;
             }
-            
+
             const characterId = target.getSyncedMeta<number>("ID");
             const rpName = target.getSyncedMeta<string>("CHARACTER_NAME");
             const color = target.getSyncedMeta<string>("NAMECOLOR");
             const isTyping = target.getSyncedMeta<boolean>("IS_TYPING");
-            
+
             let finalText = `${color}${rpName} [${characterId}]`;
             if (isTyping) {
                 finalText = `${finalText}\n~b~~w~(schreibt)`;
@@ -96,6 +96,6 @@ export class NameTagHandler {
             return undefined;
         }
 
-        return { name: target.name, dist, pos: target.pos };
+        return {name: target.name, dist, pos: target.pos};
     }
 }

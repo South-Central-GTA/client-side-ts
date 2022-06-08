@@ -1,5 +1,6 @@
-import { BankAccountCharacterAccessInterface } from "./bank-account-character-access.interface - Copy";
-import { BankAccountGroupAccessInterface } from "./bank-account-group-access.interface";
+import {BankAccountGroupAccessInterface} from "./bank-account-group-access.interface";
+import {BankAccountCharacterAccessInterface} from "./bank-account-character-access.interface";
+import {BankHistoryEntryInterface} from "./bank-history-entry.interface";
 
 export interface BankAccountInterface {
     id: number;
@@ -8,5 +9,6 @@ export interface BankAccountInterface {
     amount: string;
     bankDetails: string;
     characterAccesses: BankAccountCharacterAccessInterface[];
-    groupAccesses: BankAccountGroupAccessInterface[]
+    groupAccesses: BankAccountGroupAccessInterface[];
+    history: BankHistoryEntryInterface[];
 }

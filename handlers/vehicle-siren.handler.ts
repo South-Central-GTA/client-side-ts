@@ -1,23 +1,16 @@
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
 import {on, onGui, onServer} from "../decorators/events";
 import alt from "alt-client";
 import native from "natives";
 import {EventModule} from "../modules/event.module";
-import {CharacterInterface} from "../interfaces/character/character.interface";
-import {BankAccountInterface} from "../interfaces/bank/bank-account.interface";
-import {HouseInterface} from "../interfaces/house.interface";
-import {VehicleInterface} from "../interfaces/vehicle.interface";
-import {CriminalRecordInterface} from "../interfaces/mdc/criminal-record.interface";
-import {MdcNodeInterface} from "../interfaces/mdc/mdc-node.interface";
-import {HouseModule} from "../modules/house.module";
-import {KeyCodes} from "../enums/keycode.type";
-import {Player} from "../extensions/player.extensions";
+import {KeyCodes} from "@enums/keycode.type";
+import {Player} from "@extensions/player.extensions";
 
 @foundation()
 @singleton()
 export class VehicleSirenHandler {
-    
+
     constructor(
         private readonly event: EventModule,
         private readonly player: Player
@@ -40,9 +33,9 @@ export class VehicleSirenHandler {
         if (!entity.hasStreamSyncedMeta("SIREN_MUTED")) {
             return
         }
-        
+
         const muted = entity.getStreamSyncedMeta<boolean>("SIREN_MUTED");
-        
+
         native.setVehicleHasMutedSirens(entity.scriptID, muted);
     }
 }

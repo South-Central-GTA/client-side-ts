@@ -1,13 +1,13 @@
-import { singleton, container } from "tsyringe";
-import { foundation } from "../decorators/foundation";
+import {singleton, container} from "tsyringe";
+import {foundation} from "../decorators/foundation";
 import {on, onGui, onServer} from "../decorators/events";
-import { Player } from "../extensions/player.extensions";
+import {Player} from "@extensions/player.extensions";
 import {LoggerModule} from "../modules/logger.module";
 import {EventModule} from "../modules/event.module";
-import {KeyCodes} from "../enums/keycode.type";
+import {KeyCodes} from "@enums/keycode.type";
 import {InteractModule} from "../modules/interact.module";
 import {ContextModule} from "../modules/context.module";
-import {ActionInterface} from "../interfaces/action.interface";
+import {ActionInterface} from "@interfaces/action.interface";
 
 @foundation()
 @singleton()
@@ -17,14 +17,15 @@ export class ContextMenuHandler {
         private readonly player: Player,
         private readonly logger: LoggerModule,
         private readonly event: EventModule,
-        private readonly contextMenu: ContextModule) { }
+        private readonly contextMenu: ContextModule) {
+    }
 
     @on("keydown")
     public onKeydown(key: number): void {
         if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
             return;
         }
-        
+
         if (key === KeyCodes.ALT) {
             if (!this.player.hasInteractionOpen) {
                 this.interact.startInteract();
@@ -37,7 +38,7 @@ export class ContextMenuHandler {
         if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
             return;
         }
-        
+
         if (key === KeyCodes.ALT) {
             if (this.player.hasInteractionOpen) {
                 this.interact.stopInteraction();

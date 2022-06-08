@@ -1,37 +1,38 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { foundation } from "../decorators/foundation";
-import { onServer } from "../decorators/events";
-import { CatalogVehicleInterface } from "../interfaces/catalog-vehicle.interface";
-import { EventModule } from "../modules/event.module";
+import {singleton} from "tsyringe";
+import {foundation} from "../decorators/foundation";
+import {onServer} from "../decorators/events";
+import {EventModule} from "../modules/event.module";
+import {CatalogVehicleInterface} from "@interfaces/vehicles/catalog-vehicle.interface";
 
 @foundation()
 @singleton()
 export class VehicleCatalogHandler {
 
     constructor(
-        private readonly event: EventModule) { }
+        private readonly event: EventModule) {
+    }
 
     @onServer("vehiclecatalog:getcatalogveh")
     public onGetCatalogVeh(catalogVehicle: CatalogVehicleInterface): void {
         if (alt.Player.local.vehicle == null) {
             return;
         }
-        
+
         const vehicleName = native.getDisplayNameFromVehicleModel(alt.Player.local.vehicle.model);
         const classNumber = native.getVehicleClassFromName(alt.Player.local.vehicle.model);
         const localName = native.getLabelText(vehicleName);
-        
+
         const vehicle: CatalogVehicleInterface = catalogVehicle;
         vehicle.model = vehicle.model == "" ? vehicleName.toLowerCase() : vehicle.model;
         vehicle.displayName = localName;
         vehicle.displayClass = this.getClassName(classNumber);
-        
+
         this.event.emitServer("vehiclecatalog:saveveh", JSON.stringify(vehicle));
     }
 
-    private getClassName (classId: number): string {
+    private getClassName(classId: number): string {
         switch (classId) {
             case 0:
                 return "Compact";

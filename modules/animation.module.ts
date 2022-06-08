@@ -1,7 +1,7 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { AnimationOptions } from "../enums/animation.options";
-import { singleton } from "tsyringe";
+import {singleton} from "tsyringe";
+import {AnimationOptions} from "@enums/animation.options";
 
 @singleton()
 export class AnimationModule {
@@ -44,7 +44,7 @@ export class AnimationModule {
      */
     public play(dict: string, clip: string, options: AnimationOptions = {}): void {
         const defaultOptions = new AnimationOptions();
-        options = { ...defaultOptions, ...options };
+        options = {...defaultOptions, ...options};
 
         native.taskPlayAnim(
             alt.Player.local.scriptID,

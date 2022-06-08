@@ -1,9 +1,9 @@
-﻿import {AnimationFlag} from "../enums/animation.flag";
+﻿import {AnimationFlag} from "@enums/animation.flag";
 
 export interface AnimationInterface {
     id: number;
     dictionary: string;
     clip: string;
-    name: string;    
+    name: string;
     flags: AnimationFlag;
 }

@@ -1,17 +1,17 @@
 import * as alt from "alt-client";
 import {singleton} from "tsyringe";
-import {CharacterCreatorDataInterface} from "../interfaces/character/character-creator-data.interface";
-import {CharacterInterface} from "../interfaces/character/character.interface";
-import {CharacterFormInterface} from "../interfaces/character/character-form.interface";
-import {CharacterCreatorPurchaseInterface} from "../interfaces/character/character-creator-purchase.interface";
-import {CharacterCreatorPurchaseType} from "../enums/character-creator-purchase.type";
+import {CharacterCreatorDataInterface} from "@interfaces/character/character-creator-data.interface";
+import {CharacterCreatorPurchaseInterface} from "@interfaces/character/character-creator-purchase.interface";
 import {EventModule} from "./event.module";
-import {ItemInterface} from "../interfaces/inventory/item.interface";
 import {UID} from "../helpers";
-import {ItemState} from "../enums/item.state";
 import {LoggerModule} from "./logger.module";
-import {ClothingInterface} from "../interfaces/character/clothing.interface";
 import {ClothingModule} from "./clothing.module";
+import {CharacterInterface} from "@interfaces/character/character.interface";
+import {CharacterCreatorPurchaseType} from "@enums/character-creator-purchase.type";
+import {CharacterFormInterface} from "@interfaces/character/character-form.interface";
+import {ItemInterface} from "@interfaces/inventory/item.interface";
+import {ItemState} from "@enums/item.state";
+import {ClothingInterface} from "@interfaces/character/clothing.interface";
 
 @singleton()
 export class CharCreatorModule {
@@ -20,13 +20,14 @@ export class CharCreatorModule {
     }
 
     private characterCreatorData: CharacterCreatorDataInterface;
-    
+
     private MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE: number = 0;
 
     constructor(
         private readonly event: EventModule,
         private readonly logger: LoggerModule,
-        private readonly clothing: ClothingModule) { }
+        private readonly clothing: ClothingModule) {
+    }
 
     public setup(character: CharacterInterface, moneyToSouthCentralPointsValue: number): void {
         this.characterCreatorData = {
@@ -54,7 +55,7 @@ export class CharCreatorModule {
     public removePurchase(purchaseOrder: CharacterCreatorPurchaseInterface): void {
         this.characterCreatorData.purchaseOrders = this.characterCreatorData.purchaseOrders.filter(po => po.id !== purchaseOrder.id);
         this.event.emitGui("charcreator:updatepurchaseorders", this.characterCreatorData.purchaseOrders);
-                
+
         switch (purchaseOrder.type) {
             case CharacterCreatorPurchaseType.HOUSE:
                 this.event.emitServer("houseselector:unselect");
@@ -150,10 +151,10 @@ export class CharCreatorModule {
 
         return character.inventory.items;
     }
-    
+
     private getClothingItem(catalogItemName: string, compId: number, clothing: ClothingInterface): ItemInterface {
         const price = this.clothing.getClothCategoryPrice(catalogItemName, compId);
-        
+
         this.addPurchase({
             id: UID(),
             type: CharacterCreatorPurchaseType.CLOTHINGS,

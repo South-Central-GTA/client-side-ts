@@ -1,9 +1,9 @@
 import {BlipColor, BlipSprite} from "alt-shared";
-import {Vector3} from "../extensions/vector3.extensions";
+import {Vector3} from "@extensions/vector3.extensions";
 import alt from "alt-client";
-import {BlipType} from "../enums/blip.type";
+import {BlipType} from "@enums/blip.type";
 
-export class BlipInterface {
+export interface BlipInterface {
     id: number;
     sprite: BlipSprite;
     color: BlipColor;

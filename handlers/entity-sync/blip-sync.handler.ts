@@ -1,22 +1,21 @@
 import * as alt from "alt-client";
 import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
-import {EntityType} from "../../enums/entity.type";
+import {EntityType} from "@enums/entity.type";
 import {Vector3} from "../../extensions/vector3.extensions";
 import {BlipSyncModule} from "../../modules/blip-sync.module";
 import {on} from "../../decorators/events";
-import native from "natives";
 
-@foundation() 
+@foundation()
 @singleton()
 export class BlipSyncHandler {
-    
+
     constructor(private readonly blipSync: BlipSyncModule) {
-        
+
         alt.onServer("entitySync:create", (id: number, entityType: EntityType, position: Vector3, currEntityData: { [name: string]: any }) => {
-            if(currEntityData) {
+            if (currEntityData) {
                 const data = currEntityData;
-                if(data != undefined) {
+                if (data != undefined) {
                     if (entityType === EntityType.Blip) {
                         blipSync.add(id, position, data.name, data.sprite, data.color, data.scale, data.shortRange, data.player, data.blipType, data.radius, data.alpha);
                     }

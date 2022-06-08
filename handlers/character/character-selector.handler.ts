@@ -1,16 +1,16 @@
 import * as alt from "alt-client";
 import * as native from "natives";
-import { singleton } from "tsyringe";
-import { LoggerModule } from "../../modules/logger.module";
-import { CharacterModule } from "../../modules/character.module";
-import { CameraModule } from "../../modules/camera.module";
-import { EventModule } from "../../modules/event.module";
-import { Player } from "../../extensions/player.extensions";
+import {singleton} from "tsyringe";
+import {LoggerModule} from "../../modules/logger.module";
+import {CharacterModule} from "../../modules/character.module";
+import {CameraModule} from "../../modules/camera.module";
+import {EventModule} from "../../modules/event.module";
+import {Player} from "../../extensions/player.extensions";
 import {onServer, onGui, on} from "../../decorators/events";
-import { foundation } from "../../decorators/foundation";
+import {foundation} from "../../decorators/foundation";
 import {LoadingSpinnerModule} from "../../modules/loading-spinner.module";
-import {CharacterInterface} from "../../interfaces/character/character.interface";
-import {GenderType} from "../../enums/gender.type";
+import {CharacterInterface} from "@interfaces/character/character.interface";
+import {GenderType} from "@enums/gender.type";
 import {loadModel} from "../../helpers";
 import {GuiModule} from "../../modules/gui.module";
 import {UpdateModule} from "../../modules/update.module";
@@ -19,9 +19,9 @@ import {UpdateModule} from "../../modules/update.module";
 @singleton()
 export class CharacterSelectorHandler {
     private pedId: number;
-    private cachedCharacters: CharacterInterface[] = [];
+    private characters: CharacterInterface[] = [];
     private lastSelectedCharacterId?: number;
-    
+
     constructor(
         private readonly event: EventModule,
         private readonly logger: LoggerModule,
@@ -30,12 +30,13 @@ export class CharacterSelectorHandler {
         private readonly player: Player,
         private readonly loading: LoadingSpinnerModule,
         private readonly gui: GuiModule,
-        private readonly update: UpdateModule) { }
+        private readonly update: UpdateModule) {
+    }
 
     @onServer("charselector:open")
     public async openCharSelector(characters: CharacterInterface[], lastSelectedCharacterId?: number): Promise<void> {
-        this.cachedCharacters = characters;
-        
+        this.characters = characters;
+
         this.player.showCursor();
         this.player.isSpawnedCharacter = false;
         this.player.hideRadarAndHud(true);
@@ -44,15 +45,15 @@ export class CharacterSelectorHandler {
         this.createCamera();
         this.lastSelectedCharacterId = lastSelectedCharacterId;
 
-        if (this.cachedCharacters.length !== 0 && this.lastSelectedCharacterId !== undefined) {
-            const lastCharacter = this.cachedCharacters.find(cc => cc.id === this.lastSelectedCharacterId);
+        if (this.characters.length !== 0 && this.lastSelectedCharacterId !== undefined) {
+            const lastCharacter = this.characters.find(cc => cc.id === this.lastSelectedCharacterId);
             if (lastCharacter) {
                 await this.loadPed(lastCharacter);
             }
         }
 
         this.event.emitGui("gui:routeto", "charselector");
-        
+
         this.loading.show("Lade Charakterauswahl...");
         alt.setTimeout(() => {
             this.player.fadeIn(500);
@@ -66,14 +67,14 @@ export class CharacterSelectorHandler {
     public onClose(): void {
         this.resetCharacter();
     }
-    
+
     @onServer("charselector:update")
     public onUpdateCharacters(characters: CharacterInterface[], lastSelectedCharacterId: number): void {
-        this.cachedCharacters = characters;
+        this.characters = characters;
         this.lastSelectedCharacterId = lastSelectedCharacterId;
 
-        if (this.cachedCharacters.length !== 0 && this.lastSelectedCharacterId !== undefined) {
-            const lastCharacter = this.cachedCharacters.find(cc => cc.id === this.lastSelectedCharacterId);
+        if (this.characters.length !== 0 && this.lastSelectedCharacterId !== undefined) {
+            const lastCharacter = this.characters.find(cc => cc.id === this.lastSelectedCharacterId);
             if (lastCharacter) {
                 this.loadPed(lastCharacter);
             }
@@ -81,12 +82,12 @@ export class CharacterSelectorHandler {
             this.resetCharacter();
         }
 
-        this.event.emitGui("charselector:setup", this.cachedCharacters, this.lastSelectedCharacterId);
+        this.event.emitGui("charselector:setup", this.characters, this.lastSelectedCharacterId);
     }
 
     @onGui("charselector:ready")
     public onCharSelectorLoaded(): void {
-        this.event.emitGui("charselector:setup", this.cachedCharacters, this.lastSelectedCharacterId);
+        this.event.emitGui("charselector:setup", this.characters, this.lastSelectedCharacterId);
     }
 
     @onGui("charselector:reset")
@@ -94,15 +95,14 @@ export class CharacterSelectorHandler {
         if (this.pedId !== undefined) {
             native.deletePed(this.pedId);
             this.pedId = undefined;
-            
         }
     }
 
     @onGui("charselector:select")
     public async selectCharacter(id: number): Promise<void> {
-        await this.loadPed(this.cachedCharacters.find(c => c.id === id));
+        await this.loadPed(this.characters.find(c => c.id === id));
     }
-    
+
     @onGui("charselector:play")
     public onPlay(id: number): void {
         this.player.fadeOut(500);
@@ -138,7 +138,7 @@ export class CharacterSelectorHandler {
         if (character.gender === GenderType.FEMALE) {
             modelId = 2627665880;
         }
-        
+
         await loadModel(modelId);
 
         this.pedId = native.createPed(2, modelId, 402.7121, -996.778, -100, 180, false, false);

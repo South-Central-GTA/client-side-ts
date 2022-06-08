@@ -3,17 +3,17 @@ import * as alt from "alt-client";
 import * as native from "natives";
 import {foundation} from "../decorators/foundation";
 import {on, onClient, onGui, onServer} from "../decorators/events";
-import {KeyCodes} from "../enums/keycode.type";
-import {CommandInterface} from "../interfaces/command.interface";
+import {KeyCodes} from "@enums/keycode.type";
 import {ChatModule} from "../modules/chat.module";
 import {FreeCamModule} from "../modules/free-cam.module";
-import {Player} from "../extensions/player.extensions";
+import {Player} from "@extensions/player.extensions";
 import {EventModule} from "../modules/event.module";
-import {MessageInterface} from "../interfaces/message.interface";
 import {LoggerModule} from "../modules/logger.module";
 import {RaycastModule} from "../modules/raycast.module";
 import {MathModule} from "../modules/math.module";
-import {ChatType} from "../enums/chat.type";
+import {CommandInterface} from "@interfaces/command.interface";
+import {MessageInterface} from "@interfaces/message.interface";
+import {ChatType} from "@enums/chat.type";
 
 @foundation()
 @singleton()
@@ -27,7 +27,8 @@ export class ChatHandler {
         private readonly player: Player,
         private readonly logger: LoggerModule,
         private readonly raycast: RaycastModule,
-        private readonly math: MathModule) { }
+        private readonly math: MathModule) {
+    }
 
     @on("keydown")
     public keydown(key: number) {
@@ -49,7 +50,7 @@ export class ChatHandler {
         if (key === KeyCodes.F5) {
             this.chat.toggleChatVisibility();
         }
-        
+
         if (key === KeyCodes.F4) {
             this.chat.toggleTimestamp();
         }
@@ -69,10 +70,10 @@ export class ChatHandler {
         const currInterior = native.getInteriorFromEntity(alt.Player.local.scriptID);
         const playerPos = alt.Player.local.pos;
         let mumble = false;
-        
+
         if (dimension !== 0) {
             const dist = this.math.distance(playerPos, position);
-            
+
             // Check if player is inside an interior and if the message source is 3 meters away.
             if (currInterior !== 0 && dist > 3) {
 
@@ -85,8 +86,8 @@ export class ChatHandler {
                     mumble = true;
 
                     // If source is /not/ any screaming or megaphone
-                    if (message.chatType !== ChatType.SCREAM 
-                        && message.chatType !== ChatType.MEGAPHONE 
+                    if (message.chatType !== ChatType.SCREAM
+                        && message.chatType !== ChatType.MEGAPHONE
                         && message.chatType !== ChatType.DEP_SCREAM
                         && message.chatType !== ChatType.PHONE_SCREAM
                         && message.chatType !== ChatType.RADIO_SCREAM) {
@@ -95,7 +96,7 @@ export class ChatHandler {
                 }
             }
         }
-        
+
         if (mumble) {
             const contextArray = message.context.split(" ");
 
@@ -107,14 +108,14 @@ export class ChatHandler {
         }
 
         // Could be the place to add other addons to the chat message
-            // source is drunk or on drunks
-            // source is heavly wounded
-            // knocked out on ground
-            // mouth is covered
-        
+        // source is drunk or on drunks
+        // source is heavly wounded
+        // knocked out on ground
+        // mouth is covered
+
         this.chat.sendMessage(message);
     }
-    
+
     @onGui("chat:ready")
     public onChatLoaded() {
         this.event.emitGui("chat:setcommands", this.cachedCommands);

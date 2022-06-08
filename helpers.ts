@@ -6,7 +6,7 @@ import * as native from "natives";
  * e.g: myAwesomeEvent => my:awesome:event
  * Only for custom events, alt:v client events would be excluded
  *
- * 
+ *
  * @param {string} value
  * @returns {string}
  */
@@ -28,15 +28,15 @@ export function convertToEventName(value: string) {
         'syncedMetaChange',
         'streamSyncedMetaChange',
         'enteredVehicle',
-        'changedVehicleSeat', 
+        'changedVehicleSeat',
         'leftVehicle',
         'taskChange'
     ];
 
     return clientEvents.includes(value)
-            ? value
-            : value.replace(/([a-zA-Z])(?=[A-Z])/g, '$1:')
-                    .toLowerCase();
+        ? value
+        : value.replace(/([a-zA-Z])(?=[A-Z])/g, '$1:')
+            .toLowerCase();
 }
 
 export const loadModel = async (modelHash, timeoutMs = 10000) => {
@@ -90,17 +90,17 @@ export function getGroundZ(x, y, z, tries = 0) {
 }
 
 /**
-* Delay for a number of milliseconds
-*/
+ * Delay for a number of milliseconds
+ */
 export function sleep(delay) {
     var start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
+    while (new Date().getTime() < start + delay) ;
 }
 
 export const UUIDV4 = (): string => {
     let uuid = ''
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    for (let ii = 0; 32 > ii; ii += 1)8 === ii || 20 === ii ? (uuid += '-', uuid += (0 | 16 * Math.random()).toString(16)) : 12 === ii ? (uuid += '-', uuid += '4') : 16 === ii ? (uuid += '-', uuid += (8 | 4 * Math.random()).toString(16)) : uuid += (0 | 16 * Math.random()).toString(16)
+    for (let ii = 0; 32 > ii; ii += 1) 8 === ii || 20 === ii ? (uuid += '-', uuid += (0 | 16 * Math.random()).toString(16)) : 12 === ii ? (uuid += '-', uuid += '4') : 16 === ii ? (uuid += '-', uuid += (8 | 4 * Math.random()).toString(16)) : uuid += (0 | 16 * Math.random()).toString(16)
     return uuid
 }
 

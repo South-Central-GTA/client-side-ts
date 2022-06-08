@@ -1,5 +1,5 @@
-import {Vector3} from "../extensions/vector3.extensions";
-import {MarkerType} from "../enums/marker.type";
+import {Vector3} from "@extensions/vector3.extensions";
+import {MarkerType} from "@enums/marker.type";
 import {RGBAInterface} from "./rgba.interface";
 
 export interface ServerMarkerInterfaces {

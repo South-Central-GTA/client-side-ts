@@ -1,18 +1,18 @@
 import * as native from "natives";
 import * as alt from "alt-client";
-import { singleton } from "tsyringe";
-import { PhoneInterface } from "../interfaces/phone/phone.interface";
-import { EventModule } from "./event.module";
-import { Player } from "../extensions/player.extensions";
-import { PhoneChatInterface } from "../interfaces/phone/phone-chat.interface";
-import { PhoneMessageInterface } from "../interfaces/phone/phone-message.interface";
-import { PhoneContactInterface } from "../interfaces/phone/phone-contact.interface";
-import { LoggerModule } from "./logger.module";
-import { InputType } from "../enums/input.type";
-import { UpdateModule } from "./update.module";
-import {NotificationType} from "../enums/notification.type";
+import {singleton} from "tsyringe";
+import {PhoneInterface} from "@interfaces/phone/phone.interface";
+import {EventModule} from "./event.module";
+import {Player} from "@extensions/player.extensions";
+import {PhoneChatInterface} from "@interfaces/phone/phone-chat.interface";
+import {PhoneMessageInterface} from "@interfaces/phone/phone-message.interface";
+import {PhoneContactInterface} from "@interfaces/phone/phone-contact.interface";
+import {LoggerModule} from "./logger.module";
+import {InputType} from "@enums/input.type";
+import {UpdateModule} from "./update.module";
 import {NotificationModule} from "./notification.module";
 import {GuiModule} from "./gui.module";
+import {NotificationTypes} from "@enums/notification.types";
 
 @singleton()
 export class PhoneModule {
@@ -31,7 +31,8 @@ export class PhoneModule {
         private readonly gui: GuiModule,
         private readonly logger: LoggerModule,
         private readonly updater: UpdateModule,
-        private readonly notification: NotificationModule) { }
+        private readonly notification: NotificationModule) {
+    }
 
     public setup(phone: PhoneInterface): void {
         this.phoneId = phone.id;
@@ -121,7 +122,7 @@ export class PhoneModule {
     }
 
     public deleteChat(chatId: number): void {
-        this.event.emitServer("phone:deletechat",  chatId);
+        this.event.emitServer("phone:deletechat", chatId);
     }
 
     public pushMessage(message: PhoneMessageInterface): void {
@@ -149,7 +150,7 @@ export class PhoneModule {
         this.inCall = true;
 
         this.notification.sendNotification({
-            type: NotificationType.INFO,
+            type: NotificationTypes.INFO,
             text: "Mit der Pfeiltaste nach unten kannst du dein Handy wegpacken und wieder laufen.",
         });
     }

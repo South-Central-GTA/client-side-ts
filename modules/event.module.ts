@@ -1,4 +1,4 @@
-import { singleton } from "tsyringe";
+import {singleton} from "tsyringe";
 import * as alt from "alt-client";
 import {LoggerModule} from "./logger.module";
 
@@ -12,7 +12,8 @@ export class EventModule {
     readonly availableListenerTypes = ['on', 'onServer', 'onGui'];
 
     public constructor(
-        private readonly logger: LoggerModule) { }
+        private readonly logger: LoggerModule) {
+    }
 
     /**
      * Register listener

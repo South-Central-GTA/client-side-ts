@@ -1,15 +1,16 @@
-import { singleton } from "tsyringe";
+import {singleton} from "tsyringe";
 import * as native from "natives";
 import * as alt from "alt-client";
-import { IVehicleMods } from "../interfaces/vehicle-mods.interface";
+import {IVehicleMods} from "@interfaces/vehicle-mods.interface";
 import {MathModule} from "./math.module";
 
 @singleton()
 export class VehicleModule {
 
     public constructor(
-        private readonly math: MathModule) { }
-    
+        private readonly math: MathModule) {
+    }
+
     public fix(vehicle: alt.Vehicle, amount: number = 1000, fixCosmetics: boolean = false): void {
         for (let index = 0; index < vehicle.wheelsCount; index++) {
             native.setVehicleTyreFixed(vehicle.scriptID, index);
@@ -219,7 +220,7 @@ export class VehicleModule {
 
         return returnMods;
     }
-    
+
     public getCurrentSpeed(vehicle: alt.Vehicle): number {
         return native.getEntitySpeed(vehicle.scriptID) * 3.6;
     }
@@ -247,7 +248,7 @@ export class VehicleModule {
             return -1;
         }
 
-        const obj: { distance: null | number, door: number } = { distance: null, door: -1 };
+        const obj: { distance: null | number, door: number } = {distance: null, door: -1};
 
         for (let i = 0, l = native.getNumberOfVehicleDoors(_vehicle); i < l; i++) {
             const distance = this.math.distance(alt.Player.local.pos, native.getEntryPositionOfDoor(_vehicle, i));
