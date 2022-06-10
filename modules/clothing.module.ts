@@ -1,6 +1,5 @@
 import {singleton} from "tsyringe";
 import {LoggerModule} from "./logger.module";
-import alt from "alt-client";
 import native from "natives";
 import {MaxDrawablesTexturesInterface} from "@interfaces/character/max-drawable-textures.interface";
 import {MaxDrawablesInterface} from "@interfaces/character/max-drawables.interface";
@@ -8,8 +7,7 @@ import {ClothesInterface} from "@interfaces/character/clothes.interface";
 
 @singleton()
 export class ClothingModule {
-    constructor(
-        private readonly logger: LoggerModule) {
+    constructor(private readonly logger: LoggerModule) {
     }
 
     public isClothingItem(name: string): boolean {
@@ -68,20 +66,34 @@ export class ClothingModule {
 
     public getMaxTextureVariations(pedId: number, clothes: ClothesInterface): MaxDrawablesTexturesInterface {
         return {
-            maxHat: native.getNumberOfPedPropTextureVariations(pedId, 0, clothes.hat !== null ? clothes.hat.drawableId : -1) - 1,
-            maxGlasses: native.getNumberOfPedPropTextureVariations(pedId, 1, clothes.glasses !== null ? clothes.glasses.drawableId : -1) - 1,
-            maxEars: native.getNumberOfPedPropTextureVariations(pedId, 2, clothes.ears !== null ? clothes.ears.drawableId : -1) - 1,
-            maxWatches: native.getNumberOfPedPropTextureVariations(pedId, 6, clothes.watch !== null ? clothes.watch.drawableId : -1) - 1,
-            maxBracelets: native.getNumberOfPedPropTextureVariations(pedId, 7, clothes.bracelets !== null ? clothes.bracelets.drawableId : -1) - 1,
-            maxMask: native.getNumberOfPedTextureVariations(pedId, 1, clothes.mask !== null ? clothes.mask.drawableId : -1) - 1,
-            maxTorsos: native.getNumberOfPedTextureVariations(pedId, 3, clothes.torso !== null ? clothes.torso.drawableId : -1) - 1,
-            maxTops: native.getNumberOfPedTextureVariations(pedId, 11, clothes.top !== null ? clothes.top.drawableId : -1) - 1,
-            maxBodyArmors: native.getNumberOfPedTextureVariations(pedId, 9, clothes.bodyArmor !== null ? clothes.bodyArmor.drawableId : -1) - 1,
-            maxBackPacks: native.getNumberOfPedTextureVariations(pedId, 5, clothes.backPack !== null ? clothes.backPack.drawableId : -1) - 1,
-            maxUnderShirts: native.getNumberOfPedTextureVariations(pedId, 8, clothes.underShirt !== null ? clothes.underShirt.drawableId : -1) - 1,
-            maxAccessories: native.getNumberOfPedTextureVariations(pedId, 7, clothes.accessories !== null ? clothes.accessories.drawableId : -1) - 1,
-            maxPants: native.getNumberOfPedTextureVariations(pedId, 4, clothes.pants !== null ? clothes.pants.drawableId : -1) - 1,
-            maxShoes: native.getNumberOfPedTextureVariations(pedId, 6, clothes.shoes !== null ? clothes.shoes.drawableId : -1) - 1
+            maxHat: native.getNumberOfPedPropTextureVariations(pedId, 0,
+                    clothes.hat !== null ? clothes.hat.drawableId : -1) - 1,
+            maxGlasses: native.getNumberOfPedPropTextureVariations(pedId, 1,
+                    clothes.glasses !== null ? clothes.glasses.drawableId : -1) - 1,
+            maxEars: native.getNumberOfPedPropTextureVariations(pedId, 2,
+                    clothes.ears !== null ? clothes.ears.drawableId : -1) - 1,
+            maxWatches: native.getNumberOfPedPropTextureVariations(pedId, 6,
+                    clothes.watch !== null ? clothes.watch.drawableId : -1) - 1,
+            maxBracelets: native.getNumberOfPedPropTextureVariations(pedId, 7,
+                    clothes.bracelets !== null ? clothes.bracelets.drawableId : -1) - 1,
+            maxMask: native.getNumberOfPedTextureVariations(pedId, 1,
+                    clothes.mask !== null ? clothes.mask.drawableId : -1) - 1,
+            maxTorsos: native.getNumberOfPedTextureVariations(pedId, 3,
+                    clothes.torso !== null ? clothes.torso.drawableId : -1) - 1,
+            maxTops: native.getNumberOfPedTextureVariations(pedId, 11,
+                    clothes.top !== null ? clothes.top.drawableId : -1) - 1,
+            maxBodyArmors: native.getNumberOfPedTextureVariations(pedId, 9,
+                    clothes.bodyArmor !== null ? clothes.bodyArmor.drawableId : -1) - 1,
+            maxBackPacks: native.getNumberOfPedTextureVariations(pedId, 5,
+                    clothes.backPack !== null ? clothes.backPack.drawableId : -1) - 1,
+            maxUnderShirts: native.getNumberOfPedTextureVariations(pedId, 8,
+                    clothes.underShirt !== null ? clothes.underShirt.drawableId : -1) - 1,
+            maxAccessories: native.getNumberOfPedTextureVariations(pedId, 7,
+                    clothes.accessories !== null ? clothes.accessories.drawableId : -1) - 1,
+            maxPants: native.getNumberOfPedTextureVariations(pedId, 4,
+                    clothes.pants !== null ? clothes.pants.drawableId : -1) - 1,
+            maxShoes: native.getNumberOfPedTextureVariations(pedId, 6,
+                    clothes.shoes !== null ? clothes.shoes.drawableId : -1) - 1
         }
     }
 

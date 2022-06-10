@@ -19,21 +19,15 @@ export class RaycastModule {
     public line(startPos: alt.Vector3, dir: alt.Vector3, dist: number, flags: number, ignoredEntity: number): RaycastResultInterface {
         let targetPos = this.getTargetPos(startPos, new alt.Vector3(dir.x * dist, dir.y * dist, dir.z * dist));
 
-        let ray = native.startExpensiveSynchronousShapeTestLosProbe(
-            startPos.x,
-            startPos.y,
-            startPos.z,
-            targetPos.x,
-            targetPos.y,
-            targetPos.z,
-            flags,
-            ignoredEntity, // entity that get ignored from raycast.
-            0,);
+        let ray = native.startExpensiveSynchronousShapeTestLosProbe(startPos.x, startPos.y, startPos.z, targetPos.x,
+                targetPos.y, targetPos.z, flags, ignoredEntity, // entity that get ignored from raycast.
+                0,);
         return this.result(ray);
     }
 
     private getTargetPos(entityVector: alt.Vector3, forwardVector: alt.Vector3): alt.Vector3 {
-        return new alt.Vector3(entityVector.x + forwardVector.x, entityVector.y + forwardVector.y, entityVector.z + forwardVector.z);
+        return new alt.Vector3(entityVector.x + forwardVector.x, entityVector.y + forwardVector.y,
+                entityVector.z + forwardVector.z);
     }
 
     private result(ray: any): RaycastResultInterface {
@@ -49,8 +43,7 @@ export class RaycastModule {
     }
 
     private getModel(entity: number) {
-        if (!native.isModelValid(entity))
-            return null;
+        if (!native.isModelValid(entity)) return null;
 
         native.getEntityModel(entity);
     }

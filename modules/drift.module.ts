@@ -5,29 +5,15 @@ import {UpdateModule} from "./update.module";
 import {MathModule} from "./math.module";
 
 enum DriftEndReason {
-    LowSpeed = 0,
-    LowAngle = 1,
-    DamageDetected = 2,
-    OutOfVehicle = 3
+    LowSpeed = 0, LowAngle = 1, DamageDetected = 2, OutOfVehicle = 3
 }
 
 enum DriftTypes {
-    Drifting = 0,
-    GoodDrift = 1,
-    PerfectDrift = 2,
-    PowerSlide = 3
+    Drifting = 0, GoodDrift = 1, PerfectDrift = 2, PowerSlide = 3
 }
 
 @singleton()
 export class DriftModule {
-    get getDriftType() {
-        return this.driftType;
-    }
-
-    get getDriftScore() {
-        return this.driftScore;
-    }
-
     private healthSnapshot: number;
     private startTime: Date;
     private isDrifting: boolean;
@@ -35,14 +21,19 @@ export class DriftModule {
     private badAngleSince: number;
     private driftType: DriftTypes = 0;
     private driftScore: number = 0;
-
     private MIN_ANGLE: number = 20.0;
     private MAX_ANGLE: number = 80.0;
     private MIN_SPEED: number = 6.0;
 
-    public constructor(
-        private readonly update: UpdateModule,
-        private readonly math: MathModule) {
+    public constructor(private readonly update: UpdateModule, private readonly math: MathModule) {
+    }
+
+    get getDriftType() {
+        return this.driftType;
+    }
+
+    get getDriftScore() {
+        return this.driftScore;
     }
 
     public startTracking(vehicle: alt.Vehicle) {
@@ -64,7 +55,8 @@ export class DriftModule {
         const normalForward = this.math.normalize2d(forward.x, forward.y);
         const normalVelocity = this.math.normalize2d(velocity.x, velocity.y);
 
-        const driftAngle = native.getAngleBetween2dVectors(normalForward.x, normalForward.y, normalVelocity.x, normalVelocity.y);
+        const driftAngle = native.getAngleBetween2dVectors(normalForward.x, normalForward.y, normalVelocity.x,
+                normalVelocity.y);
 
         const angleOk = (driftAngle >= this.MIN_ANGLE && driftAngle <= this.MAX_ANGLE);
         const speedOk = (speed >= this.MIN_SPEED);
@@ -91,7 +83,8 @@ export class DriftModule {
                 }
 
                 if (end) {
-                    this.driftEnded(!angleOk ? DriftEndReason.LowAngle : (!speedOk ? DriftEndReason.LowSpeed : DriftEndReason.DamageDetected));
+                    this.driftEnded(
+                            !angleOk ? DriftEndReason.LowAngle : (!speedOk ? DriftEndReason.LowSpeed : DriftEndReason.DamageDetected));
                 } else {
                     this.driftProcessed(driftAngle, speed, false, treshhold);
                 }
@@ -110,8 +103,7 @@ export class DriftModule {
     }
 
     private driftProcessed(angle: number, speed: number, init: boolean, trehshold: boolean = false) {
-        if (trehshold)
-            return;
+        if (trehshold) return;
 
         const currentDate = new Date();
         const diff = currentDate.getTime() - this.startTime.getTime();

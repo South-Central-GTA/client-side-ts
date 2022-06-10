@@ -15,28 +15,18 @@ import {LoggerModule} from "../modules/logger.module";
 import {InventoryInterface} from "@interfaces/inventory/inventory.interface";
 import {InventoryType} from "@enums/inventory.type";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class InventoryHandler {
     private ready: boolean = false;
     private tickId: string | undefined;
     private openPosition: Vector3;
 
-    public constructor(
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly inventory: InventoryModule,
-        private readonly freecam: FreeCamModule,
-        private readonly gui: GuiModule,
-        private readonly update: UpdateModule,
-        private readonly math: MathModule,
-        private readonly logger: LoggerModule) {
+    public constructor(private readonly event: EventModule, private readonly player: Player, private readonly inventory: InventoryModule, private readonly freecam: FreeCamModule, private readonly gui: GuiModule, private readonly update: UpdateModule, private readonly math: MathModule, private readonly logger: LoggerModule) {
     }
 
     @on("keydown")
     public onKeydown(key: number): void {
-        if (!this.ready || this.player.getIsAnyTextFieldFocused)
-            return;
+        if (!this.ready || this.player.getIsAnyTextFieldFocused) return;
 
         if (key === KeyCodes.I) {
             if (!this.player.getIsInventoryOpen) {
@@ -51,8 +41,7 @@ export class InventoryHandler {
                 return;
             }
 
-            if (!this.player.getIsInventoryOpen)
-                return;
+            if (!this.player.getIsInventoryOpen) return;
 
             this.event.emitServer("inventory:requestclose");
         }
@@ -68,8 +57,8 @@ export class InventoryHandler {
         this.gui.focusView();
         this.event.emitGui("inventory:toggleui", true);
 
-        if (inventories.some(i => i.inventoryType === InventoryType.GROUP_MEMBER
-            || i.inventoryType === InventoryType.VEHICLE || i.inventoryType === InventoryType.FRISK)) {
+        if (inventories.some(
+                i => i.inventoryType === InventoryType.GROUP_MEMBER || i.inventoryType === InventoryType.VEHICLE || i.inventoryType === InventoryType.FRISK)) {
             this.openPosition = alt.Player.local.pos;
             this.tickId = this.update.add(() => this.tick());
         }
@@ -83,16 +72,6 @@ export class InventoryHandler {
 
         if (this.ready) {
             this.event.emitGui("inventory:setup", this.inventory.inventories);
-        }
-    }
-
-    @onServer("inventory:close")
-    private onClose(): void {
-        this.inventory.close();
-
-        if (this.tickId !== undefined) {
-            this.update.remove(this.tickId);
-            this.tickId = undefined;
         }
     }
 
@@ -135,6 +114,16 @@ export class InventoryHandler {
     @onGui("item:placeonground")
     public onItemPlace(itemId: number): void {
         this.inventory.placeItem(itemId);
+    }
+
+    @onServer("inventory:close")
+    private onClose(): void {
+        this.inventory.close();
+
+        if (this.tickId !== undefined) {
+            this.update.remove(this.tickId);
+            this.tickId = undefined;
+        }
     }
 
     private tick(): void {

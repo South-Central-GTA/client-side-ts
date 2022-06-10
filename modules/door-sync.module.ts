@@ -1,4 +1,3 @@
-import * as alt from "alt-client";
 import * as native from "natives";
 import {singleton} from "tsyringe";
 import {DoorInterface} from "@interfaces/door.interface";
@@ -16,11 +15,7 @@ export class DoorSyncModule {
         this.clear(id);
 
         this.doors[id] = {
-            hash: hash,
-            locked: locked,
-            position: position,
-            heading: heading,
-            id: id,
+            hash: hash, locked: locked, position: position, heading: heading, id: id,
         };
 
         this.setLockState(id, locked);
@@ -69,8 +64,10 @@ export class DoorSyncModule {
             this.doors[id].locked = locked;
             let door = this.doors[id];
 
-            native.setStateOfClosestDoorOfType(door.hash, door.position.x, door.position.y, door.position.z, door.locked, door.heading, false);
-            native.doorControl(door.hash, door.position.x, door.position.y, door.position.z, door.locked, 0.0, door.heading, 0.0);
+            native.setStateOfClosestDoorOfType(door.hash, door.position.x, door.position.y, door.position.z,
+                    door.locked, door.heading, false);
+            native.doorControl(door.hash, door.position.x, door.position.y, door.position.z, door.locked, 0.0,
+                    door.heading, 0.0);
         }
     }
 }

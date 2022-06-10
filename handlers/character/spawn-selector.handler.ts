@@ -1,32 +1,24 @@
 import * as alt from "alt-client";
-import * as native from "natives";
+import {Vector3} from "alt-client";
 import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
 import {EventModule} from "../../modules/event.module";
 import {CameraModule} from "../../modules/camera.module";
 import {LoggerModule} from "../../modules/logger.module";
 import {NotificationModule} from "../../modules/notification.module";
-import {onServer, onGui} from "../../decorators/events";
+import {onGui, onServer} from "../../decorators/events";
 import {MathModule} from "../../modules/math.module";
-import {Vector3} from "alt-client";
 import {CharCreatorModule} from "../../modules/char-creator.module";
 import {SpawnInterface} from "@interfaces/spawn.interface";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class SpawnSelectorHandler {
     private spawns: SpawnInterface[] = [];
     private currentIndex: number = 0;
     private currentSpawnIndex: number = 0;
     private helicopterCamInt: number = 0;
 
-    public constructor(
-        private readonly camera: CameraModule,
-        private readonly notification: NotificationModule,
-        private readonly logger: LoggerModule,
-        private readonly event: EventModule,
-        private readonly math: MathModule,
-        private readonly charCreator: CharCreatorModule) {
+    public constructor(private readonly camera: CameraModule, private readonly notification: NotificationModule, private readonly logger: LoggerModule, private readonly event: EventModule, private readonly math: MathModule, private readonly charCreator: CharCreatorModule) {
     }
 
     @onServer("spawnselector:reset")

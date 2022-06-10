@@ -1,12 +1,11 @@
 import * as alt from "alt-client";
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
 import {EventModule} from "../../modules/event.module";
 import {CameraModule} from "../../modules/camera.module";
 import {LoggerModule} from "../../modules/logger.module";
 import {NotificationModule} from "../../modules/notification.module";
-import {onServer, onGui} from "../../decorators/events";
+import {onGui, onServer} from "../../decorators/events";
 import {Vector3} from "../../extensions/vector3.extensions";
 import {MathModule} from "../../modules/math.module";
 import {HouseModule} from "../../modules/house.module";
@@ -16,8 +15,7 @@ import {CharacterCreatorPurchaseType} from "@enums/character-creator-purchase.ty
 import {UID} from "../../helpers";
 import {NotificationTypes} from "@enums/notification.types";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class HouseSelectorHandler {
     private houses: HouseInterface[]
     private currentIndex: number = 0;
@@ -27,14 +25,7 @@ export class HouseSelectorHandler {
     private cameraState: number = 0;
     private helicopterCamInt: number = 0;
 
-    public constructor(
-        private readonly camera: CameraModule,
-        private readonly notification: NotificationModule,
-        private readonly logger: LoggerModule,
-        private readonly event: EventModule,
-        private readonly math: MathModule,
-        private readonly house: HouseModule,
-        private readonly charCreator: CharCreatorModule) {
+    public constructor(private readonly camera: CameraModule, private readonly notification: NotificationModule, private readonly logger: LoggerModule, private readonly event: EventModule, private readonly math: MathModule, private readonly house: HouseModule, private readonly charCreator: CharCreatorModule) {
     }
 
     @onServer("houseselector:reset")
@@ -54,7 +45,8 @@ export class HouseSelectorHandler {
 
     @onServer("houseselector:open")
     public onOpen(maxPoints: number): void {
-        this.houses = this.house.getHouses.filter(h => h.southCentralPoints <= maxPoints && h.ownerId === -1 && h.houseType === 0);
+        this.houses = this.house.getHouses.filter(
+                h => h.southCentralPoints <= maxPoints && h.ownerId === -1 && h.houseType === 0);
         this.selectHouse(this.houses[this.currentIndex]);
     }
 
@@ -73,8 +65,7 @@ export class HouseSelectorHandler {
         } else {
             if (this.stayedOnBuyedHouse) {
                 this.notification.sendNotification({
-                    type: NotificationTypes.INFO,
-                    text: "Diese Immobilie wurde wieder auf dem Markt freigegeben."
+                    type: NotificationTypes.INFO, text: "Diese Immobilie wurde wieder auf dem Markt freigegeben."
                 });
 
                 this.event.emitGui("houseselector:block", false);
@@ -158,9 +149,11 @@ export class HouseSelectorHandler {
 
     private selectHouse(houseData: HouseInterface): void {
         const doorPos = new alt.Vector3(houseData.positionX, houseData.positionY, houseData.positionZ + 1);
-        const rot = new alt.Vector3(this.math.radToDeg(houseData.roll), this.math.radToDeg(houseData.pitch), this.math.radToDeg(houseData.yaw));
+        const rot = new alt.Vector3(this.math.radToDeg(houseData.roll), this.math.radToDeg(houseData.pitch),
+                this.math.radToDeg(houseData.yaw));
         const dir = this.math.rotationToDirection(rot);
-        const camPos = new alt.Vector3((dir.x * 3) + houseData.positionX, (dir.y * 3) + houseData.positionY, houseData.positionZ + 2);
+        const camPos = new alt.Vector3((dir.x * 3) + houseData.positionX, (dir.y * 3) + houseData.positionY,
+                houseData.positionZ + 2);
 
         this.updateCamera(camPos, doorPos);
 
@@ -205,7 +198,8 @@ export class HouseSelectorHandler {
     }
 
     private updateInfo(houseData: HouseInterface): void {
-        houseData.streetName = this.house.getStreet(houseData.streetDirection, new alt.Vector3(houseData.positionX, houseData.positionY, houseData.positionZ));
+        houseData.streetName = this.house.getStreet(houseData.streetDirection,
+                new alt.Vector3(houseData.positionX, houseData.positionY, houseData.positionZ));
         this.event.emitGui("houseselector:sethouseinfo", houseData);
     }
 }

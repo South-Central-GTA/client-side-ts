@@ -1,6 +1,3 @@
 export enum PersonalLicenseType {
-    DRIVING,
-    BOATS,
-    FLYING,
-    WEAPON,
+    DRIVING, BOATS, FLYING, WEAPON,
 }

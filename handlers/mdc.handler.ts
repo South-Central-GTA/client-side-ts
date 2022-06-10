@@ -1,23 +1,15 @@
-import alt from "alt-client";
-import native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {on, onGui, onServer} from "../decorators/events";
+import {onGui, onServer} from "../decorators/events";
 import {Player} from "@extensions/player.extensions";
 import {GuiModule} from "../modules/gui.module";
 import {FactionType} from "@enums/faction.type";
 import {EventModule} from "../modules/event.module";
 import {LoggerModule} from "../modules/logger.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class MdcHandler {
-    public constructor(
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule,
-    ) {
+    public constructor(private readonly player: Player, private readonly gui: GuiModule, private readonly event: EventModule, private readonly logger: LoggerModule,) {
     }
 
     @onServer("mdc:open")

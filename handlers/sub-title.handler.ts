@@ -3,12 +3,10 @@ import {foundation} from "../decorators/foundation";
 import {SubTitleModule} from "../modules/sub-title.module";
 import {onServer} from "../decorators/events";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class SubTitleHandler {
 
-    constructor(
-        private readonly subtitle: SubTitleModule) {
+    constructor(private readonly subtitle: SubTitleModule) {
     }
 
     @onServer("subtitle:draw")

@@ -6,12 +6,10 @@ import {onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 import {CatalogVehicleInterface} from "@interfaces/vehicles/catalog-vehicle.interface";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class VehicleCatalogHandler {
 
-    constructor(
-        private readonly event: EventModule) {
+    constructor(private readonly event: EventModule) {
     }
 
     @onServer("vehiclecatalog:getcatalogveh")

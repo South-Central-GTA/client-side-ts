@@ -8,5 +8,5 @@ export interface UserRecordInterface {
     characterName: string;
     userRecordType: number;
     text: string;
-    loggedAt: string;
+    createdAtJson: string;
 }

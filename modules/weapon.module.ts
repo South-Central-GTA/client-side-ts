@@ -6,9 +6,7 @@ import {LoggerModule} from "./logger.module";
 @singleton()
 export class WeaponModule {
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule) {
+    constructor(private readonly event: EventModule, private readonly logger: LoggerModule) {
     }
 
     public static getWeaponOfAmmoType(name: string): number {

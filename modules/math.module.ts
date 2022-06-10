@@ -1,18 +1,15 @@
 import * as alt from "alt-client";
+import {IVector3} from "alt-client";
 import * as native from "natives";
 import {singleton} from "tsyringe";
 import {RaycastModule} from "./raycast.module";
 import {CameraModule} from "./camera.module";
 import {LoggerModule} from "./logger.module";
-import {IVector3} from "alt-client";
 import {RaycastResultInterface} from "@interfaces/raycastresult.interface";
 
 @singleton()
 export class MathModule {
-    public constructor(
-        private raycast: RaycastModule,
-        private camera: CameraModule,
-        private logger: LoggerModule) {
+    public constructor(private raycast: RaycastModule, private camera: CameraModule, private logger: LoggerModule) {
     }
 
     // Get the direction based on rotation.
@@ -53,7 +50,8 @@ export class MathModule {
 
     public getEntityFrontPosition(entityHandle: number, distance: number = 0): alt.Vector3 {
         const modelDimensions = native.getModelDimensions(native.getEntityModel(entityHandle), undefined, undefined);
-        return this.getOffsetPositionInWorldCoords(entityHandle, new alt.Vector3(0, modelDimensions[2].y + distance, 0));
+        return this.getOffsetPositionInWorldCoords(entityHandle,
+                new alt.Vector3(0, modelDimensions[2].y + distance, 0));
     }
 
     public getEntityRearPosition(entityHandle: number): alt.Vector3 {
@@ -66,13 +64,7 @@ export class MathModule {
     }
 
     public worldToScreen(position: alt.Vector3): alt.Vector3 {
-        let result = native.getScreenCoordFromWorldCoord(
-            position.x,
-            position.y,
-            position.z,
-            undefined,
-            undefined
-        );
+        let result = native.getScreenCoordFromWorldCoord(position.x, position.y, position.z, undefined, undefined);
 
         if (!result[0]) {
             return undefined;
@@ -120,8 +112,7 @@ export class MathModule {
 
     public getPointAtPoint(pos: alt.Vector3, radius: number, angle: number) {
         const p = {
-            x: 0,
-            y: 0
+            x: 0, y: 0
         };
 
         let s = radius * Math.sin(angle);
@@ -160,10 +151,8 @@ export class MathModule {
         let camRot: alt.Vector3;
         const camera = this.camera.getCamera;
 
-        if (camera)
-            camRot = native.getCamRot(this.camera.getCamera, 2) as alt.Vector3;
-        else
-            camRot = native.getGameplayCamRot(2) as alt.Vector3;
+        if (camera) camRot = native.getCamRot(this.camera.getCamera,
+                2) as alt.Vector3; else camRot = native.getGameplayCamRot(2) as alt.Vector3;
 
         const camForward = this.rotationToDirection(camRot);
 
@@ -172,27 +161,18 @@ export class MathModule {
         const rotLeft = this.addVector3(camRot, new alt.Vector3(0, 0, -10));
         const rotRight = this.addVector3(camRot, new alt.Vector3(0, 0, 10));
 
-        let camRight = this.subVector3(
-            this.rotationToDirection(rotRight),
-            this.rotationToDirection(rotLeft)
-        );
+        let camRight = this.subVector3(this.rotationToDirection(rotRight), this.rotationToDirection(rotLeft));
         let camUp = this.subVector3(this.rotationToDirection(rotUp), this.rotationToDirection(rotDown));
 
         let rollRad = -this.degToRad(camRot.y);
 
-        let camRightRoll = this.subVector3(
-            this.mulVector(camRight, Math.cos(rollRad)),
-            this.mulVector(camUp, Math.sin(rollRad))
-        );
-        let camUpRoll = this.addVector3(
-            this.mulVector(camRight, Math.sin(rollRad)),
-            this.mulVector(camUp, Math.cos(rollRad))
-        );
+        let camRightRoll = this.subVector3(this.mulVector(camRight, Math.cos(rollRad)),
+                this.mulVector(camUp, Math.sin(rollRad)));
+        let camUpRoll = this.addVector3(this.mulVector(camRight, Math.sin(rollRad)),
+                this.mulVector(camUp, Math.cos(rollRad)));
 
         let point3D = this.addVector3(
-            this.addVector3(this.addVector3(camPos, this.mulVector(camForward, 10.0)), camRightRoll),
-            camUpRoll
-        );
+                this.addVector3(this.addVector3(camPos, this.mulVector(camForward, 10.0)), camRightRoll), camUpRoll);
 
         let point2D = this.worldToScreen(point3D);
 
@@ -209,22 +189,14 @@ export class MathModule {
 
         let eps = 0.001;
 
-        if (
-            Math.abs(point2D.x - point2DZero.x) < eps ||
-            Math.abs(point2D.y - point2DZero.y) < eps
-        ) {
+        if (Math.abs(point2D.x - point2DZero.x) < eps || Math.abs(point2D.y - point2DZero.y) < eps) {
             return this.addVector3(camPos, this.mulVector(camForward, 10.0));
         }
 
         let scaleX = (relX - point2DZero.x) / (point2D.x - point2DZero.x);
         let scaleY = (relY - point2DZero.y) / (point2D.y - point2DZero.y);
-        let point3Dret = this.addVector3(
-            this.addVector3(
-                this.addVector3(camPos, this.mulVector(camForward, 10.0)),
-                this.mulVector(camRightRoll, scaleX)
-            ),
-            this.mulVector(camUpRoll, scaleY)
-        );
+        let point3Dret = this.addVector3(this.addVector3(this.addVector3(camPos, this.mulVector(camForward, 10.0)),
+                this.mulVector(camRightRoll, scaleX)), this.mulVector(camUpRoll, scaleY));
 
         return point3Dret;
     }

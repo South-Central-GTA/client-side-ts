@@ -1,4 +1,4 @@
-import {singleton, container} from "tsyringe";
+import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
 import {LoggerModule} from "../logger.module";
 import * as alt from "alt-client";
@@ -6,13 +6,10 @@ import * as native from "natives";
 import {EventModule} from "../event.module";
 import {Player} from "../../extensions/player.extensions";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class PedMenu {
 
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly event: EventModule) {
+    constructor(private readonly logger: LoggerModule, private readonly event: EventModule) {
     }
 
     public interact(entityId: number): void {

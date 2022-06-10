@@ -1,6 +1,6 @@
 import * as native from "natives";
 import * as alt from "alt-client";
-import {singleton, container} from "tsyringe";
+import {singleton} from "tsyringe";
 import {EventModule} from "./event.module";
 import {InputType} from "@enums/input.type";
 import {ContextMenuInterface} from "@interfaces/context-menu.interface";
@@ -13,23 +13,17 @@ import {GuiModule} from "./gui.module";
 
 @singleton()
 export class ContextModule {
-    get getIsOpen() {
-        return this.isOpen;
-    }
-
     private lastX: number;
     private lastY: number;
     private everyTickRef: string;
     private endPoint: alt.Vector3;
     private isOpen: boolean;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly update: UpdateModule,
-        private readonly math: MathModule,
-        private readonly camera: CameraModule,
-        private readonly gui: GuiModule) {
+    constructor(private readonly event: EventModule, private readonly player: Player, private readonly update: UpdateModule, private readonly math: MathModule, private readonly camera: CameraModule, private readonly gui: GuiModule) {
+    }
+
+    get getIsOpen() {
+        return this.isOpen;
     }
 
     public open(title: string, actions: ActionInterface[], useLastPos: boolean = false, onCenter: boolean = false): void {
@@ -49,10 +43,7 @@ export class ContextModule {
         }
 
         const contextMenu: ContextMenuInterface = {
-            title: title,
-            x: this.lastX,
-            y: this.lastY,
-            actions: actions
+            title: title, x: this.lastX, y: this.lastY, actions: actions
         };
 
         this.isOpen = true;

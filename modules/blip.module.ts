@@ -1,7 +1,6 @@
-import * as alt from "alt-client";
+import {IVector3} from "alt-client";
 import * as native from "natives";
 import {singleton} from "tsyringe";
-import {IVector3} from "alt-client";
 
 @singleton()
 export class BlipModule {

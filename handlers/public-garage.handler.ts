@@ -11,18 +11,10 @@ import {GuiModule} from "../modules/gui.module";
 import {PublicGarageVehicleInterface} from "@interfaces/vehicles/public-garage-vehicle.interface";
 import {VehicleInterface} from "@interfaces/vehicles/vehicle.interface";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class PublicGarageHandler {
 
-    public constructor(
-        private readonly text: TextModule,
-        private readonly update: UpdateModule,
-        private readonly blip: BlipModule,
-        private readonly logger: LoggerModule,
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule) {
+    public constructor(private readonly text: TextModule, private readonly update: UpdateModule, private readonly blip: BlipModule, private readonly logger: LoggerModule, private readonly event: EventModule, private readonly player: Player, private readonly gui: GuiModule) {
     }
 
     @onServer("publicgarage:setupunpark")

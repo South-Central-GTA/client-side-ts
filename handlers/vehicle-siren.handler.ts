@@ -1,20 +1,16 @@
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {on, onGui, onServer} from "../decorators/events";
+import {on} from "../decorators/events";
 import alt from "alt-client";
 import native from "natives";
 import {EventModule} from "../modules/event.module";
 import {KeyCodes} from "@enums/keycode.type";
 import {Player} from "@extensions/player.extensions";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class VehicleSirenHandler {
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly player: Player
-    ) {
+    constructor(private readonly event: EventModule, private readonly player: Player) {
     }
 
     @on("keydown")

@@ -1,18 +1,7 @@
-import * as alt from "alt-client";
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {EventModule} from "../modules/event.module";
-import {onServer, on, onGui} from "../decorators/events";
-import {Player} from "@extensions/player.extensions";
-import {CameraModule} from "../modules/camera.module";
-import {LoggerModule} from "../modules/logger.module";
-import {UpdateModule} from "../modules/update.module";
-import {IVehicleMods} from "@interfaces/vehicle-mods.interface";
-import {VehicleModule} from "../modules/vehicle.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class TuningHandler {
     //private showcaseVehicle: number;
     //private updateId: string;

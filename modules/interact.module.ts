@@ -1,6 +1,6 @@
 import * as native from "natives";
 import * as alt from "alt-client";
-import {singleton, container} from "tsyringe";
+import {singleton} from "tsyringe";
 import {EventModule} from "./event.module";
 import {InputType} from "@enums/input.type";
 import {Player} from "@extensions/player.extensions";
@@ -29,20 +29,7 @@ export class InteractModule {
     private clickCooldown: number = Date.now();
     private currentPlayerPos: alt.Vector3;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly update: UpdateModule,
-        private readonly math: MathModule,
-        private readonly camera: CameraModule,
-        private readonly gui: GuiModule,
-        private readonly logger: LoggerModule,
-        private readonly inVehicleMenu: InVehicleMenu,
-        private readonly playerMenu: PlayerMenu,
-        private readonly pedMenu: PedMenu,
-        private readonly objectMenu: ObjectMenu,
-        private readonly vehicleMenu: VehicleMenu,
-        private readonly contextMenu: ContextModule) {
+    constructor(private readonly event: EventModule, private readonly player: Player, private readonly update: UpdateModule, private readonly math: MathModule, private readonly camera: CameraModule, private readonly gui: GuiModule, private readonly logger: LoggerModule, private readonly inVehicleMenu: InVehicleMenu, private readonly playerMenu: PlayerMenu, private readonly pedMenu: PedMenu, private readonly objectMenu: ObjectMenu, private readonly vehicleMenu: VehicleMenu, private readonly contextMenu: ContextModule) {
     }
 
     public startInteract(): void {
@@ -120,10 +107,7 @@ export class InteractModule {
             }
 
             const rayCastInfo: RaycastResultInterface = {
-                isHit: result.isHit,
-                pos: result.pos,
-                normal: result.normal,
-                entity: result.entity,
+                isHit: result.isHit, pos: result.pos, normal: result.normal, entity: result.entity,
             };
 
             if (this.math.distance(alt.Player.local.pos, rayCastInfo.pos) > this.MAX_DISTANCE) {
@@ -169,18 +153,8 @@ export class InteractModule {
             lineColor = {red: 255, green: 255, blue: 255};
         }
 
-        native.drawLine(
-            alt.Player.local.pos.x,
-            alt.Player.local.pos.y,
-            alt.Player.local.pos.z,
-            this.endPoint.x,
-            this.endPoint.y,
-            this.endPoint.z,
-            lineColor.red,
-            lineColor.green,
-            lineColor.blue,
-            50
-        );
+        native.drawLine(alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z, this.endPoint.x,
+                this.endPoint.y, this.endPoint.z, lineColor.red, lineColor.green, lineColor.blue, 50);
     }
 
     private openPedMenu(entityId: number, coords: alt.Vector3): void {

@@ -1,5 +1,3 @@
-import * as alt from "alt-client";
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
 import {onServer} from "../decorators/events";
@@ -8,13 +6,9 @@ import {LoggerModule} from "../modules/logger.module";
 import {AccountModule} from "../modules/account.module";
 import {AccountInterface} from "@interfaces/account.interface";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class AccountHandler {
-    constructor(
-        private readonly event: EventModule,
-        private readonly account: AccountModule,
-        private readonly logger: LoggerModule) {
+    constructor(private readonly event: EventModule, private readonly account: AccountModule, private readonly logger: LoggerModule) {
     }
 
     @onServer("account:sync")

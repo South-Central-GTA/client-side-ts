@@ -9,10 +9,7 @@ import alt from "alt-client";
 export class GuiModule {
     private webview: WebView = undefined;
 
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly event: EventModule,
-        private readonly player: Player) {
+    constructor(private readonly logger: LoggerModule, private readonly event: EventModule, private readonly player: Player) {
     }
 
     public createView(url: string): void {

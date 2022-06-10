@@ -1,11 +1,10 @@
-import * as native from "natives";
 import * as alt from "alt-client";
+import {IVector3} from "alt-client";
 
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {on, onGui, onServer} from "../decorators/events";
+import {onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
-import {IVector3} from "alt-client";
 import {LoggerModule} from "../modules/logger.module";
 import {CameraModule} from "../modules/camera.module";
 import {GuiModule} from "../modules/gui.module";
@@ -15,27 +14,29 @@ import {MathModule} from "../modules/math.module";
 import {WaypointModule} from "../modules/waypoint.module";
 import {VehicleModule} from "../modules/vehicle.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class DrivingSchoolHandler {
-    private checkpointPositions: IVector3[] = [
-        {x: 262.02197, y: -1859.6176, z: 25.864},
-        {x: 413.2879, y: -1717.2395, z: 28.274},
-        {x: 445.37143, y: -1605.2307, z: 28.24},
-        {x: 385.91208, y: -1553.6044, z: 28.206},
-        {x: 348.72528, y: -1529.9473, z: 28.324},
-        {x: 142.86594, y: -1380, z: 28.308},
-        {x: -204.87033, y: -1418.6373, z: 30.33},
-        {x: -150.48792, y: -1518.2373, z: 33.093},
-        {x: -51.929672, y: -1601.4725, z: 28.274},
-        {x: -96.87033, y: -1685.1296, z: 28.324},
-        {x: -97.094505, y: -1773.4813, z: 28.358},
-        {x: -55.806595, y: -1809.4945, z: 26.016},
-        {x: -7.1340637, y: -1790.0967, z: 27.179},
-        {x: -50.228573, y: -1733.5253, z: 28.274},
-        {x: 30.276924, y: -1692.4352, z: 28.206},
-        {x: 90.14506, y: -1720.8, z: 27.92},
-    ];
+    private checkpointPositions: IVector3[] = [{x: 262.02197, y: -1859.6176, z: 25.864}, {
+        x: 413.2879,
+        y: -1717.2395,
+        z: 28.274
+    }, {x: 445.37143, y: -1605.2307, z: 28.24}, {x: 385.91208, y: -1553.6044, z: 28.206}, {
+        x: 348.72528,
+        y: -1529.9473,
+        z: 28.324
+    }, {x: 142.86594, y: -1380, z: 28.308}, {x: -204.87033, y: -1418.6373, z: 30.33}, {
+        x: -150.48792,
+        y: -1518.2373,
+        z: 33.093
+    }, {x: -51.929672, y: -1601.4725, z: 28.274}, {x: -96.87033, y: -1685.1296, z: 28.324}, {
+        x: -97.094505,
+        y: -1773.4813,
+        z: 28.358
+    }, {x: -55.806595, y: -1809.4945, z: 26.016}, {x: -7.1340637, y: -1790.0967, z: 27.179}, {
+        x: -50.228573,
+        y: -1733.5253,
+        z: 28.274
+    }, {x: 30.276924, y: -1692.4352, z: 28.206}, {x: 90.14506, y: -1720.8, z: 27.92},];
 
     private MAX_SPEED = 80;
 
@@ -48,16 +49,7 @@ export class DrivingSchoolHandler {
     private speedingReports: number = 0;
     private lastCheckpoint: boolean;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule,
-        private readonly camera: CameraModule,
-        private readonly gui: GuiModule,
-        private readonly marker: MarkerModule,
-        private readonly waypoint: WaypointModule,
-        private readonly update: UpdateModule,
-        private readonly math: MathModule,
-        private readonly vehicle: VehicleModule) {
+    constructor(private readonly event: EventModule, private readonly logger: LoggerModule, private readonly camera: CameraModule, private readonly gui: GuiModule, private readonly marker: MarkerModule, private readonly waypoint: WaypointModule, private readonly update: UpdateModule, private readonly math: MathModule, private readonly vehicle: VehicleModule) {
     }
 
     @onServer("drivingschool:start")
@@ -91,11 +83,8 @@ export class DrivingSchoolHandler {
 
         this.tickId = this.update.add(() => this.tick());
 
-        this.waypoint.set(
-            this.checkpointPositions[this.index].x,
-            this.checkpointPositions[this.index].y,
-            this.checkpointPositions[this.index].z,
-            1, 1);
+        this.waypoint.set(this.checkpointPositions[this.index].x, this.checkpointPositions[this.index].y,
+                this.checkpointPositions[this.index].z, 1, 1);
     }
 
     @onServer("drivingschool:sendnextcheckpoint")
@@ -110,11 +99,7 @@ export class DrivingSchoolHandler {
             this.currentCheckpointPos = this.checkpointPositions[this.index];
         }
 
-        this.waypoint.set(
-            this.currentCheckpointPos.x,
-            this.currentCheckpointPos.y,
-            this.currentCheckpointPos.z,
-            1, 1);
+        this.waypoint.set(this.currentCheckpointPos.x, this.currentCheckpointPos.y, this.currentCheckpointPos.z, 1, 1);
     }
 
     @onServer("drivingschool:resetlastcheckpoint")

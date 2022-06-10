@@ -18,19 +18,11 @@ export class ChatModule {
 
     private updateId: string;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly freecam: FreeCamModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly update: UpdateModule) {
+    constructor(private readonly event: EventModule, private readonly freecam: FreeCamModule, private readonly player: Player, private readonly gui: GuiModule, private readonly update: UpdateModule) {
     }
 
     public openChat(): void {
-        if (!this.chatVisible || this.inputActive
-            || this.player.getIsAnyTextFieldFocused
-            || this.player.getIsAnyTextOpen)
-            return;
+        if (!this.chatVisible || this.inputActive || this.player.getIsAnyTextFieldFocused || this.player.getIsAnyTextOpen) return;
 
         if (this.freecam.isActive) {
             this.freecam.freeze();
@@ -44,8 +36,7 @@ export class ChatModule {
     }
 
     public closeChat(delay: number = 0): void {
-        if (!this.chatVisible)
-            return;
+        if (!this.chatVisible) return;
 
         this.player.blockESC(false);
         this.setChatInput(false, delay);

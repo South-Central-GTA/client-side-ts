@@ -6,7 +6,7 @@ import {CharacterModule} from "../../modules/character.module";
 import {CameraModule} from "../../modules/camera.module";
 import {EventModule} from "../../modules/event.module";
 import {Player} from "../../extensions/player.extensions";
-import {onServer, onGui, on} from "../../decorators/events";
+import {onGui, onServer} from "../../decorators/events";
 import {foundation} from "../../decorators/foundation";
 import {LoadingSpinnerModule} from "../../modules/loading-spinner.module";
 import {CharacterInterface} from "@interfaces/character/character.interface";
@@ -15,22 +15,13 @@ import {loadModel} from "../../helpers";
 import {GuiModule} from "../../modules/gui.module";
 import {UpdateModule} from "../../modules/update.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class CharacterSelectorHandler {
     private pedId: number;
     private characters: CharacterInterface[] = [];
     private lastSelectedCharacterId?: number;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule,
-        private readonly character: CharacterModule,
-        private readonly camera: CameraModule,
-        private readonly player: Player,
-        private readonly loading: LoadingSpinnerModule,
-        private readonly gui: GuiModule,
-        private readonly update: UpdateModule) {
+    constructor(private readonly event: EventModule, private readonly logger: LoggerModule, private readonly character: CharacterModule, private readonly camera: CameraModule, private readonly player: Player, private readonly loading: LoadingSpinnerModule, private readonly gui: GuiModule, private readonly update: UpdateModule) {
     }
 
     @onServer("charselector:open")

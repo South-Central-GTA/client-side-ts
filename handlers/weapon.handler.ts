@@ -4,23 +4,17 @@ import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
 import {GuiModule} from "../modules/gui.module";
 import {EventModule} from "../modules/event.module";
-import {on, onServer} from "../decorators/events";
+import {onServer} from "../decorators/events";
 import {WeaponModule} from "../modules/weapon.module";
 import {Player} from "@extensions/player.extensions";
 import {UpdateModule} from "../modules/update.module";
 import {LoggerModule} from "../modules/logger.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class WeaponHandler {
     private wasShooting = false;
 
-    public constructor(
-        private readonly gui: GuiModule,
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly update: UpdateModule,
-        private readonly logger: LoggerModule) {
+    public constructor(private readonly gui: GuiModule, private readonly event: EventModule, private readonly player: Player, private readonly update: UpdateModule, private readonly logger: LoggerModule) {
         this.update.add(() => this.tick());
     }
 
@@ -47,11 +41,13 @@ export class WeaponHandler {
 
     private updateAmmoMeta(): void {
         let pistolAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_PISTOL"));
-        let machineGunAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_MACHINE_GUN"));
+        let machineGunAmmo = native.getAmmoInPedWeapon(alt.Player.local,
+                WeaponModule.getWeaponOfAmmoType("AMMO_MACHINE_GUN"));
         let assaultAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_ASSAULT"));
         let sniperAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_SNIPER"));
         let shotgunAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_SHOTGUN"));
-        let lightMachineGunAmmo = native.getAmmoInPedWeapon(alt.Player.local, WeaponModule.getWeaponOfAmmoType("AMMO_LIGHT_MACHINE_GUN"));
+        let lightMachineGunAmmo = native.getAmmoInPedWeapon(alt.Player.local,
+                WeaponModule.getWeaponOfAmmoType("AMMO_LIGHT_MACHINE_GUN"));
 
         // thorwables 
         let baseballAmmo = native.getAmmoInPedWeapon(alt.Player.local, 0x23C9F95C);

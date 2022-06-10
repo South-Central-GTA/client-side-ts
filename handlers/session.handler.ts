@@ -9,15 +9,9 @@ import {Player} from "@extensions/player.extensions";
 import {LoadingSpinnerModule} from "../modules/loading-spinner.module";
 import {LoggerModule} from "../modules/logger.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class SessionHandler {
-    public constructor(
-        private readonly player: Player,
-        private readonly camera: CameraModule,
-        private readonly gui: GuiModule,
-        private readonly spinner: LoadingSpinnerModule,
-        private readonly logger: LoggerModule) {
+    public constructor(private readonly player: Player, private readonly camera: CameraModule, private readonly gui: GuiModule, private readonly spinner: LoadingSpinnerModule, private readonly logger: LoggerModule) {
     }
 
     @on("disconnect")
@@ -51,8 +45,10 @@ export class SessionHandler {
         alt.requestIpl("v_tunnel_hole");
         alt.requestIpl("v_tunnel_hole_lod");
 
-        native.activateInteriorEntitySet(native.getInteriorAtCoordsWithType(-38.62, -1099.01, 27.31, "v_carshowroom"), "csr_beforeMission");
-        native.activateInteriorEntitySet(native.getInteriorAtCoordsWithType(-38.62, -1099.01, 27.31, "v_carshowroom"), "shutter_closed");
+        native.activateInteriorEntitySet(native.getInteriorAtCoordsWithType(-38.62, -1099.01, 27.31, "v_carshowroom"),
+                "csr_beforeMission");
+        native.activateInteriorEntitySet(native.getInteriorAtCoordsWithType(-38.62, -1099.01, 27.31, "v_carshowroom"),
+                "shutter_closed");
 
         alt.requestIpl('ex_dt1_02_office_02b');
         alt.requestIpl('chop_props');

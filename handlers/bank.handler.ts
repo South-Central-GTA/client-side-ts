@@ -1,18 +1,14 @@
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {onServer, onGui} from "../decorators/events";
+import {onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 import {Player} from "@extensions/player.extensions";
 import {GuiModule} from "../modules/gui.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class BankHandler {
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly gui: GuiModule,
-        private readonly player: Player) {
+    constructor(private readonly event: EventModule, private readonly gui: GuiModule, private readonly player: Player) {
     }
 
     @onServer("atm:openmenu")

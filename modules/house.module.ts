@@ -11,6 +11,15 @@ import {LeaseCompanyInterface} from "@interfaces/group/lease-company.interface";
 
 @singleton()
 export class HouseModule {
+    private adutyHouseBlips: number[] = [];
+    private leaseCompanyBlips: number[] = [];
+    private ownedHouseBlips: number[] = [];
+    private houses: HouseInterface[] = [];
+    private interiors: InteriorInterface[] = [];
+
+    constructor(private readonly logger: LoggerModule, private readonly blip: BlipModule, private readonly leaseCompany: LeaseCompanyModule, private readonly player: Player) {
+    }
+
     get getHouses() {
         return this.houses;
     }
@@ -19,22 +28,9 @@ export class HouseModule {
         return this.interiors;
     }
 
-    private adutyHouseBlips: number[] = [];
-    private leaseCompanyBlips: number[] = [];
-    private ownedHouseBlips: number[] = [];
-
-    private houses: HouseInterface[] = [];
-    private interiors: InteriorInterface[] = [];
-
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly blip: BlipModule,
-        private readonly leaseCompany: LeaseCompanyModule,
-        private readonly player: Player) {
-    }
-
     public add(house: HouseInterface | LeaseCompanyInterface): void {
-        house.streetName = this.getStreet(house.streetDirection, new alt.Vector3(house.positionX, house.positionY, house.positionZ));
+        house.streetName = this.getStreet(house.streetDirection,
+                new alt.Vector3(house.positionX, house.positionY, house.positionZ));
 
         this.houses.push(house);
     }
@@ -49,7 +45,8 @@ export class HouseModule {
 
     public async syncChunk(houses: HouseInterface[] | LeaseCompanyInterface[]): Promise<void> {
         for (const house of houses) {
-            house.streetName = this.getStreet(house.streetDirection, new alt.Vector3(house.positionX, house.positionY, house.positionZ));
+            house.streetName = this.getStreet(house.streetDirection,
+                    new alt.Vector3(house.positionX, house.positionY, house.positionZ));
         }
 
         this.houses = this.houses.concat(houses);
@@ -84,14 +81,19 @@ export class HouseModule {
     }
 
     public showOwnerIcon(): void {
-        this.houses.filter(h => h.houseType === 0 && h.ownerId === this.player.characterId).forEach((house: HouseInterface) => {
-            this.ownedHouseBlips.push(this.blip.createBlip(new alt.Vector3(house.positionX, house.positionY, house.positionZ), 2, 40, "Deine Immobilie", false));
-        });
+        this.houses.filter(h => h.houseType === 0 && h.ownerId === this.player.characterId)
+                .forEach((house: HouseInterface) => {
+                    this.ownedHouseBlips.push(
+                            this.blip.createBlip(new alt.Vector3(house.positionX, house.positionY, house.positionZ), 2,
+                                    40, "Deine Immobilie", false));
+                });
     }
 
     public showDebugBlips(): void {
         this.houses.filter(h => h.houseType === 0).forEach((house: HouseInterface) => {
-            this.adutyHouseBlips.push(this.blip.createBlip(new alt.Vector3(house.positionX, house.positionY, house.positionZ), 2, 40, "Immobilie", false));
+            this.adutyHouseBlips.push(
+                    this.blip.createBlip(new alt.Vector3(house.positionX, house.positionY, house.positionZ), 2, 40,
+                            "Immobilie", false));
         });
     }
 
@@ -100,7 +102,9 @@ export class HouseModule {
             let sprite = this.leaseCompany.getCompanyTypeBlip(house.leaseCompanyType);
             const color = house.playerDuty ? 2 : 4;
 
-            this.leaseCompanyBlips.push(this.blip.createBlip(new alt.Vector3(house.positionX, house.positionY, house.positionZ), color, sprite, "", false));
+            this.leaseCompanyBlips.push(
+                    this.blip.createBlip(new alt.Vector3(house.positionX, house.positionY, house.positionZ), color,
+                            sprite, "", false));
         });
     }
 
@@ -136,7 +140,8 @@ export class HouseModule {
             return;
         }
 
-        house.streetName = this.getStreet(house.streetDirection, new alt.Vector3(house.positionX, house.positionY, house.positionZ))
+        house.streetName = this.getStreet(house.streetDirection,
+                new alt.Vector3(house.positionX, house.positionY, house.positionZ))
 
         const index = this.houses.indexOf(savedHouse);
         this.houses[index] = house;

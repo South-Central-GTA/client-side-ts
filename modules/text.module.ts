@@ -8,9 +8,7 @@ import {Player} from "@extensions/player.extensions";
 @singleton()
 export class TextModule {
 
-    public constructor(
-        private readonly math: MathModule,
-        private readonly player: Player) {
+    public constructor(private readonly math: MathModule, private readonly player: Player) {
     }
 
     public drawText2d(message: string, posX: number, posY: number, scale: number, fontType: number, align: number, r: number, g: number, b: number, a: number, useOutline: boolean = true, useDropShadow: boolean = true) {
@@ -23,11 +21,9 @@ export class TextModule {
         native.setTextColour(r, g, b, a);
         native.setTextJustification(align);
 
-        if (useOutline)
-            native.setTextOutline();
+        if (useOutline) native.setTextOutline();
 
-        if (useDropShadow)
-            native.setTextDropShadow();
+        if (useDropShadow) native.setTextDropShadow();
 
         native.endTextCommandDisplayText(posX, posY, 0);
     }

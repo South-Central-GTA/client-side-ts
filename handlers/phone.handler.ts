@@ -1,38 +1,29 @@
-import * as native from "natives";
 import * as alt from "alt-client";
 import {singleton} from "tsyringe";
-import {foundation} from "../decorators/foundation";
-import {on, onServer, onGui} from "../decorators/events";
+import {foundation} from "decorators/foundation";
+import {on, onGui, onServer} from "decorators/events";
 import {KeyCodes} from "@enums/keycode.type";
-import {EventModule} from "../modules/event.module";
-import {PhoneModule} from "../modules/phone.module";
+import {EventModule} from "modules/event.module";
+import {PhoneModule} from "modules/phone.module";
 import {PhoneChatInterface} from "@interfaces/phone/phone-chat.interface";
 import {PhoneMessageInterface} from "@interfaces/phone/phone-message.interface";
 import {PhoneContactInterface} from "@interfaces/phone/phone-contact.interface";
-import {GuiModule} from "../modules/gui.module";
+import {GuiModule} from "modules/gui.module";
 import {Player} from "@extensions/player.extensions";
-import {NotificationModule} from "../modules/notification.module";
-import {LoggerModule} from "../modules/logger.module";
+import {NotificationModule} from "modules/notification.module";
+import {LoggerModule} from "modules/logger.module";
 import {PhoneInterface} from "@interfaces/phone/phone.interface";
 import {BankingPermission} from "@enums/banking.permission";
 import {LicenseType} from "@enums/license.type";
 import {NotificationTypes} from "@enums/notification.types";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class PhoneHandler {
     private phoneKeyPressedTimes: number = 0;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly phone: PhoneModule,
-        private readonly gui: GuiModule,
-        private readonly player: Player,
-        private readonly notification: NotificationModule,
-        private readonly logger: LoggerModule) {
+    constructor(private readonly event: EventModule, private readonly phone: PhoneModule, private readonly gui: GuiModule, private readonly player: Player, private readonly notification: NotificationModule, private readonly logger: LoggerModule) {
         alt.setInterval(() => {
-            if (!this.phone.hasPhone)
-                return;
+            if (!this.phone.hasPhone) return;
 
             if (this.phoneKeyPressedTimes > 0) {
                 this.phoneKeyPressedTimes--;
@@ -42,12 +33,10 @@ export class PhoneHandler {
 
     @on("keydown")
     public onKeydown(key: number): void {
-        if (!this.phone.hasPhone || this.player.isInAPrison || !this.player.isSpawnedCharacter)
-            return;
+        if (!this.phone.hasPhone || this.player.isInAPrison || !this.player.isSpawnedCharacter) return;
 
         if (key === KeyCodes.UP_ARROW) {
-            if (this.player.getIsChatting || this.player.getIsAnyMenuOpen || this.player.hasInteractionOpen)
-                return;
+            if (this.player.getIsChatting || this.player.getIsAnyMenuOpen || this.player.hasInteractionOpen) return;
 
             this.phoneKeyPressedTimes++;
 

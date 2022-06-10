@@ -1,12 +1,18 @@
-﻿import * as alt from "alt-client";
-import * as native from "natives";
-import {singleton} from "tsyringe";
+﻿import {singleton} from "tsyringe";
 import {GroupInterface} from "@interfaces/group/group.interface";
 import {CompanyInterface} from "@interfaces/group/company.interface";
 import {FactionInterface} from "@interfaces/group/faction.interface";
 
 @singleton()
 export class GroupModule {
+    private allGroups: GroupInterface[];
+    private groups: GroupInterface[];
+    private company?: CompanyInterface;
+    private faction?: FactionInterface;
+
+    public constructor() {
+    }
+
     get getAllGroups() {
         return this.allGroups;
     }
@@ -21,14 +27,6 @@ export class GroupModule {
 
     get getFaction() {
         return this.faction;
-    }
-
-    private allGroups: GroupInterface[];
-    private groups: GroupInterface[];
-    private company?: CompanyInterface;
-    private faction?: FactionInterface;
-
-    public constructor() {
     }
 
     public setup(allGroups: GroupInterface[], groups: GroupInterface[], company?: CompanyInterface, faction?: FactionInterface): void {

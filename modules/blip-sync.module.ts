@@ -5,7 +5,6 @@ import {LoggerModule} from "./logger.module";
 import {BlipInterface} from "@interfaces/blip.interface";
 import {BlipColor, BlipSprite} from "alt-shared";
 import {BlipType} from "@enums/blip.type";
-import native from "natives";
 
 @singleton()
 export class BlipSyncModule {
@@ -14,8 +13,7 @@ export class BlipSyncModule {
     public constructor(private readonly logger: LoggerModule) {
     }
 
-    public add(id: number, position: Vector3, name: string, sprite: BlipSprite, color: BlipColor, scale: number, shortRange: boolean,
-               player: alt.Player, blipType: BlipType, radius: number, alpha: number): void {
+    public add(id: number, position: Vector3, name: string, sprite: BlipSprite, color: BlipColor, scale: number, shortRange: boolean, player: alt.Player, blipType: BlipType, radius: number, alpha: number): void {
 
         if (player !== null && player.id !== alt.Player.local.id) {
             return;
@@ -45,8 +43,17 @@ export class BlipSyncModule {
         handle.shortRange = shortRange;
 
         this.blips[id] = {
-            id: id, handle: handle, position: position, sprite: sprite, color: color,
-            scale: scale, name: name, shortRange: shortRange, blipType: blipType, player: player, radius: radius
+            id: id,
+            handle: handle,
+            position: position,
+            sprite: sprite,
+            color: color,
+            scale: scale,
+            name: name,
+            shortRange: shortRange,
+            blipType: blipType,
+            player: player,
+            radius: radius
         };
     }
 

@@ -9,18 +9,12 @@ import {GuiModule} from "../modules/gui.module";
 import {Player} from "@extensions/player.extensions";
 import native from "natives";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class ClothingHandler {
     private oldDrawableId: number = 0;
     private oldTextureId: number = 0;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly clothing: ClothingModule,
-        private readonly character: CharacterModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule) {
+    constructor(private readonly event: EventModule, private readonly clothing: ClothingModule, private readonly character: CharacterModule, private readonly player: Player, private readonly gui: GuiModule) {
     }
 
     @onServer("settorsomenu:show")
@@ -32,14 +26,16 @@ export class ClothingHandler {
         this.oldDrawableId = this.character.getCachedCharacter.torso;
         this.oldTextureId = this.character.getCachedCharacter.torsoTexture;
 
-        this.event.emitGui("settorsomenu:show", native.getNumberOfPedDrawableVariations(alt.Player.local.scriptID, 3), this.character.getCachedCharacter.gender);
+        this.event.emitGui("settorsomenu:show", native.getNumberOfPedDrawableVariations(alt.Player.local.scriptID, 3),
+                this.character.getCachedCharacter.gender);
     }
 
     @onGui("settorsomenu:updatetorso")
     private onUpdateTorso(drawableId: number, textureId: number): void {
         this.character.updateTorso(alt.Player.local.scriptID, drawableId, textureId);
 
-        this.event.emitGui("settorsomenu:setmaxtextures", native.getNumberOfPedTextureVariations(alt.Player.local.scriptID, 3, drawableId) - 1);
+        this.event.emitGui("settorsomenu:setmaxtextures",
+                native.getNumberOfPedTextureVariations(alt.Player.local.scriptID, 3, drawableId) - 1);
     }
 
     @onGui("settorsomenu:savetorso")

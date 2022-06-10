@@ -3,12 +3,10 @@ import {foundation} from "../decorators/foundation";
 import {onServer} from "../decorators/events";
 import {CountdownModule} from "../modules/countdown.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class CountdownHandler {
 
-    constructor(
-        private readonly countdown: CountdownModule) {
+    constructor(private readonly countdown: CountdownModule) {
     }
 
     @onServer("countdown:create")

@@ -11,25 +11,16 @@ import {InputType} from "@enums/input.type";
 import {TextModule} from "../modules/text.module";
 import {LoggerModule} from "../modules/logger.module";
 import {VehicleModule} from "../modules/vehicle.module";
-import {getGroundZ} from "../helpers";
 import {GuiModule} from "../modules/gui.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class VehicleHandler {
     private drivingTickId: string;
     private tickId: string;
     private maxFuel: number;
     private wasLastFrameInVehicle: boolean;
 
-    public constructor(
-        private readonly player: Player,
-        private readonly event: EventModule,
-        private readonly update: UpdateModule,
-        private readonly text: TextModule,
-        private readonly logger: LoggerModule,
-        private readonly vehicle: VehicleModule,
-        private readonly gui: GuiModule) {
+    public constructor(private readonly player: Player, private readonly event: EventModule, private readonly update: UpdateModule, private readonly text: TextModule, private readonly logger: LoggerModule, private readonly vehicle: VehicleModule, private readonly gui: GuiModule) {
         this.tickId = this.update.add(() => this.tick());
     }
 
@@ -38,8 +29,7 @@ export class VehicleHandler {
         const vehicle = alt.Player.local.vehicle;
         if (vehicle instanceof alt.Vehicle) {
             if (key === KeyCodes.Y) {
-                if (this.player.getIsAnyTextOpen || native.getVehicleClass(vehicle.scriptID) === 13)
-                    return;
+                if (this.player.getIsAnyTextOpen || native.getVehicleClass(vehicle.scriptID) === 13) return;
 
                 this.event.emitServer("vehicle:toggleengine");
             }
@@ -115,8 +105,7 @@ export class VehicleHandler {
         this.event.emitGui("vehiclesellmenu:show", hasBankAccount, isInGroup);
     }
 
-    @onServer("vehiclesellmenu:close")
-    @onGui("vehiclesellmenu:close")
+    @onServer("vehiclesellmenu:close") @onGui("vehiclesellmenu:close")
     public onSellVehicleMenuClose(): void {
         this.player.closeMenu();
         this.player.unfreeze();
@@ -211,9 +200,8 @@ export class VehicleHandler {
         const engineHealth = native.getVehicleEngineHealth(vehicle.scriptID);
         const bodyHealth = native.getVehicleBodyHealth(vehicle.scriptID);
 
-        this.text.drawText3dWithDistance(
-            `Id: ${id}\nEigentümer: ${owner}\nEngine Health: ${engineHealth.toFixed(2)}\nBody Health: ${bodyHealth.toFixed(2)}`,
-            vehicle.pos.x, vehicle.pos.y, vehicle.pos.z + 0.5, 0.4, 0,
-            41, 128, 185, 255, false, true, 5);
+        this.text.drawText3dWithDistance(`Id: ${id}\nEigentümer: ${owner}\nEngine Health: ${engineHealth.toFixed(
+                        2)}\nBody Health: ${bodyHealth.toFixed(2)}`, vehicle.pos.x, vehicle.pos.y, vehicle.pos.z + 0.5, 0.4, 0,
+                41, 128, 185, 255, false, true, 5);
     }
 }

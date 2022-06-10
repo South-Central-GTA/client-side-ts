@@ -1,11 +1,17 @@
 import * as alt from "alt-client";
+import {IVector3} from "alt-client";
 import * as native from "natives";
 import {singleton} from "tsyringe";
-import {IVector3} from "alt-client";
 import {LoggerModule} from "./logger.module";
 
 @singleton()
 export class CameraModule {
+    private camera: number | undefined;
+    private isCamMoving: boolean;
+
+    public constructor(private logger: LoggerModule) {
+    }
+
     get getCamera() {
         return this.camera;
     }
@@ -16,13 +22,6 @@ export class CameraModule {
 
     get camRot() {
         return native.getCamRot(this.camera, 0);
-    }
-
-    private camera: number | undefined;
-    private isCamMoving: boolean;
-
-    public constructor(
-        private logger: LoggerModule) {
     }
 
     public createCamera(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0, 0), fov: number = 70): void {
@@ -54,9 +53,9 @@ export class CameraModule {
         this.camera = undefined;
     }
 
-    public moveCamera(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0, 0), duration: number = 1000, override: boolean = false): void {
-        if (this.isCamMoving && !override)
-            return;
+    public moveCamera(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0,
+            0), duration: number = 1000, override: boolean = false): void {
+        if (this.isCamMoving && !override) return;
 
         const targetPosCam = native.createCam("DEFAULT_SCRIPTED_CAMERA", true);
         native.setCamCoord(targetPosCam, pos.x, pos.y, pos.z);

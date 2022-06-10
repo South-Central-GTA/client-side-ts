@@ -46,19 +46,8 @@ export class AnimationModule {
         const defaultOptions = new AnimationOptions();
         options = {...defaultOptions, ...options};
 
-        native.taskPlayAnim(
-            alt.Player.local.scriptID,
-            dict,
-            clip,
-            options.speed,
-            options.speedMultiplier,
-            options.duration,
-            options.flag,
-            options.playbackRate,
-            options.lockX,
-            options.lockY,
-            options.lockZ,
-        );
+        native.taskPlayAnim(alt.Player.local.scriptID, dict, clip, options.speed, options.speedMultiplier,
+                options.duration, options.flag, options.playbackRate, options.lockX, options.lockY, options.lockZ,);
     }
 
     public clear(): void {

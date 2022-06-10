@@ -1,4 +1,4 @@
-import {singleton, container} from "tsyringe";
+import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
 import {on, onGui, onServer} from "../decorators/events";
 import {Player} from "@extensions/player.extensions";
@@ -9,15 +9,9 @@ import {InteractModule} from "../modules/interact.module";
 import {ContextModule} from "../modules/context.module";
 import {ActionInterface} from "@interfaces/action.interface";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class ContextMenuHandler {
-    public constructor(
-        private readonly interact: InteractModule,
-        private readonly player: Player,
-        private readonly logger: LoggerModule,
-        private readonly event: EventModule,
-        private readonly contextMenu: ContextModule) {
+    public constructor(private readonly interact: InteractModule, private readonly player: Player, private readonly logger: LoggerModule, private readonly event: EventModule, private readonly contextMenu: ContextModule) {
     }
 
     @on("keydown")

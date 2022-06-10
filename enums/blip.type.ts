@@ -1,4 +1,3 @@
 export enum BlipType {
-    POINT,
-    RADIUS
+    POINT, RADIUS
 }

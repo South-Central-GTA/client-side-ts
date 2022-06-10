@@ -3,7 +3,7 @@ import * as native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
 import {EventModule} from "../../modules/event.module";
-import {onServer, on, onGui} from "../../decorators/events";
+import {on, onGui, onServer} from "../../decorators/events";
 import {CameraModule} from "../../modules/camera.module";
 import {UpdateModule} from "../../modules/update.module";
 import {VehicleModule} from "../../modules/vehicle.module";
@@ -15,23 +15,14 @@ import {CatalogVehicleInterface} from "@interfaces/vehicles/catalog-vehicle.inte
 import {NotificationTypes} from "@enums/notification.types";
 import {CharacterCreatorPurchaseType} from "@enums/character-creator-purchase.type";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class VehicleSelectorHandler {
     private updateId: string;
     private showcaseVehicle: number = null;
     private currentIndex: number = 0;
     private vehicles: CatalogVehicleInterface[] = [];
 
-    public constructor(
-        private readonly camera: CameraModule,
-        private readonly event: EventModule,
-        private readonly update: UpdateModule,
-        private readonly vehicle: VehicleModule,
-        private readonly logger: LoggerModule,
-        private readonly notification: NotificationModule,
-        private readonly charCreator: CharCreatorModule
-    ) {
+    public constructor(private readonly camera: CameraModule, private readonly event: EventModule, private readonly update: UpdateModule, private readonly vehicle: VehicleModule, private readonly logger: LoggerModule, private readonly notification: NotificationModule, private readonly charCreator: CharCreatorModule) {
     }
 
     @onServer("vehicleselector:open")
@@ -52,8 +43,7 @@ export class VehicleSelectorHandler {
         }
     }
 
-    @onGui("vehicleselector:close")
-    @on("disconnect")
+    @onGui("vehicleselector:close") @on("disconnect")
     public close(): void {
         this.update.remove(this.updateId);
         this.updateId = null;
@@ -84,14 +74,11 @@ export class VehicleSelectorHandler {
 
     @onGui("vehicleselector:order")
     public onOrder(model: string): void {
-        const vehicle: CatalogVehicleInterface = this.vehicles.find(
-            (v) => v.model === model
-        );
+        const vehicle: CatalogVehicleInterface = this.vehicles.find((v) => v.model === model);
 
         if (this.charCreator.orderVehicleLimit()) {
             this.notification.sendNotification({
-                type: NotificationTypes.ERROR,
-                text: "Du kannst nicht mehr als zwei Fahrzeuge bestellen.",
+                type: NotificationTypes.ERROR, text: "Du kannst nicht mehr als zwei Fahrzeuge bestellen.",
             });
             return;
         }
@@ -108,11 +95,7 @@ export class VehicleSelectorHandler {
     }
 
     private createCamera(): void {
-        const pos = new alt.Vector3(
-            171.6923065185547,
-            -1000.2988891601562,
-            -98.0146484375
-        );
+        const pos = new alt.Vector3(171.6923065185547, -1000.2988891601562, -98.0146484375);
         const rot = new alt.Vector3(-20, 0, 200);
 
         this.camera.createCamera(pos, rot, 60);
@@ -136,15 +119,7 @@ export class VehicleSelectorHandler {
         const hash = alt.hash(vehicle.model);
         await loadModel(hash);
 
-        this.showcaseVehicle = this.vehicle.createShowcaseVehicle(
-            hash,
-            173.129,
-            -1004.294,
-            -100.0,
-            -12.533,
-            111,
-            111
-        );
+        this.showcaseVehicle = this.vehicle.createShowcaseVehicle(hash, 173.129, -1004.294, -100.0, -12.533, 111, 111);
     }
 
     private updateStats(vehicle: CatalogVehicleInterface): void {
@@ -165,9 +140,7 @@ export class VehicleSelectorHandler {
         const breaksPercent = (breaks / maxBreaks) * 100;
 
         const vehicleStats = {
-            speed: speedPercent,
-            acceleration: accelerationPercent,
-            breaks: breaksPercent,
+            speed: speedPercent, acceleration: accelerationPercent, breaks: breaksPercent,
         };
 
         const hash = alt.hash(vehicle.model);
@@ -188,13 +161,6 @@ export class VehicleSelectorHandler {
         let newHeading = (heading += 0.1);
 
         const rot = new alt.Vector3(0, 0, newHeading);
-        native.setEntityRotation(
-            this.showcaseVehicle,
-            rot.x,
-            rot.y,
-            rot.z,
-            0,
-            false
-        );
+        native.setEntityRotation(this.showcaseVehicle, rot.x, rot.y, rot.z, 0, false);
     }
 }

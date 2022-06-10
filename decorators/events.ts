@@ -23,9 +23,7 @@ function validateEventExistsAndPush(target, type: string, name: string, property
     const events = Reflect.getMetadata('events', target.constructor) as EventInterface[];
 
     events.push({
-        type,
-        name: eventName,
-        method: propertyKey
+        type, name: eventName, method: propertyKey
     });
 
     Reflect.defineMetadata('events', events, target.constructor);

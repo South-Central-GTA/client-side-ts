@@ -4,14 +4,12 @@ import {singleton} from "tsyringe";
 import {onGui, onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class HudHandler {
     private ready: boolean;
     private money: number = 0;
 
-    public constructor(
-        private readonly event: EventModule) {
+    public constructor(private readonly event: EventModule) {
     }
 
     @onGui("hud:ready")

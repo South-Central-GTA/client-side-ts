@@ -1,5 +1,4 @@
 import * as alt from "alt-client";
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {EventModule} from "./event.module";
 import {UpdateModule} from "./update.module";
@@ -19,15 +18,7 @@ export class InventoryModule {
 
     public blocked: boolean = false;
 
-    public constructor(
-        private readonly event: EventModule,
-        private readonly update: UpdateModule,
-        private readonly gui: GuiModule,
-        private readonly player: Player,
-        private readonly logger: LoggerModule,
-        private readonly math: MathModule,
-        private readonly notification: NotificationModule,
-        private readonly freecam: FreeCamModule) {
+    public constructor(private readonly event: EventModule, private readonly update: UpdateModule, private readonly gui: GuiModule, private readonly player: Player, private readonly logger: LoggerModule, private readonly math: MathModule, private readonly notification: NotificationModule, private readonly freecam: FreeCamModule) {
     }
 
     public setup(inventories: InventoryInterface[]): void {
@@ -35,12 +26,7 @@ export class InventoryModule {
     }
 
     public open(): void {
-        if (this.player.getIsAnyMenuOpen
-            || this.player.isInAPrison
-            || !this.player.isSpawnedCharacter
-            || this.freecam.isActive
-            || this.player.isInvBlocked
-            || this.player.getIsAnyTextOpen) {
+        if (this.player.getIsAnyMenuOpen || this.player.isInAPrison || !this.player.isSpawnedCharacter || this.freecam.isActive || this.player.isInvBlocked || this.player.getIsAnyTextOpen) {
             return;
         }
 
@@ -48,8 +34,7 @@ export class InventoryModule {
     }
 
     public close(): void {
-        if (!this.player.getIsInventoryOpen || this.blocked)
-            return;
+        if (!this.player.getIsInventoryOpen || this.blocked) return;
 
         this.player.setIsInventoryOpen = false;
 
@@ -95,8 +80,7 @@ export class InventoryModule {
         }
 
         const inventoryDrop: InventoryDropInterface = {
-            itemId: itemId,
-            position: itemPosition
+            itemId: itemId, position: itemPosition
         }
 
         this.event.emitServer("placeableitem:place", JSON.stringify(inventoryDrop));

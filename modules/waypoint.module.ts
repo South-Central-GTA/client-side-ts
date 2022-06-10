@@ -12,11 +12,7 @@ export class WaypointModule {
     private currentWaypointBlip: number;
     private currentTargetPos: alt.Vector3;
 
-    public constructor(
-        private readonly logger: LoggerModule,
-        private readonly update: UpdateModule,
-        private readonly blip: BlipModule,
-        private readonly math: MathModule) {
+    public constructor(private readonly logger: LoggerModule, private readonly update: UpdateModule, private readonly blip: BlipModule, private readonly math: MathModule) {
     }
 
     public set(x: number, y: number, z: number, color: number, sprite: number): void {

@@ -9,18 +9,11 @@ import {NotificationModule} from "../../modules/notification.module";
 import {MathModule} from "../../modules/math.module";
 import alt from "alt-client";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class GasStationHandler {
     private distanceCheckInt: number = 0;
 
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly notification: NotificationModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly event: EventModule,
-        private readonly math: MathModule) {
+    constructor(private readonly logger: LoggerModule, private readonly notification: NotificationModule, private readonly player: Player, private readonly gui: GuiModule, private readonly event: EventModule, private readonly math: MathModule) {
     }
 
     @onServer("gasstation:openrefuelmenu")

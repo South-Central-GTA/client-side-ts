@@ -4,6 +4,6 @@ export interface PhoneChatInterface {
     id: number;
     phoneNumber: string;
     name: string;
-    lastUsage: string;
+    lastUsageJson: string;
     messages: PhoneMessageInterface[];
 }

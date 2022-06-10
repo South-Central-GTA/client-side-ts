@@ -1,21 +1,15 @@
-import * as alt from "alt-client";
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {onServer, onGui} from "../decorators/events";
+import {onGui, onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 import {DialogModule} from "../modules/dialog.module";
 import {LoggerModule} from "../modules/logger.module";
 import {DialogInterface} from "@interfaces/dialog.interface";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class DialogHandler {
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly dialog: DialogModule,
-        private readonly logger: LoggerModule) {
+    constructor(private readonly event: EventModule, private readonly dialog: DialogModule, private readonly logger: LoggerModule) {
     }
 
     @onServer("dialog:create")

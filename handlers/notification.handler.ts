@@ -1,15 +1,13 @@
 import {singleton} from "tsyringe";
-import {onServer, onGui} from "../decorators/events";
+import {onGui, onServer} from "../decorators/events";
 import {foundation} from "../decorators/foundation";
 import {NotificationModule} from "../modules/notification.module";
 import {NotificationInterface} from "@interfaces/notification.interface"
 import {NotificationTypes} from "@enums/notification.types";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class NotificationHandler {
-    public constructor(
-        private notification: NotificationModule) {
+    public constructor(private notification: NotificationModule) {
     }
 
     @onServer("notification:send")
@@ -20,8 +18,7 @@ export class NotificationHandler {
     @onGui("notification:error")
     public guiError(errorMessage: string): void {
         const notification: NotificationInterface = {
-            type: NotificationTypes.ERROR,
-            text: errorMessage
+            type: NotificationTypes.ERROR, text: errorMessage,
         };
 
         this.notification.sendNotification(notification);

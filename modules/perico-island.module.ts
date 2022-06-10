@@ -1,5 +1,4 @@
 import * as alt from "alt-client";
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {MathModule} from "./math.module";
 
@@ -8,8 +7,7 @@ export class PericoIslandModule {
     private islandPos: alt.Vector3 = new alt.Vector3(4895.28, -5744.58, 26.351);
     private loaded: boolean = false;
 
-    public constructor(
-        private readonly math: MathModule) {
+    public constructor(private readonly math: MathModule) {
     }
 
     public loadIsland(): void {

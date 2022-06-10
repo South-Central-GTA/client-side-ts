@@ -2,15 +2,13 @@ import * as alt from "alt-client";
 import * as native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {onServer, on} from "../decorators/events";
+import {on, onServer} from "../decorators/events";
 import {FreeCamModule} from "../modules/free-cam.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class FreeCamHandler {
 
-    public constructor(
-        private readonly freecam: FreeCamModule) {
+    public constructor(private readonly freecam: FreeCamModule) {
     }
 
     @on("streamSyncedMetaChange")

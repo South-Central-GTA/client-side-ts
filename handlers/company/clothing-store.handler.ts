@@ -16,22 +16,13 @@ import {ClothesInterface} from "@interfaces/character/clothes.interface";
 import {CharacterInterface} from "@interfaces/character/character.interface";
 import {GenderType} from "@enums/gender.type";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class ClothingStoreHandler {
     private everyTickRef: string;
     private pedId: number;
     private newClothes: ClothesInterface;
 
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly event: EventModule,
-        private readonly camera: CameraModule,
-        private readonly character: CharacterModule,
-        private readonly update: UpdateModule,
-        private readonly clothing: ClothingModule) {
+    constructor(private readonly logger: LoggerModule, private readonly player: Player, private readonly gui: GuiModule, private readonly event: EventModule, private readonly camera: CameraModule, private readonly character: CharacterModule, private readonly update: UpdateModule, private readonly clothing: ClothingModule) {
     }
 
     @onServer("clothingstore:startchangeclothes")
@@ -61,14 +52,16 @@ export class ClothingStoreHandler {
 
     @onGui("clothingstore:getcharacter")
     private onGetCharacter(): void {
-        this.event.emitGui("clothingstore:setcharacter", this.clothing.getMaxDrawableVariations(this.pedId), this.character.getCachedCharacter.gender);
+        this.event.emitGui("clothingstore:setcharacter", this.clothing.getMaxDrawableVariations(this.pedId),
+                this.character.getCachedCharacter.gender);
     }
 
     @onGui("clothingstore:updatechar")
     private onUpdateCharacter(clothes: ClothesInterface): void {
         this.newClothes = clothes;
 
-        this.event.emitGui("clothesmenu:setmaxtexturevariation", this.clothing.getMaxTextureVariations(this.pedId, clothes));
+        this.event.emitGui("clothesmenu:setmaxtexturevariation",
+                this.clothing.getMaxTextureVariations(this.pedId, clothes));
 
         this.character.updateClothes(clothes, this.pedId, this.character.getCachedCharacter.gender);
     }

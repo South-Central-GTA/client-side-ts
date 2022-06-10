@@ -6,17 +6,11 @@ import {TextModule} from "../modules/text.module";
 import {UpdateModule} from "../modules/update.module";
 import {foundation} from "../decorators/foundation";
 import {singleton} from "tsyringe";
-import {LoggerModule} from "../modules/logger.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class NameTagHandler {
 
-    public constructor(
-        private readonly math: MathModule,
-        private readonly text: TextModule,
-        private readonly update: UpdateModule,
-        private readonly player: Player) {
+    public constructor(private readonly math: MathModule, private readonly text: TextModule, private readonly update: UpdateModule, private readonly player: Player) {
         this.update.add(() => this.tick());
     }
 
@@ -25,8 +19,7 @@ export class NameTagHandler {
     }
 
     private renderNameTags(): void {
-        if (alt.Player.all.length <= 1)
-            return;
+        if (alt.Player.all.length <= 1) return;
 
         const currentPlayers = [...alt.Player.all];
         let count = 0;
@@ -58,20 +51,8 @@ export class NameTagHandler {
             }
 
             const scale = 0.4 - renderData.dist * 0.01;
-            this.text.drawText3d(
-                finalText,
-                renderData.pos.x,
-                renderData.pos.y,
-                renderData.pos.z + 1.3,
-                scale,
-                4,
-                255,
-                255,
-                255,
-                200,
-                true,
-                false
-            );
+            this.text.drawText3d(finalText, renderData.pos.x, renderData.pos.y, renderData.pos.z + 1.3, scale, 4, 255,
+                    255, 255, 200, true, false);
         });
     }
 

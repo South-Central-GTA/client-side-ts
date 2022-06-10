@@ -1,17 +1,15 @@
-﻿import * as alt from "alt-client";
-import * as native from "natives";
-import {singleton} from "tsyringe";
+﻿import {singleton} from "tsyringe";
 import {AccountInterface} from "@interfaces/account.interface";
 
 @singleton()
 export class AccountModule {
-    get getAccount() {
-        return this.account;
-    }
-
     private account: AccountInterface;
 
     public constructor() {
+    }
+
+    get getAccount() {
+        return this.account;
     }
 
     public setup(account: AccountInterface): void {

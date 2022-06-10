@@ -9,18 +9,12 @@ import {EventModule} from "../modules/event.module";
 import {NotificationModule} from "../modules/notification.module";
 import {onServer} from "../decorators/events";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class InteriorHandler {
     private oldInterior: number = 0;
     private intervalId: number | undefined;
 
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly notification: NotificationModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly event: EventModule) {
+    constructor(private readonly logger: LoggerModule, private readonly notification: NotificationModule, private readonly player: Player, private readonly gui: GuiModule, private readonly event: EventModule) {
     }
 
     @onServer("character:spawn")

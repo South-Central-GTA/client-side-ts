@@ -5,7 +5,7 @@ export interface DeliveryInterface {
     orderGroupName: string;
     supplierGroupId: number;
     supplierGroupName: string;
-    createdAt: string;
+    createdAtJson: string;
     supplierFullName: string;
     supplierPhoneNumber: string;
     status: number;

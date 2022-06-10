@@ -5,8 +5,7 @@ import {ChatModule} from "../modules/chat.module";
 import {ChatType} from "@enums/chat.type";
 import {EventModule} from "../modules/event.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class EmergencyCallHandler {
     constructor(private readonly chat: ChatModule, private readonly event: EventModule) {
     }

@@ -1,6 +1,6 @@
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {on, onServer, onGui} from "../decorators/events";
+import {on, onGui, onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 import {AnimationModule} from "../modules/animation.module";
 import {KeyCodes} from "@enums/keycode.type";
@@ -9,21 +9,14 @@ import {GuiModule} from "../modules/gui.module";
 import {AnimationInterface} from "@interfaces/animation.interface";
 import {FreeCamModule} from "../modules/free-cam.module";
 import {DeathState} from "@enums/death.state";
-import alt from "alt-client";
 import {AnimationOptions} from "@enums/animation.options";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class AnimationWheelHandler {
     private isMenuOpen: boolean = false;
     private playerAnimations: AnimationInterface[] = [];
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly animation: AnimationModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly freecam: FreeCamModule) {
+    constructor(private readonly event: EventModule, private readonly animation: AnimationModule, private readonly player: Player, private readonly gui: GuiModule, private readonly freecam: FreeCamModule) {
     }
 
     @on("keydown")
@@ -34,14 +27,7 @@ export class AnimationWheelHandler {
             } else {
                 const deathState = this.player.getStreamSyncedMeta<DeathState>("DEATH_STATE");
 
-                if (this.player.getIsAnyMenuOpen
-                    || this.player.isInAPrison
-                    || !this.player.isSpawnedCharacter
-                    || this.freecam.isActive
-                    || this.player.getIsChatting
-                    || this.player.getIsAnyTextOpen
-                    || this.player.hasInteractionOpen
-                    || deathState === DeathState.DEAD) {
+                if (this.player.getIsAnyMenuOpen || this.player.isInAPrison || !this.player.isSpawnedCharacter || this.freecam.isActive || this.player.getIsChatting || this.player.getIsAnyTextOpen || this.player.hasInteractionOpen || deathState === DeathState.DEAD) {
                     return;
                 }
 

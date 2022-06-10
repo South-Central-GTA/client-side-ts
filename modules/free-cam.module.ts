@@ -1,4 +1,5 @@
 import * as alt from "alt-client";
+import {IVector3} from "alt-client";
 import * as native from "natives";
 import {InputType} from "@enums/input.type";
 import {MathModule} from "./math.module";
@@ -7,43 +8,29 @@ import {singleton} from "tsyringe";
 import {UpdateModule} from "./update.module";
 import {Player} from "@extensions/player.extensions";
 import {EventModule} from "./event.module";
-import {IVector3} from "alt-client";
 import {LoggerModule} from "./logger.module";
 import {CameraModule} from "./camera.module";
 
 @singleton()
 export class FreeCamModule {
-    get isActive() {
-        return this.isFreeCamActive;
-    }
-
     private freezed: boolean;
     private actions = {
-        moveF: false,
-        moveB: false,
-        moveL: false,
-        moveR: false,
-        moveU: false,
-        moveD: false,
+        moveF: false, moveB: false, moveL: false, moveR: false, moveU: false, moveD: false,
     }
     private speed = {
-        move: 2.0,
-        turn: 1.5
+        move: 2.0, turn: 1.5
     };
     private everyTickRef: string | undefined;
     private updatePosInterval: number;
     private isFreeCamActive: boolean;
     private leftMouseClicked: boolean;
-
     private spectatingTarget: number | undefined;
 
-    public constructor(
-        private readonly math: MathModule,
-        private readonly camera: CameraModule,
-        private readonly update: UpdateModule,
-        private readonly player: Player,
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule) {
+    public constructor(private readonly math: MathModule, private readonly camera: CameraModule, private readonly update: UpdateModule, private readonly player: Player, private readonly event: EventModule, private readonly logger: LoggerModule) {
+    }
+
+    get isActive() {
+        return this.isFreeCamActive;
     }
 
     public start(pos: alt.Vector3, rot: alt.Vector3 = new alt.Vector3(0, 0, 0)) {
@@ -73,7 +60,8 @@ export class FreeCamModule {
         this.updatePosInterval = alt.setInterval(() => {
             if (!this.spectatingTarget) {
                 if (this.camera.getCamera) {
-                    this.event.emitServer("freecam:update", this.camera.camPos.x, this.camera.camPos.y, this.camera.camPos.z);
+                    this.event.emitServer("freecam:update", this.camera.camPos.x, this.camera.camPos.y,
+                            this.camera.camPos.z);
                 }
             } else {
                 const coords = native.getEntityCoords(this.spectatingTarget, true);
@@ -155,15 +143,13 @@ export class FreeCamModule {
     }
 
     public freeze(): void {
-        if (this.freezed)
-            return;
+        if (this.freezed) return;
 
         this.freezed = true;
     }
 
     public unfreeze(): void {
-        if (!this.freezed)
-            return;
+        if (!this.freezed) return;
 
         this.freezed = false;
     }
@@ -322,7 +308,8 @@ export class FreeCamModule {
                 this.spectatingTarget = entity;
 
                 const coords = native.getEntityCoords(this.spectatingTarget, true);
-                native.setEntityCoords(alt.Player.local.scriptID, coords.x, coords.y, coords.z, false, false, false, false);
+                native.setEntityCoords(alt.Player.local.scriptID, coords.x, coords.y, coords.z, false, false, false,
+                        false);
                 native.setHdArea(coords.x, coords.y, coords.z, 30);
                 native.requestCollisionAtCoord(coords.x, coords.y, coords.z);
 
@@ -375,15 +362,11 @@ export class FreeCamModule {
 
     private calcCameraDirectionRight(camRot: alt.Vector3) {
         let rotInRad = {
-            x: camRot.x * (Math.PI / 180),
-            y: camRot.y * (Math.PI / 180),
-            z: camRot.z * (Math.PI / 180)
+            x: camRot.x * (Math.PI / 180), y: camRot.y * (Math.PI / 180), z: camRot.z * (Math.PI / 180)
         }
 
         let camDir = {
-            x: Math.cos(rotInRad.z),
-            y: Math.sin(rotInRad.z),
-            z: Math.sin(rotInRad.x)
+            x: Math.cos(rotInRad.z), y: Math.sin(rotInRad.z), z: Math.sin(rotInRad.x)
         }
 
         return camDir;

@@ -7,8 +7,7 @@ import {MathModule} from "./math.module";
 @singleton()
 export class VehicleModule {
 
-    public constructor(
-        private readonly math: MathModule) {
+    public constructor(private readonly math: MathModule) {
     }
 
     public fix(vehicle: alt.Vehicle, amount: number = 1000, fixCosmetics: boolean = false): void {
@@ -227,8 +226,7 @@ export class VehicleModule {
 
     public getClosestVehicle(): alt.Vehicle | null {
         const obj: { distance: null | number, vehicle: null | alt.Vehicle } = {
-            distance: null,
-            vehicle: null
+            distance: null, vehicle: null
         };
 
         for (const vehicle of alt.Vehicle.streamedIn) {

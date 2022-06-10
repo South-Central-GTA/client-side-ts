@@ -1,5 +1,3 @@
-import * as alt from "alt-client";
-import * as native from "natives";
 import {EventModule} from "../modules/event.module";
 import {Player} from "@extensions/player.extensions";
 import {KeyCodes} from "@enums/keycode.type";
@@ -10,17 +8,11 @@ import {GuiModule} from "../modules/gui.module";
 import {LoggerModule} from "../modules/logger.module";
 import {PlayerInterface} from "@interfaces/player.interface";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class PlayersListHandler {
     private isMenuOpen: boolean = false;
 
-    public constructor(
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly logger: LoggerModule,
-    ) {
+    public constructor(private readonly event: EventModule, private readonly player: Player, private readonly gui: GuiModule, private readonly logger: LoggerModule,) {
     }
 
     @on("keydown")

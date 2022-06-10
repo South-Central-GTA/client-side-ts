@@ -15,21 +15,13 @@ import {TattoosInterface} from "@interfaces/character/tattoos.interface";
 import {CharacterInterface} from "@interfaces/character/character.interface";
 import {GenderType} from "@enums/gender.type";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class TattooStudioHandler {
     private everyTickRef: string;
     private pedId: number;
     private newTattoos: TattoosInterface;
 
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly event: EventModule,
-        private readonly camera: CameraModule,
-        private readonly character: CharacterModule,
-        private readonly update: UpdateModule) {
+    constructor(private readonly logger: LoggerModule, private readonly player: Player, private readonly gui: GuiModule, private readonly event: EventModule, private readonly camera: CameraModule, private readonly character: CharacterModule, private readonly update: UpdateModule) {
     }
 
     @onServer("tattoostudio:open")
@@ -65,7 +57,8 @@ export class TattooStudioHandler {
     private onUpdateCharacter(tattoos: TattoosInterface): void {
         this.newTattoos = tattoos;
 
-        this.character.updateAppearance(this.character.getCachedCharacter.appearances, this.character.getCachedCharacter.gender, this.pedId);
+        this.character.updateAppearance(this.character.getCachedCharacter.appearances,
+                this.character.getCachedCharacter.gender, this.pedId);
         this.character.updateTattoos(tattoos, this.pedId);
     }
 

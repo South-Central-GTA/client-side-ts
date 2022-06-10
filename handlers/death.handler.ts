@@ -9,17 +9,11 @@ import {DeathState} from "@enums/death.state";
 import {UpdateModule} from "../modules/update.module";
 import {LoggerModule} from "../modules/logger.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class DeathHandler {
     private tick: string | undefined;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly animation: AnimationModule,
-        private readonly update: UpdateModule,
-        private readonly logger: LoggerModule,
-    ) {
+    constructor(private readonly event: EventModule, private readonly animation: AnimationModule, private readonly update: UpdateModule, private readonly logger: LoggerModule,) {
     }
 
     @on("streamSyncedMetaChange")

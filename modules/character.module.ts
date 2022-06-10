@@ -17,22 +17,6 @@ import {ClothingInterface} from "@interfaces/character/clothing.interface";
 
 @singleton()
 export class CharacterModule {
-    get getCachedCharacter() {
-        return this.cachedCharacter;
-    }
-
-    get getMaleNudeShoes() {
-        return 34;
-    }
-
-    get getFemaleNudeShoes() {
-        return 35;
-    }
-
-    get getPedComponents() {
-        return this.pedComponents;
-    }
-
     private hairOverlaysMale = {
         0: {collection: 'mpbeach_overlays', overlay: 'FM_Hair_Fuzz'},
         1: {collection: 'multiplayer_overlays', overlay: 'NG_M_Hair_001'},
@@ -108,7 +92,6 @@ export class CharacterModule {
         72: {collection: 'mpgunrunning_overlays', overlay: 'MP_Gunrunning_Hair_M_000_M'},
         73: {collection: 'mpgunrunning_overlays', overlay: 'MP_Gunrunning_Hair_M_001_M'}
     };
-
     private hairOverlaysFemale = {
         0: {collection: 'mpbeach_overlays', overlay: 'FM_Hair_Fuzz'},
         1: {collection: 'multiplayer_overlays', overlay: 'NG_F_Hair_001'},
@@ -189,14 +172,26 @@ export class CharacterModule {
         77: {collection: 'mpgunrunning_overlays', overlay: 'MP_Gunrunning_Hair_F_001_F'}
     };
     private cachedCharacter: CharacterInterface;
-
     private pedComponents: PedComponentVariationsInterface[] = [];
 
-    public constructor(
-        private readonly logger: LoggerModule,
-        private readonly event: EventModule,
-        private readonly clothing: ClothingModule) {
+    public constructor(private readonly logger: LoggerModule, private readonly event: EventModule, private readonly clothing: ClothingModule) {
         this.readComponentsFromJson();
+    }
+
+    get getCachedCharacter() {
+        return this.cachedCharacter;
+    }
+
+    get getMaleNudeShoes() {
+        return 34;
+    }
+
+    get getFemaleNudeShoes() {
+        return 35;
+    }
+
+    get getPedComponents() {
+        return this.pedComponents;
     }
 
     public apply(character: CharacterInterface, pedId: number): void {
@@ -204,16 +199,14 @@ export class CharacterModule {
         native.clearPedDecorations(pedId);
         native.setPedHeadBlendData(pedId, 0, 0, 0, 0, 0, 0, 0, 0, 0, false);
 
-        this.updateParents(character.mother, character.father, character.similarity, character.skinSimilarity, character.gender, pedId);
+        this.updateParents(character.mother, character.father, character.similarity, character.skinSimilarity,
+                character.gender, pedId);
         this.updateFaceFeatures(character.faceFeatures, pedId);
         this.updateAppearance(character.appearances, character.gender, pedId);
 
         character.clothes = this.getClothesFromInventory(character.inventory);
         character.clothes.torso = {
-            drawableId: character.torso,
-            textureId: character.torsoTexture,
-            title: "",
-            genderType: GenderType.MALE,
+            drawableId: character.torso, textureId: character.torsoTexture, title: "", genderType: GenderType.MALE,
         }
 
         this.updateClothes(character.clothes, pedId, character.gender);
@@ -341,12 +334,18 @@ export class CharacterModule {
     public updateTattoos(tattoos: TattoosInterface, pedId: number): void {
         native.clearPedDecorations(pedId);
 
-        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.headCollection), Number.parseInt(tattoos.headHash));
-        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.torsoCollection), Number.parseInt(tattoos.torsoHash));
-        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.leftArmCollection), Number.parseInt(tattoos.leftArmHash));
-        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.rightArmCollection), Number.parseInt(tattoos.rightArmHash));
-        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.leftLegCollection), Number.parseInt(tattoos.leftLegHash));
-        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.rightLegCollection), Number.parseInt(tattoos.rightLegHash));
+        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.headCollection),
+                Number.parseInt(tattoos.headHash));
+        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.torsoCollection),
+                Number.parseInt(tattoos.torsoHash));
+        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.leftArmCollection),
+                Number.parseInt(tattoos.leftArmHash));
+        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.rightArmCollection),
+                Number.parseInt(tattoos.rightArmHash));
+        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.leftLegCollection),
+                Number.parseInt(tattoos.leftLegHash));
+        native.addPedDecorationFromHashes(pedId, native.getHashKey(tattoos.rightLegCollection),
+                Number.parseInt(tattoos.rightLegHash));
     }
 
     public setNude(pedId: number, gender: number): void {
@@ -379,8 +378,7 @@ export class CharacterModule {
     }
 
     public updateAppearance(appearances: AppearancesInterface, gender: GenderType, pedId: number): void {
-        if (!appearances)
-            return;
+        if (!appearances) return;
 
         native.clearPedDecorations(pedId);
         native.setPedEyeColor(pedId, appearances.eyeColor);
@@ -469,7 +467,8 @@ export class CharacterModule {
         }
 
         // This will only filter items from the inventory that are clothing item types and equipped.
-        const clothingItems = inventory.items.filter(i => i.itemState === ItemState.EQUIPPED && this.clothing.isClothingItem(i.catalogItemName));
+        const clothingItems = inventory.items.filter(
+                i => i.itemState === ItemState.EQUIPPED && this.clothing.isClothingItem(i.catalogItemName));
 
         const clothes = this.createEmptyClothings();
 
@@ -526,29 +525,20 @@ export class CharacterModule {
     }
 
     private updateParents(mother: number, father: number, similarity: number, skinSimilarity: number, gender: GenderType, pedId: number): void {
-        native.setPedHeadBlendData(
-            pedId,
+        native.setPedHeadBlendData(pedId,
 
-            mother,
-            father,
-            0,
+                mother, father, 0,
 
-            mother,
-            father,
-            0,
+                mother, father, 0,
 
 
-            similarity,
-            skinSimilarity,
-            0,
+                similarity, skinSimilarity, 0,
 
-            false
-        );
+                false);
     }
 
     private updateFaceFeatures(faceFeatures: FaceFeaturesInterface, pedId: number): void {
-        if (!faceFeatures)
-            return;
+        if (!faceFeatures) return;
 
         native.setPedFaceFeature(pedId, 0, faceFeatures.noseWidth);
         native.setPedFaceFeature(pedId, 1, faceFeatures.noseHeight);

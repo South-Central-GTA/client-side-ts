@@ -19,26 +19,14 @@ import {Vector3} from "@extensions/vector3.extensions";
 import {LoggerModule} from "../modules/logger.module";
 import {AnimationFlag} from "@enums/animation.flag";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class PlayerHandler {
     private cuffTick: string;
     private lastSeatShuffle = Date.now();
     private adutyPlayerBlips: number[] = [];
     private dutyInterval: number;
 
-    public constructor(
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly animation: AnimationModule,
-        private readonly update: UpdateModule,
-        private readonly math: MathModule,
-        private readonly camera: CameraModule,
-        private readonly chat: ChatModule,
-        private readonly blip: BlipModule,
-        private readonly pericoIsland: PericoIslandModule,
-        private readonly house: HouseModule,
-        private readonly logger: LoggerModule) {
+    public constructor(private readonly event: EventModule, private readonly player: Player, private readonly animation: AnimationModule, private readonly update: UpdateModule, private readonly math: MathModule, private readonly camera: CameraModule, private readonly chat: ChatModule, private readonly blip: BlipModule, private readonly pericoIsland: PericoIslandModule, private readonly house: HouseModule, private readonly logger: LoggerModule) {
         this.update.add(() => this.tick());
 
         alt.setInterval(() => {
@@ -60,11 +48,11 @@ export class PlayerHandler {
             }
 
             if (alt.Player.local.vehicle) {
-                if (Date.now() < this.lastSeatShuffle)
-                    return;
+                if (Date.now() < this.lastSeatShuffle) return;
 
                 if (native.canShuffleSeat(alt.Player.local.vehicle.scriptID, 0)) {
-                    native.taskShuffleToNextVehicleSeat(alt.Player.local.vehicle.scriptID, alt.Player.local.vehicle.scriptID, 0);
+                    native.taskShuffleToNextVehicleSeat(alt.Player.local.vehicle.scriptID,
+                            alt.Player.local.vehicle.scriptID, 0);
                     this.lastSeatShuffle = Date.now() + 5;
                 }
             } else {
@@ -84,8 +72,7 @@ export class PlayerHandler {
                     }
                 });
 
-                if (closestVehicle === undefined)
-                    return;
+                if (closestVehicle === undefined) return;
 
                 const vehicle = closestVehicle.scriptID;
                 const seats: number = native.getVehicleModelNumberOfSeats(closestVehicle.model);
@@ -100,21 +87,23 @@ export class PlayerHandler {
 
                 const boneFRDoor = native.getEntityBoneIndexByName(vehicle, 'door_pside_f');//Front right
                 const posFRDoor = native.getWorldPositionOfEntityBone(vehicle, boneFRDoor);
-                const distFRDoor = this.math.distance(new alt.Vector3(posFRDoor.x, posFRDoor.y, posFRDoor.z), alt.Player.local.pos);
+                const distFRDoor = this.math.distance(new alt.Vector3(posFRDoor.x, posFRDoor.y, posFRDoor.z),
+                        alt.Player.local.pos);
 
                 const boneBLDoor = native.getEntityBoneIndexByName(vehicle, 'door_dside_r');//Back Left
                 const posBLDoor = native.getWorldPositionOfEntityBone(vehicle, boneBLDoor);
-                const distBLDoor = this.math.distance(new alt.Vector3(posBLDoor.x, posBLDoor.y, posBLDoor.z), alt.Player.local.pos);
+                const distBLDoor = this.math.distance(new alt.Vector3(posBLDoor.x, posBLDoor.y, posBLDoor.z),
+                        alt.Player.local.pos);
 
                 const boneBRDoor = native.getEntityBoneIndexByName(vehicle, 'door_pside_r');//Back Right
                 const posBRDoor = native.getWorldPositionOfEntityBone(vehicle, boneBRDoor);
-                const distBRDoor = this.math.distance(new alt.Vector3(posBRDoor.x, posBRDoor.y, posBRDoor.z), alt.Player.local.pos);
+                const distBRDoor = this.math.distance(new alt.Vector3(posBRDoor.x, posBRDoor.y, posBRDoor.z),
+                        alt.Player.local.pos);
 
                 let minDist = Math.min(distFRDoor, distBLDoor, distBRDoor);
 
                 if (minDist == distFRDoor) {
-                    if (minDist > 1.8)
-                        return;
+                    if (minDist > 1.8) return;
 
                     if (native.isVehicleSeatFree(vehicle, 0, false)) {
                         native.taskEnterVehicle(alt.Player.local.scriptID, vehicle, 5000, 0, 2, 1, 0);
@@ -123,16 +112,14 @@ export class PlayerHandler {
                     }
                 }
                 if (minDist == distBLDoor) {
-                    if (minDist > 1.8)
-                        return;
+                    if (minDist > 1.8) return;
 
                     if (native.isVehicleSeatFree(vehicle, 1, false)) {
                         native.taskEnterVehicle(alt.Player.local.scriptID, vehicle, 5000, 1, 2, 1, 0);
                     }
                 }
                 if (minDist == distBRDoor) {
-                    if (minDist > 1.8)
-                        return;
+                    if (minDist > 1.8) return;
 
                     if (native.isVehicleSeatFree(vehicle, 2, false)) {
                         native.taskEnterVehicle(alt.Player.local.scriptID, vehicle, 5000, 2, 2, 1, 0);
@@ -183,7 +170,8 @@ export class PlayerHandler {
         if (state) {
             const house = this.house.getHouses.find(h => h.id === houseId);
             this.dutyInterval = alt.setInterval(() => {
-                if (this.math.distance(alt.Player.local.pos, new Vector3(house.positionX, house.positionY, house.positionZ)) > 30) {
+                if (this.math.distance(alt.Player.local.pos,
+                        new Vector3(house.positionX, house.positionY, house.positionZ)) > 30) {
                     // To far away from lease company house.
                     this.event.emitServer("player:clearduty", house.id);
                     this.player.isDuty = false;
@@ -215,8 +203,7 @@ export class PlayerHandler {
         this.player.clearTasksImmediately();
     }
 
-    @onGui("player:blockcontrols")
-    @onServer("player:blockcontrols")
+    @onGui("player:blockcontrols") @onServer("player:blockcontrols")
     public onToggleControls(state: boolean): void {
         this.player.blockGameControls(state);
     }
@@ -230,8 +217,7 @@ export class PlayerHandler {
         }
     }
 
-    @onGui("player:togglecamera")
-    @onServer("player:togglecamera")
+    @onGui("player:togglecamera") @onServer("player:togglecamera")
     public onToggleCamera(state: boolean): void {
         this.player.lockCamera(state);
     }

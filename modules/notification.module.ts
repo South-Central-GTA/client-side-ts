@@ -1,5 +1,3 @@
-import * as alt from "alt-client";
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {NotificationInterface} from "@interfaces/notification.interface";
 import {EventModule} from "./event.module";
@@ -7,8 +5,7 @@ import {EventModule} from "./event.module";
 @singleton()
 export class NotificationModule {
 
-    public constructor(
-        private readonly event: EventModule) {
+    public constructor(private readonly event: EventModule) {
     }
 
     public sendNotification(notification: NotificationInterface): void {

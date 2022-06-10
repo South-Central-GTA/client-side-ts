@@ -2,7 +2,7 @@ import {singleton} from "tsyringe";
 import * as alt from "alt-client";
 import * as native from "natives";
 import {foundation} from "../decorators/foundation";
-import {on, onClient, onGui, onServer} from "../decorators/events";
+import {on, onGui, onServer} from "../decorators/events";
 import {KeyCodes} from "@enums/keycode.type";
 import {ChatModule} from "../modules/chat.module";
 import {FreeCamModule} from "../modules/free-cam.module";
@@ -15,25 +15,16 @@ import {CommandInterface} from "@interfaces/command.interface";
 import {MessageInterface} from "@interfaces/message.interface";
 import {ChatType} from "@enums/chat.type";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class ChatHandler {
     private cachedCommands: CommandInterface[] = [];
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly freecam: FreeCamModule,
-        private readonly chat: ChatModule,
-        private readonly player: Player,
-        private readonly logger: LoggerModule,
-        private readonly raycast: RaycastModule,
-        private readonly math: MathModule) {
+    constructor(private readonly event: EventModule, private readonly freecam: FreeCamModule, private readonly chat: ChatModule, private readonly player: Player, private readonly logger: LoggerModule, private readonly raycast: RaycastModule, private readonly math: MathModule) {
     }
 
     @on("keydown")
     public keydown(key: number) {
-        if (!this.chat.ready || this.player.isInAPrison || !this.player.isSpawnedCharacter)
-            return;
+        if (!this.chat.ready || this.player.isInAPrison || !this.player.isSpawnedCharacter) return;
 
         if (key === KeyCodes.T || key === KeyCodes.ENTER) {
             this.chat.openChat();
@@ -86,11 +77,7 @@ export class ChatHandler {
                     mumble = true;
 
                     // If source is /not/ any screaming or megaphone
-                    if (message.chatType !== ChatType.SCREAM
-                        && message.chatType !== ChatType.MEGAPHONE
-                        && message.chatType !== ChatType.DEP_SCREAM
-                        && message.chatType !== ChatType.PHONE_SCREAM
-                        && message.chatType !== ChatType.RADIO_SCREAM) {
+                    if (message.chatType !== ChatType.SCREAM && message.chatType !== ChatType.MEGAPHONE && message.chatType !== ChatType.DEP_SCREAM && message.chatType !== ChatType.PHONE_SCREAM && message.chatType !== ChatType.RADIO_SCREAM) {
                         return;
                     }
                 }

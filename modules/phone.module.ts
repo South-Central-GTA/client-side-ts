@@ -25,13 +25,7 @@ export class PhoneModule {
     private updateId: string;
     private phone: PhoneInterface;
 
-    public constructor(
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly logger: LoggerModule,
-        private readonly updater: UpdateModule,
-        private readonly notification: NotificationModule) {
+    public constructor(private readonly event: EventModule, private readonly player: Player, private readonly gui: GuiModule, private readonly logger: LoggerModule, private readonly updater: UpdateModule, private readonly notification: NotificationModule) {
     }
 
     public setup(phone: PhoneInterface): void {
@@ -65,8 +59,7 @@ export class PhoneModule {
     }
 
     public open(): void {
-        if (this.player.getIsPhoneOpen && this.hasPhone)
-            return;
+        if (this.player.getIsPhoneOpen && this.hasPhone) return;
 
         this.updateId = this.updater.add(() => this.toggleActions());
 
@@ -81,8 +74,7 @@ export class PhoneModule {
     }
 
     public close(): void {
-        if (!this.player.getIsPhoneOpen && this.hasPhone)
-            return;
+        if (!this.player.getIsPhoneOpen && this.hasPhone) return;
 
         alt.setTimeout(() => {
             this.updater.remove(this.updateId);

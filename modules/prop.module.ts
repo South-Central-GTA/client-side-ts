@@ -36,23 +36,9 @@ export class PropModule {
 
         options = {...defaultOptions, ...options};
 
-        native.attachEntityToEntity(
-            this.propID,
-            entity,
-            bone,
-            options.xPos,
-            options.yPos,
-            options.zPos,
-            options.xRot,
-            options.yRot,
-            options.zRot,
-            options.p9,
-            options.useSoftPinning,
-            options.collision,
-            options.isPed,
-            options.vertexIndex,
-            options.fixedRot
-        );
+        native.attachEntityToEntity(this.propID, entity, bone, options.xPos, options.yPos, options.zPos, options.xRot,
+                options.yRot, options.zRot, options.p9, options.useSoftPinning, options.collision, options.isPed,
+                options.vertexIndex, options.fixedRot);
     }
 
 }

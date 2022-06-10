@@ -15,21 +15,13 @@ import {AppearancesInterface} from "@interfaces/character/appearances.interface"
 import {CharacterInterface} from "@interfaces/character/character.interface";
 import {GenderType} from "@enums/gender.type";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class HairSalonHandler {
     private everyTickRef: string;
     private pedId: number;
     private newAppearances: AppearancesInterface;
 
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly event: EventModule,
-        private readonly camera: CameraModule,
-        private readonly character: CharacterModule,
-        private readonly update: UpdateModule) {
+    constructor(private readonly logger: LoggerModule, private readonly player: Player, private readonly gui: GuiModule, private readonly event: EventModule, private readonly camera: CameraModule, private readonly character: CharacterModule, private readonly update: UpdateModule) {
     }
 
     @onServer("hairsalon:open")

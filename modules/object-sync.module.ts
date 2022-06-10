@@ -14,12 +14,7 @@ import {DateModule} from "./date.module";
 export class ObjectSyncModule {
     private objects: ServerObjectInterfaces[] = [];
 
-    public constructor(
-        private readonly logger: LoggerModule,
-        private readonly update: UpdateModule,
-        private readonly player: Player,
-        private readonly text: TextModule,
-        private readonly date: DateModule) {
+    public constructor(private readonly logger: LoggerModule, private readonly update: UpdateModule, private readonly player: Player, private readonly text: TextModule, private readonly date: DateModule) {
         this.update.add(() => {
             for (const key in this.objects) {
                 const object = this.objects[key];
@@ -27,14 +22,14 @@ export class ObjectSyncModule {
                     if (this.player.isAduty) {
                         if (object.itemId === -1) {
                             this.text.drawText3dWithDistance(
-                                `Erstellt von: ${object.ownerName}\nErstellt um: ${this.date.getDate(object.createdAtJson)}`,
-                                object.position.x, object.position.y, object.position.z + 0.5, 0.4, 0,
-                                255, 255, 255, 255, false, true, 5);
+                                    `Erstellt von: ${object.ownerName}\nErstellt um: ${this.date.getDate(
+                                            object.createdAtJson)}`, object.position.x, object.position.y,
+                                    object.position.z + 0.5, 0.4, 0, 255, 255, 255, 255, false, true, 5);
                         } else {
                             this.text.drawText3dWithDistance(
-                                `ItemId: ${object.itemId}\nErstellt von: ${object.ownerName}\nErstellt um: ${this.date.getDate(object.createdAtJson)}`,
-                                object.position.x, object.position.y, object.position.z + 0.5, 0.4, 0,
-                                255, 255, 255, 255, false, true, 5);
+                                    `ItemId: ${object.itemId}\nErstellt von: ${object.ownerName}\nErstellt um: ${this.date.getDate(
+                                            object.createdAtJson)}`, object.position.x, object.position.y,
+                                    object.position.z + 0.5, 0.4, 0, 255, 255, 255, 255, false, true, 5);
                         }
                     }
                 }
@@ -42,10 +37,10 @@ export class ObjectSyncModule {
         });
     }
 
-    public add(id: number, model: string, name: string, position: Vector3, rotation: Vector3, freeze: boolean,
-               onFire: boolean, itemId: number, ownerName: string, createdAtJson: string): void {
+    public add(id: number, model: string, name: string, position: Vector3, rotation: Vector3, freeze: boolean, onFire: boolean, itemId: number, ownerName: string, createdAtJson: string): void {
         loadModel(alt.hash(model)).then(() => {
-            const entity = native.createObject(native.getHashKey(model), position.x, position.y, position.z, false, false, false);
+            const entity = native.createObject(native.getHashKey(model), position.x, position.y, position.z, false,
+                    false, false);
             this.objects[id] = {
                 id: id,
                 model: model,
@@ -73,7 +68,7 @@ export class ObjectSyncModule {
 
             loadModel(alt.hash(obj.model)).then(() => {
                 this.objects[id].entity = native.createObject(native.getHashKey(obj.model), obj.position.x,
-                    obj.position.y, obj.position.z, false, false, false);
+                        obj.position.y, obj.position.z, false, false, false);
 
                 this.setFreeze(id, obj.freeze);
                 this.setPosition(id, obj.position);
@@ -126,7 +121,8 @@ export class ObjectSyncModule {
     private setPosition(id: number, position: Vector3): void {
         if (this.objects.hasOwnProperty(id)) {
             this.objects[id].position = position;
-            native.setEntityCoords(this.objects[id].entity, position.x, position.y, position.z, false, false, false, false);
+            native.setEntityCoords(this.objects[id].entity, position.x, position.y, position.z, false, false, false,
+                    false);
         }
     }
 
@@ -140,7 +136,8 @@ export class ObjectSyncModule {
     private setOnFire(id: number, onFire = null): void {
         if (this.objects.hasOwnProperty(id)) {
             if (onFire) {
-                this.objects[id].fireEntity = native.startScriptFire(this.objects[id].position.x, this.objects[id].position.y, this.objects[id].position.z, 1, true);
+                this.objects[id].fireEntity = native.startScriptFire(this.objects[id].position.x,
+                        this.objects[id].position.y, this.objects[id].position.z, 1, true);
             } else {
                 if (this.objects[id].fireEntity !== undefined) {
                     native.removeScriptFire(this.objects[id].fireEntity);

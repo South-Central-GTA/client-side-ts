@@ -1,4 +1,3 @@
-import * as alt from "alt-client";
 import {singleton} from "tsyringe";
 import {CharacterCreatorDataInterface} from "@interfaces/character/character-creator-data.interface";
 import {CharacterCreatorPurchaseInterface} from "@interfaces/character/character-creator-purchase.interface";
@@ -15,18 +14,14 @@ import {ClothingInterface} from "@interfaces/character/clothing.interface";
 
 @singleton()
 export class CharCreatorModule {
-    get getCharacterData() {
-        return this.characterCreatorData;
-    }
-
     private characterCreatorData: CharacterCreatorDataInterface;
-
     private MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE: number = 0;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule,
-        private readonly clothing: ClothingModule) {
+    constructor(private readonly event: EventModule, private readonly logger: LoggerModule, private readonly clothing: ClothingModule) {
+    }
+
+    get getCharacterData() {
+        return this.characterCreatorData;
     }
 
     public setup(character: CharacterInterface, moneyToSouthCentralPointsValue: number): void {
@@ -44,7 +39,8 @@ export class CharCreatorModule {
     }
 
     public orderVehicleLimit(): boolean {
-        return (this.characterCreatorData.purchaseOrders.filter(po => po.type === CharacterCreatorPurchaseType.VEHICLE).length > 1)
+        return (this.characterCreatorData.purchaseOrders.filter(
+                po => po.type === CharacterCreatorPurchaseType.VEHICLE).length > 1)
     }
 
     public addPurchase(purchase: CharacterCreatorPurchaseInterface): void {
@@ -53,7 +49,8 @@ export class CharCreatorModule {
     }
 
     public removePurchase(purchaseOrder: CharacterCreatorPurchaseInterface): void {
-        this.characterCreatorData.purchaseOrders = this.characterCreatorData.purchaseOrders.filter(po => po.id !== purchaseOrder.id);
+        this.characterCreatorData.purchaseOrders = this.characterCreatorData.purchaseOrders.filter(
+                po => po.id !== purchaseOrder.id);
         this.event.emitGui("charcreator:updatepurchaseorders", this.characterCreatorData.purchaseOrders);
 
         switch (purchaseOrder.type) {
@@ -65,7 +62,8 @@ export class CharCreatorModule {
     }
 
     public resetTypePurchaseOrders(type: CharacterCreatorPurchaseType): void {
-        this.characterCreatorData.purchaseOrders = this.characterCreatorData.purchaseOrders.filter(po => po.type !== type);
+        this.characterCreatorData.purchaseOrders = this.characterCreatorData.purchaseOrders.filter(
+                po => po.type !== type);
         this.event.emitGui("charcreator:updatepurchaseorders", this.characterCreatorData.purchaseOrders);
     }
 
@@ -122,11 +120,13 @@ export class CharCreatorModule {
         }
 
         if (character.clothes.underShirt) {
-            character.inventory.items.push(this.getClothingItem("CLOTHING_UNDERSHIRT", 8, character.clothes.underShirt));
+            character.inventory.items.push(
+                    this.getClothingItem("CLOTHING_UNDERSHIRT", 8, character.clothes.underShirt));
         }
 
         if (character.clothes.accessories) {
-            character.inventory.items.push(this.getClothingItem("CLOTHING_ACCESSORIES", 7, character.clothes.accessories));
+            character.inventory.items.push(
+                    this.getClothingItem("CLOTHING_ACCESSORIES", 7, character.clothes.accessories));
         }
 
         if (character.clothes.watch) {

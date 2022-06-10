@@ -6,26 +6,27 @@ import {Vector3} from "../../extensions/vector3.extensions";
 import {BlipSyncModule} from "../../modules/blip-sync.module";
 import {on} from "../../decorators/events";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class BlipSyncHandler {
 
     constructor(private readonly blipSync: BlipSyncModule) {
 
-        alt.onServer("entitySync:create", (id: number, entityType: EntityType, position: Vector3, currEntityData: { [name: string]: any }) => {
-            if (currEntityData) {
-                const data = currEntityData;
-                if (data != undefined) {
-                    if (entityType === EntityType.Blip) {
-                        blipSync.add(id, position, data.name, data.sprite, data.color, data.scale, data.shortRange, data.player, data.blipType, data.radius, data.alpha);
+        alt.onServer("entitySync:create",
+                (id: number, entityType: EntityType, position: Vector3, currEntityData: { [name: string]: any }) => {
+                    if (currEntityData) {
+                        const data = currEntityData;
+                        if (data != undefined) {
+                            if (entityType === EntityType.Blip) {
+                                blipSync.add(id, position, data.name, data.sprite, data.color, data.scale,
+                                        data.shortRange, data.player, data.blipType, data.radius, data.alpha);
+                            }
+                        }
+                    } else {
+                        if (entityType === EntityType.Blip) {
+                            blipSync.restore(id);
+                        }
                     }
-                }
-            } else {
-                if (entityType === EntityType.Blip) {
-                    blipSync.restore(id);
-                }
-            }
-        });
+                });
 
         alt.onServer("entitySync:remove", (id: number, entityType: EntityType) => {
             if (entityType === EntityType.Blip) {
@@ -45,13 +46,14 @@ export class BlipSyncHandler {
             }
         });
 
-        alt.onServer("entitySync:updateData", (id: number, entityType: EntityType, newEntityData: { [name: string]: any }) => {
-            if (entityType === EntityType.Blip) {
-                // if (newEntityData.hasOwnProperty("locked")) {
-                //     blipSync.setLockState(id, newEntityData.locked);
-                // }
-            }
-        });
+        alt.onServer("entitySync:updateData",
+                (id: number, entityType: EntityType, newEntityData: { [name: string]: any }) => {
+                    if (entityType === EntityType.Blip) {
+                        // if (newEntityData.hasOwnProperty("locked")) {
+                        //     blipSync.setLockState(id, newEntityData.locked);
+                        // }
+                    }
+                });
     }
 
     @on("disconnect")

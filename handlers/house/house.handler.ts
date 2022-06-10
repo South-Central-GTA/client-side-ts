@@ -1,8 +1,7 @@
 import * as alt from "alt-client";
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
-import {onServer, on} from "../../decorators/events";
+import {on, onServer} from "../../decorators/events";
 import {TextModule} from "../../modules/text.module";
 import {UpdateModule} from "../../modules/update.module";
 import {LoggerModule} from "../../modules/logger.module";
@@ -17,19 +16,9 @@ import {HouseInterface} from "@interfaces/house.interface";
 import {LeaseCompanyInterface} from "@interfaces/group/lease-company.interface";
 import {InteriorInterface} from "@interfaces/interior.interface";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class HouseHandler {
-    constructor(
-        private readonly text: TextModule,
-        private readonly update: UpdateModule,
-        private readonly logger: LoggerModule,
-        private readonly house: HouseModule,
-        private readonly event: EventModule,
-        private readonly math: MathModule,
-        private readonly blip: BlipModule,
-        private readonly leaseCompany: LeaseCompanyModule,
-        private readonly player: Player) {
+    constructor(private readonly text: TextModule, private readonly update: UpdateModule, private readonly logger: LoggerModule, private readonly house: HouseModule, private readonly event: EventModule, private readonly math: MathModule, private readonly blip: BlipModule, private readonly leaseCompany: LeaseCompanyModule, private readonly player: Player) {
         this.update.add(() => this.tick());
     }
 
@@ -40,8 +29,11 @@ export class HouseHandler {
         }
 
         if (key === KeyCodes.F) {
-            const house = this.house.getHouses.find(h => this.math.distance(new alt.Vector3(h.positionX, h.positionY, h.positionZ), alt.Player.local.pos) <= 1.5);
-            const exit = this.house.getInteriors.find(e => this.math.distance(new alt.Vector3(e.x, e.y, e.z), alt.Player.local.pos) <= 1.5);
+            const house = this.house.getHouses.find(
+                    h => this.math.distance(new alt.Vector3(h.positionX, h.positionY, h.positionZ),
+                            alt.Player.local.pos) <= 1.5);
+            const exit = this.house.getInteriors.find(
+                    e => this.math.distance(new alt.Vector3(e.x, e.y, e.z), alt.Player.local.pos) <= 1.5);
 
             if (!alt.Player.local.vehicle && house || !alt.Player.local.vehicle && exit) {
                 this.event.emitServer("house:enterexit");
@@ -102,7 +94,8 @@ export class HouseHandler {
                 leaseCompany.typeName = this.leaseCompany.getCompanyTypeName(leaseCompany.leaseCompanyType);
             }
 
-            house.streetName = this.house.getStreet(house.streetDirection, new alt.Vector3(house.positionX, house.positionY, house.positionZ));
+            house.streetName = this.house.getStreet(house.streetDirection,
+                    new alt.Vector3(house.positionX, house.positionY, house.positionZ));
         });
 
         this.event.emitGui("house:updatecharacterhouses", houses)
@@ -141,7 +134,8 @@ export class HouseHandler {
                     colorText = "~b~";
 
                     if (house.subName !== "") {
-                        lowerText = `${house.subName} ${this.leaseCompany.getCompanyTypeName(leaseCompany.leaseCompanyType)}`;
+                        lowerText = `${house.subName} ${this.leaseCompany.getCompanyTypeName(
+                                leaseCompany.leaseCompanyType)}`;
                     } else {
                         lowerText = `${this.leaseCompany.getCompanyTypeName(leaseCompany.leaseCompanyType)}`;
                     }
@@ -157,21 +151,17 @@ export class HouseHandler {
                 }
 
                 if (house.ownerId !== -1 || house.groupOwnerId !== -1) {
-                    this.text.drawText3dWithDistance(
-                        defaultText,
-                        house.positionX, house.positionY, house.positionZ + 1, 0.4, 0,
-                        255, 255, 255, 175, false, true, 2);
+                    this.text.drawText3dWithDistance(defaultText, house.positionX, house.positionY, house.positionZ + 1,
+                            0.4, 0, 255, 255, 255, 175, false, true, 2);
                 } else {
                     if (house.rentable) {
-                        this.text.drawText3dWithDistance(
-                            `${defaultText}\n${colorText}$${house.price} /renthouse`,
-                            house.positionX, house.positionY, house.positionZ + 1, 0.4, 0,
-                            255, 255, 255, 175, false, true, 2);
+                        this.text.drawText3dWithDistance(`${defaultText}\n${colorText}$${house.price} /renthouse`,
+                                house.positionX, house.positionY, house.positionZ + 1, 0.4, 0, 255, 255, 255, 175,
+                                false, true, 2);
                     } else {
-                        this.text.drawText3dWithDistance(
-                            `${defaultText}\n${colorText}$${house.price} /buyhouse`,
-                            house.positionX, house.positionY, house.positionZ + 1, 0.4, 0,
-                            255, 255, 255, 175, false, true, 2);
+                        this.text.drawText3dWithDistance(`${defaultText}\n${colorText}$${house.price} /buyhouse`,
+                                house.positionX, house.positionY, house.positionZ + 1, 0.4, 0, 255, 255, 255, 175,
+                                false, true, 2);
                     }
                 }
             }

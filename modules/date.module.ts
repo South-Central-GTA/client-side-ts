@@ -9,11 +9,7 @@ export class DateModule {
 
         const date = new Date(JSON.parse(dateJson));
         return date.toLocaleDateString("de-DE", {
-            hour: 'numeric',
-            minute: 'numeric',
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric'
+            hour: 'numeric', minute: 'numeric', year: 'numeric', month: 'numeric', day: 'numeric'
         });
     }
 
@@ -24,11 +20,7 @@ export class DateModule {
 
         const date = new Date(JSON.parse(dateJson));
         return date.toLocaleDateString("de-DE", {
-            hour: 'numeric',
-            minute: 'numeric',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+            hour: 'numeric', minute: 'numeric', year: 'numeric', month: 'long', day: 'numeric'
         });
     }
 }

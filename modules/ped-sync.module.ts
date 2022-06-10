@@ -12,10 +12,28 @@ import {CharacterModule} from "./character.module";
 export class PedSyncModule {
     private peds: ServerPedInterface[] = [];
 
-    public constructor(
-        private readonly logger: LoggerModule,
-        private readonly character: CharacterModule,
-    ) {
+    public constructor(private readonly logger: LoggerModule, private readonly character: CharacterModule,) {
+    }
+
+    private static makePedStupid(entity: number): void {
+        native.setEntityAsMissionEntity(entity, true, false); // make sure its not despawned by game engine
+        native.setBlockingOfNonTemporaryEvents(entity, true); // make sure ped doesnt flee etc only do what its told
+        native.setPedCanBeTargetted(entity, false);
+        native.setPedCanBeKnockedOffVehicle(entity, 1);
+        native.setPedCanBeDraggedOut(entity, false);
+        native.setPedSuffersCriticalHits(entity, false);
+        native.setPedDropsWeaponsWhenDead(entity, false);
+        native.setPedDiesInstantlyInWater(entity, false);
+        native.setPedCanRagdoll(entity, false);
+        native.setPedDiesWhenInjured(entity, false);
+        native.taskSetBlockingOfNonTemporaryEvents(entity, true);
+        native.setPedFleeAttributes(entity, 0, false);
+        native.setPedConfigFlag(entity, 32, false); // ped cannot fly thru windscreen
+        native.setPedConfigFlag(entity, 281, true); // ped no writhe
+        native.setPedGetOutUpsideDownVehicle(entity, false);
+        native.setPedCanEvasiveDive(entity, false);
+        native.freezeEntityPosition(entity, true);
+        native.setEntityInvincible(entity, true);
     }
 
     public add(id: number, model: string, position: Vector3, heading: number, vehicle: alt.Vehicle, seat: number, characterModel: CharacterInterface): void {
@@ -65,11 +83,13 @@ export class PedSyncModule {
             loadModel(hash).then(() => {
                 if (ped.vehicle !== null) {
                     alt.setTimeout(() => {
-                        this.peds[id].entity = native.createPedInsideVehicle(ped.vehicle.scriptID, 0, hash, ped.seat, false, false);
+                        this.peds[id].entity = native.createPedInsideVehicle(ped.vehicle.scriptID, 0, hash, ped.seat,
+                                false, false);
                         PedSyncModule.makePedStupid(this.peds[id].entity);
                     }, 100);
                 } else {
-                    this.peds[id].entity = native.createPed(0, hash, ped.position.x, ped.position.y, ped.position.z, ped.heading, false, false);
+                    this.peds[id].entity = native.createPed(0, hash, ped.position.x, ped.position.y, ped.position.z,
+                            ped.heading, false, false);
                     PedSyncModule.makePedStupid(this.peds[id].entity);
                 }
 
@@ -111,28 +131,8 @@ export class PedSyncModule {
     public setPosition(id: number, position: Vector3) {
         if (this.peds.hasOwnProperty(id)) {
             this.peds[id].position = position;
-            native.setEntityCoords(this.peds[id].entity, position.x, position.y, position.z, false, false, false, false);
+            native.setEntityCoords(this.peds[id].entity, position.x, position.y, position.z, false, false, false,
+                    false);
         }
-    }
-
-    private static makePedStupid(entity: number): void {
-        native.setEntityAsMissionEntity(entity, true, false); // make sure its not despawned by game engine
-        native.setBlockingOfNonTemporaryEvents(entity, true); // make sure ped doesnt flee etc only do what its told
-        native.setPedCanBeTargetted(entity, false);
-        native.setPedCanBeKnockedOffVehicle(entity, 1);
-        native.setPedCanBeDraggedOut(entity, false);
-        native.setPedSuffersCriticalHits(entity, false);
-        native.setPedDropsWeaponsWhenDead(entity, false);
-        native.setPedDiesInstantlyInWater(entity, false);
-        native.setPedCanRagdoll(entity, false);
-        native.setPedDiesWhenInjured(entity, false);
-        native.taskSetBlockingOfNonTemporaryEvents(entity, true);
-        native.setPedFleeAttributes(entity, 0, false);
-        native.setPedConfigFlag(entity, 32, false); // ped cannot fly thru windscreen
-        native.setPedConfigFlag(entity, 281, true); // ped no writhe
-        native.setPedGetOutUpsideDownVehicle(entity, false);
-        native.setPedCanEvasiveDive(entity, false);
-        native.freezeEntityPosition(entity, true);
-        native.setEntityInvincible(entity, true);
     }
 }

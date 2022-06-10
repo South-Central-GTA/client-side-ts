@@ -1,23 +1,17 @@
-import * as native from "natives";
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {on, onServer, onGui} from "../decorators/events";
+import {on, onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 import {Player} from "@extensions/player.extensions";
 import {GuiModule} from "../modules/gui.module";
 import {AccountModule} from "../modules/account.module";
 import {KeyCodes} from "@enums/keycode.type";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class AdminHandler {
     private isMenuOpen: boolean = false;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly player: Player,
-        private readonly gui: GuiModule,
-        private readonly account: AccountModule) {
+    constructor(private readonly event: EventModule, private readonly player: Player, private readonly gui: GuiModule, private readonly account: AccountModule) {
     }
 
     @on("keydown")

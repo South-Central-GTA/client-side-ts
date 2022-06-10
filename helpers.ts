@@ -11,31 +11,9 @@ import * as native from "natives";
  * @returns {string}
  */
 export function convertToEventName(value: string) {
-    const clientEvents = [
-        'anyResourceError',
-        'anyResourceStart',
-        'anyResourceStop',
-        'connectionComplete',
-        'consoleCommand',
-        'disconnect',
-        'gameEntityCreate',
-        'gameEntityDestroy',
-        'keydown',
-        'keyup',
-        'removeEntity',
-        'resourceStart',
-        'resourceStop',
-        'syncedMetaChange',
-        'streamSyncedMetaChange',
-        'enteredVehicle',
-        'changedVehicleSeat',
-        'leftVehicle',
-        'taskChange'
-    ];
+    const clientEvents = ['anyResourceError', 'anyResourceStart', 'anyResourceStop', 'connectionComplete', 'consoleCommand', 'disconnect', 'gameEntityCreate', 'gameEntityDestroy', 'keydown', 'keyup', 'removeEntity', 'resourceStart', 'resourceStop', 'syncedMetaChange', 'streamSyncedMetaChange', 'enteredVehicle', 'changedVehicleSeat', 'leftVehicle', 'taskChange'];
 
-    return clientEvents.includes(value)
-        ? value
-        : value.replace(/([a-zA-Z])(?=[A-Z])/g, '$1:')
+    return clientEvents.includes(value) ? value : value.replace(/([a-zA-Z])(?=[A-Z])/g, '$1:')
             .toLowerCase();
 }
 
@@ -71,20 +49,12 @@ export const loadModel = async (modelHash, timeoutMs = 10000) => {
 
 export function getGroundZ(x, y, z, tries = 0) {
     native.setFocusPosAndVel(x, y, z, 0, 0, 0);
-    let [_, height] = native.getGroundZFor3dCoord(
-        x,
-        y,
-        z + 1,
-        0,
-        undefined,
-        undefined);
+    let [_, height] = native.getGroundZFor3dCoord(x, y, z + 1, 0, undefined, undefined);
 
-    if (!height && tries < 20)
-        return getGroundZ(x, y, z + 5, ++tries);
+    if (!height && tries < 20) return getGroundZ(x, y, z + 5, ++tries);
 
     native.clearFocus();
-    if (!height)
-        return 0;
+    if (!height) return 0;
 
     return height;
 }
@@ -94,13 +64,19 @@ export function getGroundZ(x, y, z, tries = 0) {
  */
 export function sleep(delay) {
     var start = new Date().getTime();
-    while (new Date().getTime() < start + delay) ;
+    while (new Date().getTime() < start + delay) {
+        ;
+    }
 }
 
 export const UUIDV4 = (): string => {
     let uuid = ''
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    for (let ii = 0; 32 > ii; ii += 1) 8 === ii || 20 === ii ? (uuid += '-', uuid += (0 | 16 * Math.random()).toString(16)) : 12 === ii ? (uuid += '-', uuid += '4') : 16 === ii ? (uuid += '-', uuid += (8 | 4 * Math.random()).toString(16)) : uuid += (0 | 16 * Math.random()).toString(16)
+    for (let ii = 0; 32 > ii; ii += 1) {
+        8 === ii || 20 === ii ? (uuid += '-', uuid += (0 | 16 * Math.random()).toString(
+                16)) : 12 === ii ? (uuid += '-', uuid += '4') : 16 === ii ? (uuid += '-', uuid += (8 | 4 * Math.random()).toString(
+                16)) : uuid += (0 | 16 * Math.random()).toString(16)
+    }
     return uuid
 }
 

@@ -1,9 +1,9 @@
 ﻿import * as alt from "alt-client";
 import * as native from "natives";
-import {injectable, singleton} from "tsyringe";
+import {injectable} from "tsyringe";
 import {Player} from "../../extensions/player.extensions";
 import {foundation} from "../../decorators/foundation";
-import {onServer, onGui, on} from "../../decorators/events";
+import {on, onGui, onServer} from "../../decorators/events";
 import {loadModel, UID} from "../../helpers";
 import {DialogType} from "@enums/dialog.type";
 import {CameraModule} from "../../modules/camera.module";
@@ -21,9 +21,9 @@ import {CharacterFormInterface} from "@interfaces/character/character-form.inter
 import {GenderType} from "@enums/gender.type";
 import {LocationInterface} from "@interfaces/location.interface";
 import {CharacterCreatorPurchaseInterface} from "@interfaces/character/character-creator-purchase.interface";
+import {GuiModule} from "modules/gui.module";
 
-@foundation()
-@injectable()
+@foundation() @injectable()
 export class CharacterCreatorHandler {
     private pedId: number;
     private everyTickRef: string;
@@ -32,24 +32,19 @@ export class CharacterCreatorHandler {
     private setNudeMode: boolean = false;
 
     private camPortrait: LocationInterface = {
-        pos: new alt.Vector3(403.16586, -998.3614, -98.53971),
-        rot: new alt.Vector3(-14.409467, 4.2688686, 28.610905)
+        pos: new alt.Vector3(403.16586, -998.3614, -98.53971), rot: new alt.Vector3(-14.409467, 4.2688686, 28.610905)
     }
     private camFace: LocationInterface = {
-        pos: new alt.Vector3(402.86017, -997.1442, -98.344),
-        rot: new alt.Vector3(1.4960656, -0, 16.131594)
+        pos: new alt.Vector3(402.86017, -997.1442, -98.344), rot: new alt.Vector3(1.4960656, -0, 16.131594)
     }
     private camTorso: LocationInterface = {
-        pos: new alt.Vector3(402.92615, -997.37085, -98.78486),
-        rot: new alt.Vector3(1.4960656, 0, 16.131594)
+        pos: new alt.Vector3(402.92615, -997.37085, -98.78486), rot: new alt.Vector3(1.4960656, 0, 16.131594)
     }
     private camPants: LocationInterface = {
-        pos: new alt.Vector3(402.92615, -997.37085, -99.574425),
-        rot: new alt.Vector3(1.4960656, 0, 16.131594)
+        pos: new alt.Vector3(402.92615, -997.37085, -99.574425), rot: new alt.Vector3(1.4960656, 0, 16.131594)
     }
     private camFeets: LocationInterface = {
-        pos: new alt.Vector3(402.92615, -997.37085, -99.67937),
-        rot: new alt.Vector3(-19.803135, 4.268868, 15.383445)
+        pos: new alt.Vector3(402.92615, -997.37085, -99.67937), rot: new alt.Vector3(-19.803135, 4.268868, 15.383445)
     }
 
     private characterPos: alt.Vector3 = new alt.Vector3(402.857, -996.672, -100);
@@ -58,22 +53,11 @@ export class CharacterCreatorHandler {
     private MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE: number = 0;
     private PHONE_POINTS_PRICE: number = 0;
 
-    public constructor(
-        private readonly camera: CameraModule,
-        private readonly character: CharacterModule,
-        private readonly player: Player,
-        private readonly event: EventModule,
-        private readonly update: UpdateModule,
-        private readonly logger: LoggerModule,
-        private readonly loading: LoadingSpinnerModule,
-        private readonly charCreator: CharCreatorModule,
-        private readonly dialog: DialogModule,
-        private readonly clothing: ClothingModule) {
+    public constructor(private readonly camera: CameraModule, private readonly character: CharacterModule, private readonly player: Player, private readonly event: EventModule, private readonly update: UpdateModule, private readonly logger: LoggerModule, private readonly loading: LoadingSpinnerModule, private readonly charCreator: CharCreatorModule, private readonly dialog: DialogModule, private readonly gui: GuiModule, private readonly clothing: ClothingModule) {
     }
 
     @onServer("charcreator:open")
-    public async onOpen(character: CharacterInterface, isTutorial: boolean, moneyToSouthCentralPointsValue: number,
-                        baseCharacterCosts: number, phonePointsPrice: number): Promise<void> {
+    public async onOpen(character: CharacterInterface, isTutorial: boolean, moneyToSouthCentralPointsValue: number, baseCharacterCosts: number, phonePointsPrice: number): Promise<void> {
         this.isTutorial = isTutorial;
 
         this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE = moneyToSouthCentralPointsValue;
@@ -104,7 +88,8 @@ export class CharacterCreatorHandler {
 
         this.isNewCharacter = (character != null);
 
-        this.pedId = native.createPed(2, mHash, this.characterPos.x, this.characterPos.y, this.characterPos.z, 180, false, false);
+        this.pedId = native.createPed(2, mHash, this.characterPos.x, this.characterPos.y, this.characterPos.z, 180,
+                false, false);
 
         this.charCreator.setup(character, this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE);
 
@@ -126,7 +111,6 @@ export class CharacterCreatorHandler {
         alt.setTimeout(() => {
             this.player.fadeIn(500);
             this.player.unblurScreen(250);
-
             this.loading.hide();
 
         }, 1500);
@@ -145,8 +129,7 @@ export class CharacterCreatorHandler {
         this.loading.hide();
     }
 
-    @onServer("charcreator:cantfinishedcreation")
-    @on("charcreator:cantfinishedcreation")
+    @onServer("charcreator:cantfinishedcreation") @on("charcreator:cantfinishedcreation")
     public onCantFinishedCreation(): void {
         this.player.fadeIn(250);
         this.loading.hide();
@@ -191,7 +174,8 @@ export class CharacterCreatorHandler {
 
     @onGui("charcreator:getcharacter")
     public onGetCharacter(): void {
-        this.event.emitGui("charcreator:setcharacter", this.character.getCachedCharacter, this.clothing.getMaxDrawableVariations(this.pedId), this.isNewCharacter);
+        this.event.emitGui("charcreator:setcharacter", this.character.getCachedCharacter,
+                this.clothing.getMaxDrawableVariations(this.pedId), this.isNewCharacter);
     }
 
     @onGui("charcreator:setcamerapos")
@@ -257,7 +241,8 @@ export class CharacterCreatorHandler {
                 type: CharacterCreatorPurchaseType.MONEY,
                 name: `$${form.startMoney} Startgeld`,
                 description: "Geld im Inventar des Charakters",
-                southCentralPoints: Number.parseInt((form.startMoney * this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE).toFixed(0)),
+                southCentralPoints: Number.parseInt(
+                        (form.startMoney * this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE).toFixed(0)),
                 removeable: false,
                 orderedVehicle: null
             });
@@ -284,7 +269,8 @@ export class CharacterCreatorHandler {
 
         this.updateCharacter(character);
 
-        this.event.emitGui("clothesmenu:setmaxtexturevariation", this.clothing.getMaxTextureVariations(this.pedId, character.clothes));
+        this.event.emitGui("clothesmenu:setmaxtexturevariation",
+                this.clothing.getMaxTextureVariations(this.pedId, character.clothes));
 
         if (this.setNudeMode) {
             this.character.setNude(this.pedId, character.gender);
@@ -348,9 +334,11 @@ export class CharacterCreatorHandler {
         native.deletePed(this.pedId);
 
         if (char.gender == GenderType.MALE) {
-            this.pedId = native.createPed(2, 1885233650, this.characterPos.x, this.characterPos.y, this.characterPos.z, 180, false, false);
+            this.pedId = native.createPed(2, 1885233650, this.characterPos.x, this.characterPos.y, this.characterPos.z,
+                    180, false, false);
         } else if (char.gender == GenderType.FEMALE) {
-            this.pedId = native.createPed(2, -1667301416, this.characterPos.x, this.characterPos.y, this.characterPos.z, 180, false, false);
+            this.pedId = native.createPed(2, -1667301416, this.characterPos.x, this.characterPos.y, this.characterPos.z,
+                    180, false, false);
         }
 
         char.father = 0;

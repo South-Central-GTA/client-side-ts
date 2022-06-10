@@ -1,12 +1,11 @@
-import * as native from "natives";
 import * as alt from "alt-client";
+import {IVector3} from "alt-client";
 
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {on, onGui, onServer} from "../decorators/events";
+import {onGui, onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 import {Player} from "@extensions/player.extensions";
-import {IVector3} from "alt-client";
 import {LoggerModule} from "../modules/logger.module";
 import {CameraModule} from "../modules/camera.module";
 import {GuiModule} from "../modules/gui.module";
@@ -15,17 +14,17 @@ import {BlipModule} from "../modules/blip.module";
 import {UpdateModule} from "../modules/update.module";
 import {MathModule} from "../modules/math.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class AdminPrisonHandler {
-    private checkpointPositions: IVector3[] = [
-        {x: 395.86813, y: 6493.1343, z: 27.049805},
-        {x: 394.6022, y: 6546.58, z: 26.460083},
-        {x: 309.25714, y: 6546.5933, z: 28.111328},
-        {x: 306.30328, y: 6492.949, z: 28.380981},
-        {x: 303.3231, y: 6447.798, z: 31.161133},
-        {x: 392.84836, y: 6458.492, z: 29.189697}
-    ];
+    private checkpointPositions: IVector3[] = [{x: 395.86813, y: 6493.1343, z: 27.049805}, {
+        x: 394.6022,
+        y: 6546.58,
+        z: 26.460083
+    }, {x: 309.25714, y: 6546.5933, z: 28.111328}, {x: 306.30328, y: 6492.949, z: 28.380981}, {
+        x: 303.3231,
+        y: 6447.798,
+        z: 31.161133
+    }, {x: 392.84836, y: 6458.492, z: 29.189697}];
     private index: number = 0;
     private currentCheckpointPos: IVector3 | undefined;
     private tickId: string | undefined;
@@ -33,16 +32,7 @@ export class AdminPrisonHandler {
     private currentBlip: number | undefined;
     private totalCheckpoints: number;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule,
-        private readonly camera: CameraModule,
-        private readonly gui: GuiModule,
-        private readonly marker: MarkerModule,
-        private readonly blip: BlipModule,
-        private readonly update: UpdateModule,
-        private readonly math: MathModule,
-        private readonly player: Player) {
+    constructor(private readonly event: EventModule, private readonly logger: LoggerModule, private readonly camera: CameraModule, private readonly gui: GuiModule, private readonly marker: MarkerModule, private readonly blip: BlipModule, private readonly update: UpdateModule, private readonly math: MathModule, private readonly player: Player) {
     }
 
     @onServer("adminprison:start")

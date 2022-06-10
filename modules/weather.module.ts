@@ -7,23 +7,12 @@ import {LoggerModule} from "./logger.module";
 
 @singleton()
 export class WeatherModule {
-    public readonly weatherNameMap: Map<WeatherType, string> = new Map([
-        [WeatherType.CLEAR, "CLEAR"],
-        [WeatherType.EXTRA_SUNNY, "EXTRASUNNY"],
-        [WeatherType.CLOUDS, "CLOUDS"],
-        [WeatherType.OVERCAST, "OVERCAST"],
-        [WeatherType.RAIN, "RAIN"],
-        [WeatherType.CLEARING, "CLEARING"],
-        [WeatherType.THUNDER, "THUNDER"],
-        [WeatherType.SMOKG, "SMOG"],
-        [WeatherType.XMAS, "XMAS"],
-    ]);
+    public readonly weatherNameMap: Map<WeatherType, string> = new Map(
+            [[WeatherType.CLEAR, "CLEAR"], [WeatherType.EXTRA_SUNNY, "EXTRASUNNY"], [WeatherType.CLOUDS, "CLOUDS"], [WeatherType.OVERCAST, "OVERCAST"], [WeatherType.RAIN, "RAIN"], [WeatherType.CLEARING, "CLEARING"], [WeatherType.THUNDER, "THUNDER"], [WeatherType.SMOKG, "SMOG"], [WeatherType.XMAS, "XMAS"],]);
 
     public oldWeather: WeatherType;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule) {
+    constructor(private readonly event: EventModule, private readonly logger: LoggerModule) {
     }
 
     public startSync(): void {

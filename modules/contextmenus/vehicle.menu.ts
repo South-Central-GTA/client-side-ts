@@ -1,17 +1,13 @@
-import {singleton, container} from "tsyringe";
+import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
 import {LoggerModule} from "../logger.module";
 import * as alt from "alt-client";
 import {EventModule} from "../event.module";
 import {MathModule} from "../math.module";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class VehicleMenu {
-    constructor(
-        private readonly logger: LoggerModule,
-        private readonly event: EventModule,
-        private readonly math: MathModule) {
+    constructor(private readonly logger: LoggerModule, private readonly event: EventModule, private readonly math: MathModule) {
     }
 
     public interact(coords: alt.Vector3): void {

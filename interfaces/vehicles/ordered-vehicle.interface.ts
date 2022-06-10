@@ -5,8 +5,8 @@
     displayClass: string;
 
     orderedBy: string;
-    deliverdAt: string;
+    deliverdAtJson: string;
 
-    deliveryRequestedAt: string;
+    deliveryRequestedAtJson: string;
     deliveryRequestedBy: string;
 }

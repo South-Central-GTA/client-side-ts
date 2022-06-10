@@ -1,5 +1,3 @@
 ﻿export enum BankHistoryType {
-    WITHDRAW,
-    DEPOSIT,
-    TRANSFER
+    WITHDRAW, DEPOSIT, TRANSFER
 }

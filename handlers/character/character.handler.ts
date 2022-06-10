@@ -17,22 +17,11 @@ import {CharacterInterface} from "@interfaces/character/character.interface";
 import {InventoryInterface} from "@interfaces/inventory/inventory.interface";
 import {KeyCodes} from "@enums/keycode.type";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class CharacterHandler {
     private isMenuOpen: boolean = false;
 
-    constructor(
-        private readonly character: CharacterModule,
-        private readonly player: Player,
-        private readonly camera: CameraModule,
-        private readonly event: EventModule,
-        private readonly gui: GuiModule,
-        private readonly weather: WeatherModule,
-        private readonly house: HouseModule,
-        private readonly loading: LoadingSpinnerModule,
-        private readonly logger: LoggerModule,
-        private readonly phone: PhoneModule) {
+    constructor(private readonly character: CharacterModule, private readonly player: Player, private readonly camera: CameraModule, private readonly event: EventModule, private readonly gui: GuiModule, private readonly weather: WeatherModule, private readonly house: HouseModule, private readonly loading: LoadingSpinnerModule, private readonly logger: LoggerModule, private readonly phone: PhoneModule) {
     }
 
     @on("keydown")
@@ -50,11 +39,6 @@ export class CharacterHandler {
                 }
             }
         }
-    }
-
-    @onServer("character:showmenu")
-    private onShowMenu(): void {
-        this.setMenuState(true);
     }
 
     @onServer("character:apply")
@@ -124,12 +108,18 @@ export class CharacterHandler {
 
     @onServer("character:updateclothes")
     public onUpdateClothes(inventory: InventoryInterface): void {
-        this.character.createClothesBasedOnInventory(inventory, alt.Player.local.scriptID, this.character.getCachedCharacter.gender);
+        this.character.createClothesBasedOnInventory(inventory, alt.Player.local.scriptID,
+                this.character.getCachedCharacter.gender);
     }
 
     @onGui("charactermenu:requestclose")
     public onRequestClose(): void {
         this.setMenuState(false);
+    }
+
+    @onServer("character:showmenu")
+    private onShowMenu(): void {
+        this.setMenuState(true);
     }
 
     private setMenuState(state: boolean): void {

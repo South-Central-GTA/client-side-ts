@@ -1,9 +1,8 @@
-import * as native from "natives";
 import * as alt from "alt-client";
 
 import {singleton} from "tsyringe";
 import {foundation} from "../decorators/foundation";
-import {on, onGui, onServer} from "../decorators/events";
+import {onServer} from "../decorators/events";
 import {EventModule} from "../modules/event.module";
 import {Player} from "@extensions/player.extensions";
 import {LoggerModule} from "../modules/logger.module";
@@ -15,23 +14,13 @@ import {UpdateModule} from "../modules/update.module";
 import {MathModule} from "../modules/math.module";
 import {Vector3} from "@extensions/vector3.extensions";
 
-@foundation()
-@singleton()
+@foundation() @singleton()
 export class FriskHandler {
     private tickId: string | undefined;
     private searchedByPlayerId: number | undefined;
     private openPosition: Vector3;
 
-    constructor(
-        private readonly event: EventModule,
-        private readonly logger: LoggerModule,
-        private readonly camera: CameraModule,
-        private readonly gui: GuiModule,
-        private readonly marker: MarkerModule,
-        private readonly blip: BlipModule,
-        private readonly update: UpdateModule,
-        private readonly math: MathModule,
-        private readonly player: Player) {
+    constructor(private readonly event: EventModule, private readonly logger: LoggerModule, private readonly camera: CameraModule, private readonly gui: GuiModule, private readonly marker: MarkerModule, private readonly blip: BlipModule, private readonly update: UpdateModule, private readonly math: MathModule, private readonly player: Player) {
     }
 
     @onServer("frisk:start")

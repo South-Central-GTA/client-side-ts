@@ -11,8 +11,7 @@ export class EventModule {
      */
     readonly availableListenerTypes = ['on', 'onServer', 'onGui'];
 
-    public constructor(
-        private readonly logger: LoggerModule) {
+    public constructor(private readonly logger: LoggerModule) {
     }
 
     /**
@@ -45,7 +44,7 @@ export class EventModule {
      * @param {(...args: any[]) => void} callback
      */
     public onGui(name: string, callback: (...args: any[]) => void) {
-        alt.emit('gui:on', name, callback);
+        alt.emit('webview:on', name, callback);
     }
 
     /**
@@ -88,6 +87,6 @@ export class EventModule {
      */
     public emitGui(name: string, ...args: any[]) {
         //this.logger.info("EventModule: Emit gui event '" + name + "' with args: " + JSON.stringify(args));
-        alt.emit('gui:emit', name, ...args);
+        alt.emit('webview:emit', name, ...args);
     }
 }

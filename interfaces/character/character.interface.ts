@@ -18,9 +18,9 @@ export interface CharacterInterface {
 
     gender: GenderType;
     age: number;
-    onlineSince: string;
-    lastUsage: string;
-    createdAt: string;
+    onlineSinceJson: string;
+    lastUsageJson: string;
+    createdAtJson: string;
 
     mother: number;
     father: number;

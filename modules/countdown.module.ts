@@ -6,8 +6,7 @@ import {EventModule} from "./event.module";
 export class CountdownModule {
     private countdowns: Map<string, number> = new Map();
 
-    public constructor(
-        private readonly event: EventModule) {
+    public constructor(private readonly event: EventModule) {
     }
 
     public create(id: string, serverEvent: string, duration: number): void {

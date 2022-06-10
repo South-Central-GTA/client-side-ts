@@ -1,4 +1,3 @@
 ﻿export enum DeathState {
-    ALIVE,
-    DEAD
+    ALIVE, DEAD
 }

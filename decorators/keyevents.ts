@@ -17,8 +17,7 @@ export const keyup = (key: number | string): MethodDecorator => {
         const keyup = Reflect.getMetadata('keyup', target.constructor) as KeyEventsInterface[];
 
         keyup.push({
-            key,
-            callback: propertyKey
+            key, callback: propertyKey
         });
 
         Reflect.defineMetadata('keyup', keyup, target.constructor);
@@ -42,8 +41,7 @@ export const keydown = (key: number | string): MethodDecorator => {
         const keydown = Reflect.getMetadata('keydown', target.constructor) as KeyEventsInterface[];
 
         keydown.push({
-            key,
-            callback: propertyKey
+            key, callback: propertyKey
         });
 
         Reflect.defineMetadata('keydown', keydown, target.constructor);
