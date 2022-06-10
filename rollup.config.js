@@ -4,7 +4,7 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 export default {
     input: './index.ts',
     output: {
-        dir: '../../altv-server/resources/southcentral/client',
+        dir: './output',
         format: 'esm'
     },
     plugins: [
