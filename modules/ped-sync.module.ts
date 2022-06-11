@@ -93,7 +93,7 @@ export class PedSyncModule {
                     PedSyncModule.makePedStupid(this.peds[id].entity);
                 }
 
-                if (ped.characterModel !== null) {
+                if (ped.characterModel !== undefined) {
                     this.character.apply(ped.characterModel, ped.entity);
                 }
             });
