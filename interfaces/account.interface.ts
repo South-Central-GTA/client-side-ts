@@ -8,6 +8,6 @@ export interface AccountInterface {
     southCentralPoints: number;
     permission: AdminPermission;
     avatarUrl: string;
-    lastUsage: string;
-    createdAt: string;
+    lastUsageJson: string;
+    createdAtJson: string;
 }

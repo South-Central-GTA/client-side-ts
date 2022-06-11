@@ -16,7 +16,7 @@ export interface ItemInterface {
     positionX?: number;
     positionY?: number;
     positionZ?: number;
-    lastUsage?: string;
+    lastUsageJson?: string;
 
     entity?: number; // only clientside
 
