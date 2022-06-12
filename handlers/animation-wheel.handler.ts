@@ -10,6 +10,8 @@ import {AnimationInterface} from "@interfaces/animation.interface";
 import {FreeCamModule} from "../modules/free-cam.module";
 import {DeathState} from "@enums/death.state";
 import {AnimationOptions} from "@enums/animation.options";
+import {METAKEY_STREAM_SYNC} from "data/custom-player-stream-synced-meta.interface";
+import alt from "alt-client";
 
 @foundation() @singleton()
 export class AnimationWheelHandler {
@@ -25,7 +27,7 @@ export class AnimationWheelHandler {
             if (this.isMenuOpen) {
                 this.setMenuState(false);
             } else {
-                const deathState = this.player.getStreamSyncedMeta<DeathState>("DEATH_STATE");
+                const deathState = alt.Player.local.getStreamSyncedMeta(METAKEY_STREAM_SYNC.DEATH_STATE);
 
                 if (this.player.getIsAnyMenuOpen || this.player.isInAPrison || !this.player.isSpawnedCharacter || this.freecam.isActive || this.player.getIsChatting || this.player.getIsAnyTextOpen || this.player.hasInteractionOpen || deathState === DeathState.DEAD) {
                     return;

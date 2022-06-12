@@ -8,6 +8,7 @@ import native from "natives";
 import {DeathState} from "@enums/death.state";
 import {UpdateModule} from "../modules/update.module";
 import {LoggerModule} from "../modules/logger.module";
+import {METAKEY_STREAM_SYNC} from "data/custom-player-stream-synced-meta.interface";
 
 @foundation() @singleton()
 export class DeathHandler {
@@ -22,8 +23,7 @@ export class DeathHandler {
             return
         }
 
-        const deathState = entity.getStreamSyncedMeta<DeathState>("DEATH_STATE");
-
+        const deathState = alt.Player.local.getStreamSyncedMeta(METAKEY_STREAM_SYNC.DEATH_STATE);
     }
 
     @onServer("death:start")

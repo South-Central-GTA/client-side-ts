@@ -6,7 +6,8 @@ import {AnimationOptions} from "@enums/animation.options";
 @singleton()
 export class AnimationModule {
     private dicts = new Map();
-
+    private cancelable: boolean = false;
+    
     public constructor() {
     }
 
@@ -37,20 +38,22 @@ export class AnimationModule {
 
     /**
      * Play Animation for current player
-     *
-     * @param {string} dict
-     * @param {string} clip
-     * @param {AnimationOptions} options
      */
-    public play(dict: string, clip: string, options: AnimationOptions = {}): void {
+    public play(dict: string, clip: string, options: AnimationOptions = {}, cancelable: boolean = true): void {
         const defaultOptions = new AnimationOptions();
         options = {...defaultOptions, ...options};
+        
+        this.cancelable = cancelable;
 
         native.taskPlayAnim(alt.Player.local.scriptID, dict, clip, options.speed, options.speedMultiplier,
                 options.duration, options.flag, options.playbackRate, options.lockX, options.lockY, options.lockZ,);
     }
 
-    public clear(): void {
+    public clear(force: boolean = false): void {
+        if (!this.cancelable && !force) {
+            return;
+        }
+        
         native.clearPedTasks(alt.Player.local.scriptID);
     }
 

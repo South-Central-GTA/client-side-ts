@@ -63,6 +63,7 @@ import {FireMdcHandler} from "./handlers/fire-mdc.handler";
 import {PrisonHandler} from "./handlers/prison.handler";
 import {FriskHandler} from "./handlers/frisk.handler";
 import {CharacterSelectorHandler} from "./handlers/character/character-selector.handler";
+import {LockpickingHandler} from "handlers/lockpicking.handler";
 
 @injectable()
 export class ClientStartup {
@@ -131,6 +132,7 @@ export class ClientStartup {
         private readonly hairSalonHandler: HairSalonHandler,
         private readonly tattooStudioHandler: TattooStudioHandler,
         private readonly clothingStoreHandler: ClothingStoreHandler,
+        private readonly lockpickingHandler: LockpickingHandler,
         private readonly drivingSchoolHandler: DrivingSchoolHandler) {
     }
 }

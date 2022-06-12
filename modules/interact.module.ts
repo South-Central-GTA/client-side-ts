@@ -38,17 +38,14 @@ export class InteractModule {
         }
 
         this.player.showCursor();
-
-        if (alt.Player.local.vehicle) {
-            this.inVehicleMenu.interact(alt.Player.local.vehicle);
-        } else {
-            if (this.everyTickRef) {
-                this.update.remove(this.everyTickRef);
-                this.everyTickRef = null;
-            }
-
-            this.everyTickRef = this.update.add(() => this.tick());
+        
+        if (this.everyTickRef) {
+            this.update.remove(this.everyTickRef);
+            this.everyTickRef = null;
         }
+
+        this.everyTickRef = this.update.add(() => this.tick());
+        
 
         this.player.hasInteractionOpen = true;
     }
@@ -177,9 +174,10 @@ export class InteractModule {
 
     private openVehicleMenu(entityId: number, coords: alt.Vector3): void {
         if (alt.Player.local.vehicle) {
+            this.inVehicleMenu.interact(alt.Player.local.vehicle);
             return;
         }
-
+        
         this.vehicleMenu.interact(coords);
     }
 }

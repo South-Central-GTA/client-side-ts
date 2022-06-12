@@ -276,6 +276,11 @@ export class PlayerHandler {
 
         this.event.emitServer("data:sendcamerainfo", name, pos.x, pos.y, pos.z, rot.x, rot.y, rot.z);
     }
+    
+    @onServer("player:blockgamecontrols")
+    public onBlockGameControls(state: boolean): void {
+        this.player.blockGameControls(state)
+    }
 
     @onGui("player:focusinput")
     public onFocusInput(state: boolean): void {
