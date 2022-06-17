@@ -34,7 +34,7 @@ export class DoorSyncHandler {
 
         alt.onServer("entitySync:clearCache", (id: number, entityType: EntityType) => {
             if (entityType === EntityType.Door) {
-                doorSync.clear(id);
+                doorSync.remove(id);
             }
         });
 
@@ -44,14 +44,13 @@ export class DoorSyncHandler {
             }
         });
 
-        alt.onServer("entitySync:updateData",
-                (id: number, entityType: EntityType, newEntityData: { [name: string]: any }) => {
-                    if (entityType === EntityType.Door) {
-                        if (newEntityData.hasOwnProperty("locked")) {
-                            doorSync.setLockState(id, newEntityData.locked);
-                        }
-                    }
-                });
+        alt.onServer("entitySync:updateData", (id: number, entityType: EntityType, newEntityData: { [name: string]: any }) => {
+            if (entityType === EntityType.Door) {
+                if (newEntityData.hasOwnProperty("locked")) {
+                    doorSync.setLockState(id, newEntityData.locked);
+                }
+            }
+        });
     }
 
     @on("disconnect")

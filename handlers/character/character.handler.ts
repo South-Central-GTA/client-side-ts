@@ -48,9 +48,6 @@ export class CharacterHandler {
 
     @onServer("character:spawn")
     public spawn(character: CharacterInterface): void {
-        const localPlayer = alt.Player.local;
-
-        this.character.apply(character, localPlayer.scriptID);
         this.player.characterId = character.id;
 
         if (this.player.getIsPhoneOpen) {
@@ -79,6 +76,8 @@ export class CharacterHandler {
             this.player.updateHealthInHUD(true);
         }, 600);
 
+        const localPlayer = alt.Player.local;
+
         native.setPedConfigFlag(localPlayer, 35, false); // Disable Auto Helmet when your on a motorcycle 
         native.setPedConfigFlag(localPlayer, 241, true); // Disable Stopping Engine
         native.setPedConfigFlag(localPlayer, 429, true); // Disable Starting Engine
@@ -104,12 +103,6 @@ export class CharacterHandler {
     @onServer("character:updatetorso")
     public onUpdateTorso(torso: number): void {
         this.character.updateTorso(alt.Player.local.scriptID, torso, 0);
-    }
-
-    @onServer("character:updateclothes")
-    public onUpdateClothes(inventory: InventoryInterface): void {
-        this.character.createClothesBasedOnInventory(inventory, alt.Player.local.scriptID,
-                this.character.getCachedCharacter.gender);
     }
 
     @onGui("charactermenu:requestclose")

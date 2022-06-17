@@ -40,7 +40,45 @@ export class DialogHandler {
     }
 
     private sendEvents(serverEvent: string, clientEvent: string, bankAccountId: number = -1, inputContent: string = ""): void {
-        if (this.dialog.getCurrentDialog.dataJson !== "null") {
+        if (this.dialog.getCurrentDialog.dataJson === "null" || !this.dialog.getCurrentDialog.dataJson) {
+            if (this.dialog.getCurrentDialog.hasInputField) {
+                if (this.dialog.getCurrentDialog.hasBankAccountSelection) {
+                    if (serverEvent !== null) {
+                        this.event.emitServer(serverEvent, bankAccountId, inputContent);
+                    }
+
+                    if (clientEvent !== null) {
+                        this.event.emit(clientEvent, bankAccountId, inputContent);
+                    }
+                } else {
+                    if (serverEvent !== null) {
+                        this.event.emitServer(serverEvent, inputContent);
+                    }
+
+                    if (clientEvent !== null) {
+                        this.event.emit(clientEvent, inputContent);
+                    }
+                }
+            } else {
+                if (this.dialog.getCurrentDialog.hasBankAccountSelection) {
+                    if (serverEvent !== null) {
+                        this.event.emitServer(serverEvent, bankAccountId);
+                    }
+
+                    if (clientEvent !== null) {
+                        this.event.emit(clientEvent, bankAccountId);
+                    }
+                } else {
+                    if (serverEvent !== null) {
+                        this.event.emitServer(serverEvent);
+                    }
+
+                    if (clientEvent !== null) {
+                        this.event.emit(clientEvent);
+                    }
+                }
+            }
+        } else {
             const data = JSON.parse(this.dialog.getCurrentDialog.dataJson);
 
             if (this.dialog.getCurrentDialog.hasBankAccountSelection) {
@@ -77,44 +115,6 @@ export class DialogHandler {
 
                     if (clientEvent !== null) {
                         this.event.emit(clientEvent, ...data);
-                    }
-                }
-            }
-        } else {
-            if (this.dialog.getCurrentDialog.hasInputField) {
-                if (this.dialog.getCurrentDialog.hasBankAccountSelection) {
-                    if (serverEvent !== null) {
-                        this.event.emitServer(serverEvent, bankAccountId, inputContent);
-                    }
-
-                    if (clientEvent !== null) {
-                        this.event.emit(clientEvent, bankAccountId, inputContent);
-                    }
-                } else {
-                    if (serverEvent !== null) {
-                        this.event.emitServer(serverEvent, inputContent);
-                    }
-
-                    if (clientEvent !== null) {
-                        this.event.emit(clientEvent, inputContent);
-                    }
-                }
-            } else {
-                if (this.dialog.getCurrentDialog.hasBankAccountSelection) {
-                    if (serverEvent !== null) {
-                        this.event.emitServer(serverEvent, bankAccountId);
-                    }
-
-                    if (clientEvent !== null) {
-                        this.event.emit(clientEvent, bankAccountId);
-                    }
-                } else {
-                    if (serverEvent !== null) {
-                        this.event.emitServer(serverEvent);
-                    }
-
-                    if (clientEvent !== null) {
-                        this.event.emit(clientEvent);
                     }
                 }
             }

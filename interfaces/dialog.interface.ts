@@ -7,7 +7,7 @@ export interface DialogInterface {
     hasBankAccountSelection: boolean;
     hasInputField: boolean;
     freezeGameControls: boolean;
-    dataJson: string;
+    dataJson?: string;
     primaryButton?: string;
     secondaryButton?: string;
     primaryButtonServerEvent?: string;

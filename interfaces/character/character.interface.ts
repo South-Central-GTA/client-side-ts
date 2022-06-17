@@ -43,5 +43,4 @@ export interface CharacterInterface {
     tattoos: TattoosInterface;
     licenses: PersonalLicenseInterface[];
 
-    clothes: ClothesInterface; //only clientside
 }

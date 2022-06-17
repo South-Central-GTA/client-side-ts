@@ -12,7 +12,7 @@ import {DateModule} from "./date.module";
 
 @singleton()
 export class ObjectSyncModule {
-    private objects: ServerObjectInterfaces[] = [];
+    private objects: Map<number, ServerObjectInterfaces> = new Map();
 
     public constructor(private readonly logger: LoggerModule, private readonly update: UpdateModule, private readonly player: Player, private readonly text: TextModule, private readonly date: DateModule) {
         this.update.add(() => {
@@ -41,7 +41,7 @@ export class ObjectSyncModule {
         loadModel(alt.hash(model)).then(() => {
             const entity = native.createObject(native.getHashKey(model), position.x, position.y, position.z, false,
                     false, false);
-            this.objects[id] = {
+            this.objects.set(id, {
                 id: id,
                 model: model,
                 name: name,
@@ -53,7 +53,7 @@ export class ObjectSyncModule {
                 itemId: itemId,
                 ownerName: ownerName,
                 createdAtJson: createdAtJson
-            };
+            });
 
             this.setFreeze(id, freeze);
             this.setPosition(id, position);
@@ -63,11 +63,11 @@ export class ObjectSyncModule {
     }
 
     public restore(id: number): void {
-        if (this.objects.hasOwnProperty(id)) {
-            const obj = this.objects[id];
+        if (this.objects.has(id)) {
+            const obj = this.objects.get(id);
 
             loadModel(alt.hash(obj.model)).then(() => {
-                this.objects[id].entity = native.createObject(native.getHashKey(obj.model), obj.position.x,
+                this.objects.get(id).entity = native.createObject(native.getHashKey(obj.model), obj.position.x,
                         obj.position.y, obj.position.z, false, false, false);
 
                 this.setFreeze(id, obj.freeze);
@@ -79,15 +79,15 @@ export class ObjectSyncModule {
     }
 
     public remove(id: any): void {
-        if (this.objects.hasOwnProperty(id)) {
-            native.deleteObject(this.objects[id].entity);
-            this.objects[id].entity = null;
+        if (this.objects.has(id)) {
+            native.deleteObject(this.objects.get(id).entity);
+            this.objects.get(id).entity = null;
         }
     }
 
     public clear(id: any): void {
-        if (this.objects.hasOwnProperty(id)) {
-            delete this.objects[id];
+        if (this.objects.has(id)) {
+            this.objects.delete(id);
         }
     }
 
@@ -96,56 +96,56 @@ export class ObjectSyncModule {
             native.deleteObject(object.entity);
         });
 
-        this.objects = [];
+        this.objects = new Map();
     }
 
     public setFreeze(id: number, freeze: boolean): void {
-        if (this.objects.hasOwnProperty(id)) {
-            native.freezeEntityPosition(this.objects[id].entity, freeze);
+        if (this.objects.has(id)) {
+            native.freezeEntityPosition(this.objects.get(id).entity, freeze);
 
-            this.objects[id].freeze = freeze;
+            this.objects.get(id).freeze = freeze;
         }
     }
 
     public getObject(id: number): ServerObjectInterfaces {
-        if (this.objects.hasOwnProperty(id)) {
-            return this.objects[id];
+        if (this.objects.has(id)) {
+            return this.objects.get(id);
         }
     }
 
     public getObjectByEntity(entity: number): ServerObjectInterfaces {
-        const currentObjects = this.objects.filter(obj => obj !== null);
+        const currentObjects = [...this.objects.values()].filter(obj => obj !== null);
         return currentObjects.find(obj => obj.entity === entity);
     }
 
     private setPosition(id: number, position: Vector3): void {
-        if (this.objects.hasOwnProperty(id)) {
-            this.objects[id].position = position;
-            native.setEntityCoords(this.objects[id].entity, position.x, position.y, position.z, false, false, false,
+        if (this.objects.has(id)) {
+            this.objects.get(id).position = position;
+            native.setEntityCoords(this.objects.get(id).entity, position.x, position.y, position.z, false, false, false,
                     false);
         }
     }
 
     private setRotation(id: number, rotation: Vector3): void {
-        if (this.objects.hasOwnProperty(id)) {
-            native.setEntityRotation(this.objects[id].entity, rotation.x, rotation.y, rotation.z, 0, true);
-            this.objects[id].rotation = rotation;
+        if (this.objects.has(id)) {
+            native.setEntityRotation(this.objects.get(id).entity, rotation.x, rotation.y, rotation.z, 0, true);
+            this.objects.get(id).rotation = rotation;
         }
     }
 
     private setOnFire(id: number, onFire = null): void {
-        if (this.objects.hasOwnProperty(id)) {
+        if (this.objects.has(id)) {
             if (onFire) {
-                this.objects[id].fireEntity = native.startScriptFire(this.objects[id].position.x,
-                        this.objects[id].position.y, this.objects[id].position.z, 1, true);
+                this.objects.get(id).fireEntity = native.startScriptFire(this.objects.get(id).position.x,
+                        this.objects.get(id).position.y, this.objects.get(id).position.z, 1, true);
             } else {
-                if (this.objects[id].fireEntity !== undefined) {
-                    native.removeScriptFire(this.objects[id].fireEntity);
-                    this.objects[id].fireEntity = null;
+                if (this.objects.get(id).fireEntity !== undefined) {
+                    native.removeScriptFire(this.objects.get(id).fireEntity);
+                    this.objects.get(id).fireEntity = null;
                 }
             }
 
-            this.objects[id].onFire = onFire;
+            this.objects.get(id).onFire = onFire;
         }
     }
 }

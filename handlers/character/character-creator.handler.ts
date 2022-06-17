@@ -17,11 +17,12 @@ import {DialogModule} from "../../modules/dialog.module";
 import {ClothingModule} from "../../modules/clothing.module";
 import {CharacterInterface} from "@interfaces/character/character.interface";
 import {CharacterCreatorPurchaseType} from "@enums/character-creator-purchase.type";
-import {CharacterFormInterface} from "@interfaces/character/character-form.interface";
 import {GenderType} from "@enums/gender.type";
 import {LocationInterface} from "@interfaces/location.interface";
 import {CharacterCreatorPurchaseInterface} from "@interfaces/character/character-creator-purchase.interface";
 import {GuiModule} from "modules/gui.module";
+import {ClothesInterface} from "@interfaces/character/clothes.interface";
+import {CharacterCreatorDataInterface} from "@interfaces/character/character-creator-data.interface";
 
 @foundation() @injectable()
 export class CharacterCreatorHandler {
@@ -50,18 +51,12 @@ export class CharacterCreatorHandler {
     private characterPos: alt.Vector3 = new alt.Vector3(402.857, -996.672, -100);
     private lastIndex: number = 0;
 
-    private MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE: number = 0;
-    private PHONE_POINTS_PRICE: number = 0;
-
     public constructor(private readonly camera: CameraModule, private readonly character: CharacterModule, private readonly player: Player, private readonly event: EventModule, private readonly update: UpdateModule, private readonly logger: LoggerModule, private readonly loading: LoadingSpinnerModule, private readonly charCreator: CharCreatorModule, private readonly dialog: DialogModule, private readonly gui: GuiModule, private readonly clothing: ClothingModule) {
     }
 
     @onServer("charcreator:open")
     public async onOpen(character: CharacterInterface, isTutorial: boolean, moneyToSouthCentralPointsValue: number, baseCharacterCosts: number, phonePointsPrice: number): Promise<void> {
         this.isTutorial = isTutorial;
-
-        this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE = moneyToSouthCentralPointsValue;
-        this.PHONE_POINTS_PRICE = phonePointsPrice;
 
         if (this.isTutorial) {
             // this.dialog.create({
@@ -91,7 +86,7 @@ export class CharacterCreatorHandler {
         this.pedId = native.createPed(2, mHash, this.characterPos.x, this.characterPos.y, this.characterPos.z, 180,
                 false, false);
 
-        this.charCreator.setup(character, this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE);
+        this.charCreator.setup(character, moneyToSouthCentralPointsValue, phonePointsPrice);
 
         this.charCreator.addPurchase({
             id: UID(),
@@ -153,7 +148,6 @@ export class CharacterCreatorHandler {
             description: "Bist du dir sicher das du die Charakter Erstellung verlassen möchtest? Dein aktueller Charakter würde nicht gespeichert werden!",
             hasBankAccountSelection: false,
             hasInputField: false,
-            dataJson: "[]",
             freezeGameControls: false,
             primaryButton: "Ja",
             secondaryButton: "Nein",
@@ -229,54 +223,20 @@ export class CharacterCreatorHandler {
         this.update.remove(this.everyTickRef);
     }
 
-    @onGui("charcreator:setform")
-    public onSetForm(form: CharacterFormInterface): void {
-        this.charCreator.setForm(form);
-        this.charCreator.resetTypePurchaseOrders(CharacterCreatorPurchaseType.MONEY);
-        this.charCreator.resetTypePurchaseOrders(CharacterCreatorPurchaseType.ITEM);
-
-        if (form.startMoney > 0) {
-            this.charCreator.addPurchase({
-                id: UID(),
-                type: CharacterCreatorPurchaseType.MONEY,
-                name: `$${form.startMoney} Startgeld`,
-                description: "Geld im Inventar des Charakters",
-                southCentralPoints: Number.parseInt(
-                        (form.startMoney * this.MONEY_TO_SOUTH_CENTRAL_POINTS_VALUE).toFixed(0)),
-                removeable: false,
-                orderedVehicle: null
-            });
+    @onGui("charcreator:updatedata")
+    public onUpdateData(data: CharacterCreatorDataInterface): void {
+        if (data.character.gender !== this.charCreator.getCharacterData.character.gender) {
+            this.switchGender(data.character);
         }
+    
+        this.charCreator.updateData(data);
 
-        if (form.hasPhone) {
-            this.charCreator.addPurchase({
-                id: UID(),
-                type: CharacterCreatorPurchaseType.ITEM,
-                name: `Handy`,
-                description: "Item im Inventar des Charakters",
-                southCentralPoints: Number.parseInt((this.PHONE_POINTS_PRICE).toFixed(0)),
-                removeable: false,
-                orderedVehicle: null
-            });
-        }
-    }
-
-    @onGui("charcreator:updatechar")
-    public onUpdateChar(character: CharacterInterface, genderChanged: boolean): void {
-        if (genderChanged) {
-            this.switchGender(character);
-        }
-
-        this.updateCharacter(character);
+        this.updateCharacter(data.character, data.clothes);
 
         this.event.emitGui("clothesmenu:setmaxtexturevariation",
-                this.clothing.getMaxTextureVariations(this.pedId, character.clothes));
-
-        if (this.setNudeMode) {
-            this.character.setNude(this.pedId, character.gender);
-        }
+                this.clothing.getMaxTextureVariations(this.pedId, data.clothes));
     }
-
+    
     @onGui("charcreator:setnude")
     public onSetNude(): void {
         this.setNudeMode = true;
@@ -286,20 +246,17 @@ export class CharacterCreatorHandler {
     @onGui("charcreator:loadclothes")
     public onLoadClothes(): void {
         this.setNudeMode = false;
-        this.character.apply(this.charCreator.getCharacterData.character, this.pedId);
+        this.character.updateClothes(this.charCreator.getCharacterData.clothes, this.pedId, this.charCreator.getCharacterData.character.gender);
     }
 
     @onGui("charcreator:requestbuycharacter")
-    public onRequestBuyCharacter(character: CharacterInterface): void {
-        this.updateCharacter(character);
-
+    public onRequestBuyCharacter(): void {
         this.dialog.create({
             type: DialogType.TWO_BUTTON_DIALOG,
             title: "Charakter kaufen",
             description: "Bist du dir sicher das du diesen Charakter so kaufen möchtest? Du kannst später einige Dinge nicht mehr anpassen! Beachte das du in allen Tabs oben was einstellen kannst, bist du dir sicher das du den Charakter so erstellen möchtest?",
             hasBankAccountSelection: false,
             hasInputField: false,
-            dataJson: "[]",
             freezeGameControls: false,
             primaryButton: "Ja",
             secondaryButton: "Nein",
@@ -350,17 +307,16 @@ export class CharacterCreatorHandler {
         this.event.emitGui("charcreator:setgender", char.gender, this.clothing.getMaxDrawableVariations(this.pedId));
     }
 
-    private updateCharacter(character: CharacterInterface): void {
-        // Generate cloth items based on the given cloth interface. 
-        character.inventory.items = this.charCreator.getInventoryClothingItems(character);
+    private updateCharacter(character: CharacterInterface, clothes: ClothesInterface): void {
+        this.charCreator.resetTypePurchaseOrders(CharacterCreatorPurchaseType.CLOTHINGS);
 
         // Save the torso extra because its not a cloth item.
-        if (character.clothes.torso) {
-            character.torso = character.clothes.torso.drawableId;
-            character.torsoTexture = character.clothes.torso.textureId;
+        if (clothes.torso) {
+            character.torso = clothes.torso.drawableId;
+            character.torsoTexture = clothes.torso.textureId;
         }
 
-        this.charCreator.setCharacter(character);
         this.character.apply(character, this.pedId);
+        this.character.updateClothes(clothes, this.pedId, character.gender);
     }
 }

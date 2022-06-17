@@ -204,126 +204,69 @@ export class CharacterModule {
         this.updateFaceFeatures(character.faceFeatures, pedId);
         this.updateAppearance(character.appearances, character.gender, pedId);
 
-        character.clothes = this.getClothesFromInventory(character.inventory);
-        character.clothes.torso = {
-            drawableId: character.torso, textureId: character.torsoTexture, title: "", genderType: GenderType.MALE,
-        }
-
-        this.updateClothes(character.clothes, pedId, character.gender);
-
         this.updateTattoos(character.tattoos, pedId);
 
         this.cachedCharacter = character;
     }
-
-    public createClothesBasedOnInventory(inventory: InventoryInterface, pedId: number, gender: number): void {
-        const clothes = this.getClothesFromInventory(inventory);
-        clothes.torso = {
-            drawableId: this.cachedCharacter.torso,
-            textureId: this.cachedCharacter.torsoTexture,
-            title: "",
-            genderType: GenderType.MALE,
-        }
-
-        this.updateClothes(clothes, pedId, gender);
-    }
-
+    
     public updateClothes(clothes: ClothesInterface, pedId: number, gender: number) {
-        if (clothes.hat !== null) {
+        this.setNude(pedId, gender);
+        
+        if (clothes.hat) {
             native.setPedPreloadPropData(pedId, 0, clothes.hat.drawableId, clothes.hat.textureId);
             native.setPedPropIndex(pedId, 0, clothes.hat.drawableId, clothes.hat.textureId, true);
-        } else {
-            native.clearPedProp(pedId, 0);
         }
 
-        if (clothes.glasses !== null) {
+        if (clothes.glasses) {
             native.setPedPropIndex(pedId, 1, clothes.glasses.drawableId, clothes.glasses.textureId, true);
-        } else {
-            native.clearPedProp(pedId, 1);
         }
 
-        if (clothes.ears !== null) {
+        if (clothes.ears) {
             native.setPedPropIndex(pedId, 2, clothes.ears.drawableId, clothes.ears.textureId, true);
-        } else {
-            native.clearPedProp(pedId, 2);
         }
 
-        if (clothes.mask !== null) {
+        if (clothes.mask) {
             native.setPedComponentVariation(pedId, 1, clothes.mask.drawableId, clothes.mask.textureId, 2);
-        } else {
-            native.setPedComponentVariation(pedId, 1, 0, 0, 2);
         }
 
-        if (clothes.watch !== null) {
+        if (clothes.watch) {
             native.setPedPropIndex(pedId, 6, clothes.watch.drawableId, clothes.watch.textureId, true);
-        } else {
-            native.clearPedProp(pedId, 6);
         }
 
-        if (clothes.bracelets !== null) {
+        if (clothes.bracelets) {
             native.setPedPropIndex(pedId, 7, clothes.bracelets.drawableId, clothes.bracelets.textureId, true);
-        } else {
-            native.clearPedProp(pedId, 7);
         }
 
-        if (clothes.top !== null) {
+        if (clothes.top) {
             native.setPedComponentVariation(pedId, 11, clothes.top.drawableId, clothes.top.textureId, 2);
-        } else {
-            if (gender === GenderType.MALE) {
-                native.setPedComponentVariation(pedId, 11, 15, 0, 0);
-            } else {
-                native.setPedComponentVariation(pedId, 11, 18, 0, 0);
-            }
         }
 
-        if (clothes.torso !== null) {
+        if (clothes.torso) {
             this.updateTorso(pedId, clothes.torso.drawableId, clothes.torso.textureId);
-        } else {
-            this.updateTorso(pedId, 15, 0);
         }
 
-        if (clothes.bodyArmor !== null) {
+        if (clothes.bodyArmor) {
             native.setPedComponentVariation(pedId, 9, clothes.bodyArmor.drawableId, clothes.bodyArmor.textureId, 2);
-        } else {
-            native.setPedComponentVariation(pedId, 9, 0, 0, 0);
         }
 
-        if (clothes.backPack !== null) {
+        if (clothes.backPack) {
             native.setPedComponentVariation(pedId, 5, clothes.backPack.drawableId, clothes.backPack.textureId, 2);
-        } else {
-            native.setPedComponentVariation(pedId, 5, 0, 0, 0);
         }
 
-        if (clothes.underShirt !== null) {
+        if (clothes.underShirt) {
             native.setPedComponentVariation(pedId, 8, clothes.underShirt.drawableId, clothes.underShirt.textureId, 2);
-        } else {
-            native.setPedComponentVariation(pedId, 8, 15, 0, 0);
         }
 
-        if (clothes.accessories !== null) {
+        if (clothes.accessories) {
             native.setPedComponentVariation(pedId, 7, clothes.accessories.drawableId, clothes.accessories.textureId, 2);
-        } else {
-            native.setPedComponentVariation(pedId, 7, 0, 0, 0);
         }
 
-        if (clothes.pants !== null) {
+        if (clothes.pants) {
             native.setPedComponentVariation(pedId, 4, clothes.pants.drawableId, clothes.pants.textureId, 2);
-        } else {
-            if (gender === GenderType.MALE) {
-                native.setPedComponentVariation(pedId, 4, 61, 0, 0);
-            } else {
-                native.setPedComponentVariation(pedId, 4, 17, 0, 0);
-            }
         }
 
-        if (clothes.shoes !== null) {
+        if (clothes.shoes) {
             native.setPedComponentVariation(pedId, 6, clothes.shoes.drawableId, clothes.shoes.textureId, 2);
-        } else {
-            if (gender === GenderType.MALE) {
-                native.setPedComponentVariation(pedId, 6, this.getMaleNudeShoes, 0, 2);
-            } else {
-                native.setPedComponentVariation(pedId, 6, this.getFemaleNudeShoes, 0, 2);
-            }
         }
     }
 
@@ -359,10 +302,10 @@ export class CharacterModule {
 
         this.updateTorso(pedId, 15, 0);
         native.setPedComponentVariation(pedId, 1, 0, 0, 0);
-        native.setPedComponentVariation(pedId, 9, 0, 0, 0);
         native.setPedComponentVariation(pedId, 5, 0, 0, 0);
-        native.setPedComponentVariation(pedId, 8, 15, 0, 0);
         native.setPedComponentVariation(pedId, 7, 0, 0, 0);
+        native.setPedComponentVariation(pedId, 8, 15, 0, 0);
+        native.setPedComponentVariation(pedId, 9, 0, 0, 0);
 
         if (gender === GenderType.MALE) {
             native.setPedComponentVariation(pedId, 4, 61, 0, 0);
@@ -440,88 +383,6 @@ export class CharacterModule {
 
         native.setPedHeadOverlay(pedId, 12, appearances.addbodyblemihesValue, appearances.addbodyblemihesOpacity);
         native.setPedHeadOverlayColor(pedId, 12, this.getColorType(12), appearances.addbodyblemihesColor, 0);
-    }
-
-    private createEmptyClothings(): ClothesInterface {
-        return {
-            hat: null,
-            glasses: null,
-            ears: null,
-            watch: null,
-            bracelets: null,
-            mask: null,
-            top: null,
-            torso: null,
-            bodyArmor: null,
-            backPack: null,
-            underShirt: null,
-            accessories: null,
-            pants: null,
-            shoes: null
-        }
-    }
-
-    private getClothesFromInventory(inventory: InventoryInterface): ClothesInterface {
-        if (inventory === undefined) {
-            throw Error("We have no inventory.");
-        }
-
-        // This will only filter items from the inventory that are clothing item types and equipped.
-        const clothingItems = inventory.items.filter(
-                i => i.itemState === ItemState.EQUIPPED && this.clothing.isClothingItem(i.catalogItemName));
-
-        const clothes = this.createEmptyClothings();
-
-        for (let index = 0; index < clothingItems.length; index++) {
-            const item = clothingItems[index];
-            const clothing: ClothingInterface = JSON.parse(item.customData);
-
-            switch (item.catalogItemName) {
-                case "CLOTHING_HAT":
-                    clothes.hat = clothing;
-                    break;
-                case "CLOTHING_GLASSES":
-                    clothes.glasses = clothing;
-                    break;
-                case "CLOTHING_EARS":
-                    clothes.ears = clothing;
-                    break;
-                case "CLOTHING_MASK":
-                    clothes.mask = clothing;
-                    break;
-                case "CLOTHING_TOP":
-                    clothes.top = clothing;
-                    break;
-                case "CLOTHING_UNDERSHIRT":
-                    clothes.underShirt = clothing;
-                    break;
-                case "CLOTHING_ACCESSORIES":
-                    clothes.accessories = clothing;
-                    break;
-                case "CLOTHING_WATCH":
-                    clothes.watch = clothing;
-                    break;
-                case "CLOTHING_BRACELET":
-                    clothes.bracelets = clothing;
-                    break;
-                case "CLOTHING_PANTS":
-                    clothes.pants = clothing;
-                    break;
-                case "CLOTHING_BACKPACK":
-                    clothes.backPack = clothing;
-                    break;
-                case "CLOTHING_BODY_ARMOR":
-                    clothes.bodyArmor = clothing;
-                    break;
-                case "CLOTHING_SHOES":
-                    clothes.shoes = clothing;
-                    break;
-                default:
-                    this.logger.error("Es wurde kein Kleidungstyp mit dem Namen " + name + " gefunden.");
-            }
-        }
-
-        return clothes;
     }
 
     private updateParents(mother: number, father: number, similarity: number, skinSimilarity: number, gender: GenderType, pedId: number): void {

@@ -118,7 +118,6 @@ export class HairSalonHandler {
 
         this.pedId = native.createPed(2, modelId, 139.76703, -1708.5758, 28.313599, 35, false, false);
         this.character.apply(character, this.pedId);
-        this.character.setNude(this.pedId, character.gender);
     }
 
     private tick(dir: number): void {

@@ -38,8 +38,6 @@ export class TattooStudioHandler {
         await this.loadPed(character);
         this.createCamera();
 
-        this.character.setNude(this.pedId, this.character.getCachedCharacter.gender);
-
         this.event.emitGui("gui:routeto", "tattoostudio");
     }
 
@@ -123,7 +121,6 @@ export class TattooStudioHandler {
 
         this.pedId = native.createPed(2, modelId, 1321.7935, -1654.6022, 51.26306, 0, false, false);
         this.character.apply(character, this.pedId);
-        this.character.setNude(this.pedId, character.gender);
     }
 
     private tick(dir: number): void {

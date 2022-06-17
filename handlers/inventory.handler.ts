@@ -53,10 +53,10 @@ export class InventoryHandler {
         this.player.blockESC(true);
         this.player.setIsInventoryOpen = true;
         this.player.showCursor();
-
+        
         this.gui.focusView();
         this.event.emitGui("inventory:toggleui", true);
-
+        
         if (inventories.some(
                 i => i.inventoryType === InventoryType.GROUP_MEMBER || i.inventoryType === InventoryType.VEHICLE || i.inventoryType === InventoryType.FRISK)) {
             this.openPosition = alt.Player.local.pos;

@@ -9,24 +9,24 @@ import {Player} from "../../extensions/player.extensions";
 import {onGui, onServer} from "../../decorators/events";
 import {foundation} from "../../decorators/foundation";
 import {LoadingSpinnerModule} from "../../modules/loading-spinner.module";
-import {CharacterInterface} from "@interfaces/character/character.interface";
 import {GenderType} from "@enums/gender.type";
 import {loadModel} from "../../helpers";
 import {GuiModule} from "../../modules/gui.module";
 import {UpdateModule} from "../../modules/update.module";
+import {CharacterDataInterface} from "@interfaces/character/character-data.interface";
 
 @foundation() @singleton()
 export class CharacterSelectorHandler {
     private pedId: number;
-    private characters: CharacterInterface[] = [];
+    private characterDatas: CharacterDataInterface[] = [];
     private lastSelectedCharacterId?: number;
 
     constructor(private readonly event: EventModule, private readonly logger: LoggerModule, private readonly character: CharacterModule, private readonly camera: CameraModule, private readonly player: Player, private readonly loading: LoadingSpinnerModule, private readonly gui: GuiModule, private readonly update: UpdateModule) {
     }
 
     @onServer("charselector:open")
-    public async openCharSelector(characters: CharacterInterface[], lastSelectedCharacterId?: number): Promise<void> {
-        this.characters = characters;
+    public async openCharSelector(characterDatas: CharacterDataInterface[], lastSelectedCharacterId?: number): Promise<void> {
+        this.characterDatas = characterDatas;
 
         this.player.showCursor();
         this.player.isSpawnedCharacter = false;
@@ -36,10 +36,10 @@ export class CharacterSelectorHandler {
         this.createCamera();
         this.lastSelectedCharacterId = lastSelectedCharacterId;
 
-        if (this.characters.length !== 0 && this.lastSelectedCharacterId !== undefined) {
-            const lastCharacter = this.characters.find(cc => cc.id === this.lastSelectedCharacterId);
-            if (lastCharacter) {
-                await this.loadPed(lastCharacter);
+        if (this.characterDatas.length !== 0 && this.lastSelectedCharacterId !== undefined) {
+            const lastCharacterData = this.characterDatas.find(cc => cc.character.id === this.lastSelectedCharacterId);
+            if (lastCharacterData) {
+                await this.loadPed(lastCharacterData);
             }
         }
 
@@ -60,25 +60,25 @@ export class CharacterSelectorHandler {
     }
 
     @onServer("charselector:update")
-    public onUpdateCharacters(characters: CharacterInterface[], lastSelectedCharacterId: number): void {
-        this.characters = characters;
+    public onUpdateCharacters(characterDatas: CharacterDataInterface[], lastSelectedCharacterId: number): void {
+        this.characterDatas = characterDatas;
         this.lastSelectedCharacterId = lastSelectedCharacterId;
 
-        if (this.characters.length !== 0 && this.lastSelectedCharacterId !== undefined) {
-            const lastCharacter = this.characters.find(cc => cc.id === this.lastSelectedCharacterId);
-            if (lastCharacter) {
-                this.loadPed(lastCharacter);
+        if (this.characterDatas.length !== 0 && this.lastSelectedCharacterId !== undefined) {
+            const lastCharacterData = this.characterDatas.find(cc => cc.character.id === this.lastSelectedCharacterId);
+            if (lastCharacterData) {
+                this.loadPed(lastCharacterData);
             }
         } else {
             this.resetCharacter();
         }
 
-        this.event.emitGui("charselector:setup", this.characters, this.lastSelectedCharacterId);
+        this.event.emitGui("charselector:setup", this.characterDatas.map(c => c.character), this.lastSelectedCharacterId);
     }
 
     @onGui("charselector:ready")
     public onCharSelectorLoaded(): void {
-        this.event.emitGui("charselector:setup", this.characters, this.lastSelectedCharacterId);
+        this.event.emitGui("charselector:setup", this.characterDatas.map(c => c.character), this.lastSelectedCharacterId);
     }
 
     @onGui("charselector:reset")
@@ -91,7 +91,7 @@ export class CharacterSelectorHandler {
 
     @onGui("charselector:select")
     public async selectCharacter(id: number): Promise<void> {
-        await this.loadPed(this.characters.find(c => c.id === id));
+        await this.loadPed(this.characterDatas.find(c => c.character.id === id));
     }
 
     @onGui("charselector:play")
@@ -118,21 +118,25 @@ export class CharacterSelectorHandler {
         this.camera.createCamera(pos, rot);
     }
 
-    private async loadPed(character: CharacterInterface): Promise<void> {
+    private async loadPed(characterData: CharacterDataInterface): Promise<void> {
         this.onClose();
 
         let modelId = 0;
-        if (character.gender === GenderType.MALE) {
+        if (characterData.character.gender === GenderType.MALE) {
             modelId = 1885233650;
         }
 
-        if (character.gender === GenderType.FEMALE) {
+        if (characterData.character.gender === GenderType.FEMALE) {
             modelId = 2627665880;
         }
 
         await loadModel(modelId);
 
         this.pedId = native.createPed(2, modelId, 402.7121, -996.778, -100, 180, false, false);
-        this.character.apply(character, this.pedId);
+        this.character.apply(characterData.character, this.pedId);
+        
+        if (characterData.clothings) {
+            this.character.updateClothes(characterData.clothings, this.pedId, characterData.character.gender);
+        }
     }
 }

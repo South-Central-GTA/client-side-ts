@@ -8,7 +8,7 @@ import {BlipType} from "@enums/blip.type";
 
 @singleton()
 export class BlipSyncModule {
-    private blips: BlipInterface[] = [];
+    private blips: Map<number, BlipInterface> = new Map();
 
     public constructor(private readonly logger: LoggerModule) {
     }
@@ -42,7 +42,7 @@ export class BlipSyncModule {
         handle.name = name;
         handle.shortRange = shortRange;
 
-        this.blips[id] = {
+        this.blips.set(id, {
             id: id,
             handle: handle,
             position: position,
@@ -54,11 +54,11 @@ export class BlipSyncModule {
             blipType: blipType,
             player: player,
             radius: radius
-        };
+        });
     }
 
     public get(entityId: number): BlipInterface {
-        if (this.blips.hasOwnProperty(entityId)) {
+        if (this.blips.has(entityId)) {
             return this.blips[entityId];
         } else {
             return null;
@@ -66,8 +66,8 @@ export class BlipSyncModule {
     }
 
     public restore(id: number): void {
-        if (this.blips.hasOwnProperty(id)) {
-            const blip = this.blips[id];
+        if (this.blips.has(id)) {
+            const blip = this.blips.get(id);
 
             if (blip.player !== null && blip.player.id !== alt.Player.local.id) {
                 return;
@@ -100,18 +100,18 @@ export class BlipSyncModule {
     }
 
     public remove(id: number): void {
-        if (this.blips.hasOwnProperty(id)) {
-            this.blips[id].handle.destroy();
-            this.blips[id].handle = null;
-            delete this.blips[id];
+        if (this.blips.has(id)) {
+            this.blips.get(id).handle.destroy();
+            this.blips.get(id).handle = null;
+            this.blips.delete(id);
         }
     }
 
     public clear(id: number): void {
-        if (this.blips.hasOwnProperty(id)) {
-            this.blips[id].handle.destroy();
-            this.blips[id].handle = null;
-            delete this.blips[id];
+        if (this.blips.has(id)) {
+            this.blips.get(id).handle.destroy();
+            this.blips.get(id).handle = null;
+            this.blips.delete(id);
         }
     }
 
@@ -120,13 +120,13 @@ export class BlipSyncModule {
             blip.handle.destroy();
         });
 
-        this.blips = [];
+        this.blips = new Map();
     }
 
     public setPosition(id: number, position: Vector3): void {
-        if (this.blips.hasOwnProperty(id)) {
-            this.blips[id].handle.pos = position;
-            this.blips[id].position = position;
+        if (this.blips.has(id)) {
+            this.blips.get(id).handle.pos = position;
+            this.blips.get(id).position = position;
         }
     }
 }

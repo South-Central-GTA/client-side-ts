@@ -20,7 +20,7 @@ import {GenderType} from "@enums/gender.type";
 export class ClothingStoreHandler {
     private everyTickRef: string;
     private pedId: number;
-    private newClothes: ClothesInterface;
+    private newClothes: ClothesInterface | undefined = undefined;
 
     constructor(private readonly logger: LoggerModule, private readonly player: Player, private readonly gui: GuiModule, private readonly event: EventModule, private readonly camera: CameraModule, private readonly character: CharacterModule, private readonly update: UpdateModule, private readonly clothing: ClothingModule) {
     }
@@ -30,6 +30,8 @@ export class ClothingStoreHandler {
         if (!this.player.getIsInInterior) {
             return;
         }
+        
+        this.newClothes = undefined;
 
         this.player.openMenu();
         this.player.freeze();
@@ -85,6 +87,10 @@ export class ClothingStoreHandler {
 
     @onGui("clothingstore:requestbuy")
     private onRequestBuy(): void {
+        if (this.newClothes === undefined) {
+            return;
+        }
+        
         this.event.emitServer("clothingstore:requestitems", JSON.stringify(this.newClothes));
         this.close();
     }
@@ -126,7 +132,6 @@ export class ClothingStoreHandler {
 
         this.pedId = native.createPed(2, modelId, 71.1033, -1387.0286, 28.364136, 178.58267, false, false);
         this.character.apply(character, this.pedId);
-        this.character.setNude(this.pedId, character.gender);
     }
 
     private tick(dir: number): void {

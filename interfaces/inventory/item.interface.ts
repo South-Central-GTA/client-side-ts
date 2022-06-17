@@ -1,5 +1,6 @@
 import {CatalogItemInterface} from "./catalog-item.interface";
 import {ItemState} from "@enums/item.state";
+import {GenderType} from "@enums/gender.type";
 
 export interface ItemInterface {
     id: number;
@@ -10,7 +11,6 @@ export interface ItemInterface {
     customData: string;
     note: string;
     amount: number;
-    condition: number;
     isBought: boolean;
     itemState: ItemState;
     positionX?: number;
@@ -20,6 +20,12 @@ export interface ItemInterface {
 
     entity?: number; // only clientside
 
+    // only for cloth items
+    genderType?: GenderType;
+    drawableId?: number;
+    textureId?: number;
+    title?: string;
+    
     // only for weapon attachments
     attachedToWeaponItem?: number;
     attachmentItems?: ItemInterface[];
