@@ -22,7 +22,7 @@ export class ChatModule {
     }
 
     public openChat(): void {
-        if (!this.chatVisible || this.inputActive || this.player.getIsAnyTextFieldFocused || this.player.getIsAnyTextOpen) return;
+        if (!this.chatVisible || this.inputActive || this.player.getIsAnyTextOpen || this.player.getIsAnyTextOpen) return;
 
         if (this.freecam.isActive) {
             this.freecam.freeze();

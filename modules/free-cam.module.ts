@@ -50,6 +50,7 @@ export class FreeCamModule {
 
         alt.on('keydown', (key: number) => this.keydown(key));
         alt.on('keyup', (key: number) => this.keyup(key));
+        
         if (this.everyTickRef) {
             this.update.remove(this.everyTickRef);
             this.everyTickRef = undefined;

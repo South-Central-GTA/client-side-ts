@@ -6,7 +6,7 @@ import {CharacterModule} from "../../modules/character.module";
 import {CameraModule} from "../../modules/camera.module";
 import {EventModule} from "../../modules/event.module";
 import {Player} from "../../extensions/player.extensions";
-import {onGui, onServer} from "../../decorators/events";
+import {on, onGui, onServer} from "../../decorators/events";
 import {foundation} from "../../decorators/foundation";
 import {LoadingSpinnerModule} from "../../modules/loading-spinner.module";
 import {GenderType} from "@enums/gender.type";
@@ -82,6 +82,7 @@ export class CharacterSelectorHandler {
     }
 
     @onGui("charselector:reset")
+    @on("disconnect")
     public resetCharacter(): void {
         if (this.pedId !== undefined) {
             native.deletePed(this.pedId);

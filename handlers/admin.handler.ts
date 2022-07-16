@@ -16,7 +16,7 @@ export class AdminHandler {
 
     @on("keydown")
     public onKeydown(key: number): void {
-        if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
+        if (this.player.isInAPrison || !this.player.isSpawnedCharacter || !this.player.isControlsEnabled) {
             return;
         }
 

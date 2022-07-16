@@ -118,6 +118,7 @@ export class CharacterCreatorHandler {
     }
 
     @onServer("charcreator:reset")
+    @on("disconnect")
     public onReset(): void {
         native.deletePed(this.pedId);
 

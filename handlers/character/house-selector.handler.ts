@@ -5,7 +5,7 @@ import {EventModule} from "../../modules/event.module";
 import {CameraModule} from "../../modules/camera.module";
 import {LoggerModule} from "../../modules/logger.module";
 import {NotificationModule} from "../../modules/notification.module";
-import {onGui, onServer} from "../../decorators/events";
+import {on, onGui, onServer} from "../../decorators/events";
 import {Vector3} from "../../extensions/vector3.extensions";
 import {MathModule} from "../../modules/math.module";
 import {HouseModule} from "../../modules/house.module";
@@ -29,6 +29,7 @@ export class HouseSelectorHandler {
     }
 
     @onServer("houseselector:reset")
+    @on("disconnect")
     public onReset(): void {
         this.currentIndex = 0;
         this.currentHouseId = -1;

@@ -26,7 +26,7 @@ export class CharacterHandler {
 
     @on("keydown")
     public onKeydown(key: number): void {
-        if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
+        if (this.player.isInAPrison || !this.player.isSpawnedCharacter || !this.player.isControlsEnabled) {
             return;
         }
 
@@ -59,6 +59,7 @@ export class CharacterHandler {
         this.player.lockCamera(false, true);
         this.player.setVisible(true);
         this.player.showHud();
+        this.player.blockGameControls(false);
         this.player.isSpawnedCharacter = true;
 
         this.gui.unfocusView();

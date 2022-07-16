@@ -27,7 +27,6 @@ export class VehicleModule {
         native.setVehicleNumberPlateText(vehicle, "");
         native.setVehicleColours(vehicle, primColor, secColor);
         native.setVehicleModKit(vehicle, 0);
-
         return vehicle;
     }
 

@@ -12,6 +12,10 @@ export class CameraModule {
     public constructor(private logger: LoggerModule) {
     }
 
+    get hasCamera() {
+        return this.camera !== undefined;
+    }
+
     get getCamera() {
         return this.camera;
     }

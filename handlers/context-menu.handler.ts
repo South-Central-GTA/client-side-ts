@@ -16,20 +16,22 @@ export class ContextMenuHandler {
 
     @on("keydown")
     public onKeydown(key: number): void {
-        if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
-            return;
-        }
-
         if (key === KeyCodes.ALT) {
-            if (!this.player.hasInteractionOpen) {
-                this.interact.startInteract();
+            if (this.player.isInAPrison || !this.player.isSpawnedCharacter || !this.player.isControlsEnabled || this.player.hasInteractionOpen) {
+                this.logger.info("this.player.isInAPrison: " + this.player.isInAPrison);
+                this.logger.info("this.player.isSpawnedCharacter: " + this.player.isSpawnedCharacter);
+                this.logger.info("this.player.isControlsEnabled: " + this.player.isControlsEnabled);
+                this.logger.info("this.player.hasInteractionOpen: " + this.player.hasInteractionOpen);
+                return;
             }
+            
+            this.interact.startInteract();
         }
     }
 
     @on("keyup")
     public keyup(key: number): void {
-        if (this.player.isInAPrison || !this.player.isSpawnedCharacter) {
+        if (this.player.isInAPrison || !this.player.isSpawnedCharacter || !this.player.isControlsEnabled) {
             return;
         }
 

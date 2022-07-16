@@ -6,7 +6,7 @@ import {EventModule} from "../../modules/event.module";
 import {CameraModule} from "../../modules/camera.module";
 import {LoggerModule} from "../../modules/logger.module";
 import {NotificationModule} from "../../modules/notification.module";
-import {onGui, onServer} from "../../decorators/events";
+import {on, onGui, onServer} from "../../decorators/events";
 import {MathModule} from "../../modules/math.module";
 import {CharCreatorModule} from "../../modules/char-creator.module";
 import {SpawnInterface} from "@interfaces/spawn.interface";
@@ -22,6 +22,7 @@ export class SpawnSelectorHandler {
     }
 
     @onServer("spawnselector:reset")
+    @on("disconnect")
     public onReset(): void {
         this.currentIndex = 0;
         this.currentSpawnIndex = this.currentIndex;

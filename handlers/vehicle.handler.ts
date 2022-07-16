@@ -29,7 +29,9 @@ export class VehicleHandler {
         const vehicle = alt.Player.local.vehicle;
         if (vehicle instanceof alt.Vehicle) {
             if (key === KeyCodes.Y) {
-                if (this.player.getIsAnyTextOpen || native.getVehicleClass(vehicle.scriptID) === 13) return;
+                if (this.player.getIsAnyTextOpen || native.getVehicleClass(vehicle.scriptID) === 13 || !this.player.isControlsEnabled) {
+                    return;  
+                } 
 
                 this.event.emitServer("vehicle:toggleengine");
             }

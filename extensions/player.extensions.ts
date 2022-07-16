@@ -17,10 +17,10 @@ export class Player extends alt.Player {
     public isSpawnedCharacter: boolean;
     public isAduty: boolean;
     public isDuty: boolean;
-    public isInAPrison: boolean;
+    public isInAPrison: boolean = false;
     public isInHouse: boolean;
     public isControlsEnabled: boolean = true;
-    public hasInteractionOpen: boolean;
+    public hasInteractionOpen: boolean = false;
     public isInvBlocked: boolean;
     private directions = [0, 45, 90, 135, 180, 225, 270, 315, 360];
     private directionNames = ["N", "NW", "W", "SW", "S", "SO", "O", "NO", "N"];
@@ -84,12 +84,8 @@ export class Player extends alt.Player {
         this.blockGameControls(state);
     }
 
-    get getIsAnyTextFieldFocused() {
-        return this.isAnyTextFieldFocused || this.isChatting;
-    }
-
     get getIsAnyTextOpen() {
-        return this.isAnyTextFieldFocused || this.isChatting || this.openMenuCount;
+        return this.isAnyTextFieldFocused || this.isChatting;
     }
 
     get getIsCursorVisible() {
@@ -180,7 +176,6 @@ export class Player extends alt.Player {
         }
 
         native.displayHud(true);
-
     }
 
     public hideRadarAndHud(force: boolean = false): void {
@@ -217,6 +212,8 @@ export class Player extends alt.Player {
     }
 
     public blockGameControls(state: boolean): void {
+        this.logger.info(`Blocking game controls: ${state}`);
+        
         if (!state && this.getIsAnyTextOpen) {
             return;
         }

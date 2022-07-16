@@ -33,10 +33,6 @@ export class InteractModule {
     }
 
     public startInteract(): void {
-        if (!this.player.isSpawnedCharacter || this.player.getIsAnyTextOpen) {
-            return;
-        }
-
         this.player.showCursor();
         
         if (this.everyTickRef) {

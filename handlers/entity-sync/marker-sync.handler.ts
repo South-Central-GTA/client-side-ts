@@ -34,7 +34,7 @@ export class MarkerSyncHandler {
         });
 
         alt.onServer("entitySync:updatePosition", (id: number, entityType: EntityType, position: Vector3) => {
-            if (entityType == 0) {
+            if (entityType === EntityType.Marker) {
                 markerSync.setPosition(id, position);
             }
         });

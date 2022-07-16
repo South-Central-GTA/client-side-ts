@@ -26,7 +26,7 @@ export class InventoryHandler {
 
     @on("keydown")
     public onKeydown(key: number): void {
-        if (!this.ready || this.player.getIsAnyTextFieldFocused) return;
+        if (!this.ready || this.player.getIsAnyTextOpen) return;
 
         if (key === KeyCodes.I) {
             if (!this.player.getIsInventoryOpen) {

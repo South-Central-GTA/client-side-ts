@@ -1,7 +1,7 @@
 import {singleton} from "tsyringe";
 import {foundation} from "../../decorators/foundation";
 import {LoggerModule} from "../../modules/logger.module";
-import {onGui, onServer} from "../../decorators/events";
+import {on, onGui, onServer} from "../../decorators/events";
 import {Player} from "../../extensions/player.extensions";
 import {GuiModule} from "../../modules/gui.module";
 import {EventModule} from "../../modules/event.module";
@@ -48,6 +48,7 @@ export class ClothingStoreHandler {
     }
 
     @onServer("clothingstore:reset")
+    @on("disconnect")
     private onReset(): void {
         native.deletePed(this.pedId);
     }
